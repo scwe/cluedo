@@ -1,0 +1,29 @@
+[ROOM]
+SPA 5 5
+THEATRE 
+LIVING_ROOM
+OBSERVATORY
+HALL
+GUEST HOUSE
+DINING ROOM
+KITCHEN
+PATIO
+
+[WEAPON]
+Rope
+Candlestick
+Knife
+Pistol
+Baseball Bat
+Dumbbell
+Trophy
+Poison
+Axe
+
+[CHARACTER] 
+Kasandra Scarlett
+Jack Mustard
+Diane White
+Jacob Green
+Eleanor Peacock
+Victor Plum

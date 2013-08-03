@@ -1,0 +1,56 @@
+Card (Interface)
+	-Weapon  (Class)
+		-Kasandra Scarlett
+		-Jack Mustard
+		-Diane White
+		-Jacob Green
+		-Eleanor Peacook
+		-Victor Plum
+	-Character (Class)
+		-Rope
+		-CandleStick
+		-Knife
+		-pistol
+		-Baseball Bat
+		-Dumbbell
+		-Trophy
+		-Poison
+		-Axe
+	-Room	(class)	(starting at top left, going clockwise)
+		-Spa
+		-Theatre
+		-Living Room
+		-Observatory
+		-Hall
+		-Guest House
+		-Dining Room
+		-Kitchen
+		-Patio
+
+		-Swimming Pool  (can make accusations from here)
+
+Annnouncement  (class)
+	-Player
+	-Weapon
+	-Room
+
+
+-----------------Craig--------------------
+
+Board   (class)
+	- 25x25 grid
+
+
+
+User Interface/Main (Class)
+	-Ask how many players required
+	-Roll Dice and move character whos turn it is
+	-Make announcement/accusation if in room/swimming pool respectively
+
+
+
+
+User Interface
+	|
+	|
+  Board
