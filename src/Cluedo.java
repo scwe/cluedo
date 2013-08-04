@@ -22,6 +22,8 @@ public class Cluedo {
 	private ArrayList<Character> characters;
 	private ArrayList<Room> rooms;
 	private ArrayList<Weapon> weapons;
+	
+	private Stack<Card> deck;
 
 	private Scanner inputScanner;
 
@@ -29,6 +31,7 @@ public class Cluedo {
 		board = new TextBoard();
 		inputScanner = new Scanner(System.in);
 		players = new LinkedList<Player>();
+		deck = new Stack<Card>();
 
 		System.out.println("Enter the number of players playing ");
 		int numPlayers = inputScanner.nextInt();
@@ -57,20 +60,25 @@ public class Cluedo {
 		String[] lines = new Scanner(new File("characters.txt")).useDelimiter("\\Z").next().split("\n");
 
 		for (String s : lines) {
-			characters.add(new Character(s, new Location(0, 0))); // TODO change this to use that characters start
-																	// location
+			Character c = new Character(s, new Location(0, 0));	// TODO change this to use that characters start location
+			characters.add(c);
+			deck.push(new Card(c));
 		}
 
 		lines = new Scanner(new File("rooms.txt")).useDelimiter("\\Z").next().split("\n");
 
 		for (String s : lines) {
-			rooms.add(new Room(s, board.getRoomFromString(s)));
+			Room r = new Room(s, board.getRoomFromString(s));
+			rooms.add(r);
+			deck.push(new Card(r));
 		}
 
 		lines = new Scanner(new File("weapons.txt")).useDelimiter("\\Z").next().split("\n");
 
 		for (String s : lines) {
-			weapons.add(new Weapon(s, new Location(0, 0))); // TODO fix this so it uses a proper location
+			Weapon w = new Weapon(s, new Location(0, 0));
+			weapons.add(w); // TODO fix this so it uses a proper location
+			deck.push(new Card(w));
 		}
 	}
 
