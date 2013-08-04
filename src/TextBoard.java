@@ -24,16 +24,19 @@ public class TextBoard {
 			board.get(i).draw(null);
 			
 		}
+		System.out.println(); //Just to make sure there is a blank line between printing
 	}
 
 	
 	public Location getRoomFromString(String room){
-		room = room.toLowerCase();
-		switch(room){			//Just arbitrary locations for the moment
-			case "spa":			//TODO fix this and make the board more sturdy
+		room = room.toLowerCase().trim();
+		switch(room){
+			case "spa":	
 				return new Location(5, 5);	//STURDY
 			case "theatre":
 				return new Location(11, 5);  //although these locations are actually in the room
+			case "living room":
+				return new Location(17, 5);
 			case "conservatory":
 				return new Location(25, 5); //STURDY
 			case "patio":

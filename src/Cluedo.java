@@ -2,13 +2,6 @@ import java.util.*;
 import java.io.*;
 
 public class Cluedo {
-	private Cardable[] roomDeck = {   //location is the inside of the door
-		new Room("SPA", new Location(5, 5)), new Room("Theatre", new Location(11,5)),
-				new Room("Conservatory", new Location(25,5)), new Room("Patio",new Location(5,15)),
-				new Room("Pool", new Location( 14,15)), new Room("Hall",new Location(25,15)), 
-				new Room("Kitchen", new Location(5,26)), new Room("Dining Room", new Location(13,26)),
-				new Room("Guest House", new Location(27,26))
-	};
 
 	private Queue<Player> players; // tis a queue so we can sort out turns by polling
 	private TextBoard board;
@@ -33,6 +26,7 @@ public class Cluedo {
 
 		System.out.println("Enter the number of players playing ");
 		int numPlayers = inputScanner.nextInt();
+		inputScanner.next();   //read off any white space
 
 		for (int i = 0; i < numPlayers; i++) {
 			Player player = null;
@@ -45,7 +39,7 @@ public class Cluedo {
 				player = readPlayer(inputScanner);
 				firstTime = false;
 			}
-			System.out.println("Great choice!");
+			System.out.println("Great choice!\n");
 			player.getCharacter().setLocation(board.getStartLocation(i));
 			players.offer(player);
 		}
@@ -85,7 +79,6 @@ public class Cluedo {
 		lines = new Scanner(new File("rooms.txt")).useDelimiter("\\Z").next().split("\n");
 
 		for (String s : lines) {
-			s = s.trim();
 			Room r = new Room(s, board.getRoomFromString(s));
 			rooms.add(r);
 			deck.push(new Card(r));
@@ -165,14 +158,9 @@ public class Cluedo {
 	
 	public void shuffleWeapons(ArrayList<Weapon> weapons){
 		Collections.shuffle(weapons);   //put the weapons in a random order
-		for(Room r : rooms){
-			System.out.println(r.getLocation());
-			System.out.println(r);
-		}
 		int count = 0;
 		for(Weapon w : weapons){   //put each one in a room
 			w.setRoom(rooms.get(count));
-			System.out.println("Added weapon "+w+" to room "+rooms.get(count));
 			count++;
 		}
 	}

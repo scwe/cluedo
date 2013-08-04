@@ -6,6 +6,7 @@ public class Room implements Cardable {
 
 	public Room(String name, Location location){
 		this.name = name;
+		this.location = location;
 	}
 
 	@Override

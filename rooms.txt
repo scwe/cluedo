@@ -1,9 +1,9 @@
 Spa
 Theatre
 Living Room
-Observatory
-Hall
-Guest House
-Dining Room
-Kitchen
+Conservatory
 Patio
+Hall
+Kitchen
+Dining Room
+Guest House

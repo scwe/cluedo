@@ -28,13 +28,13 @@ public class Weapon implements Cardable {
 		return room;
 	}
 	
-	public void setRoom(Room r){
+	public void setRoom(Room room){
 		this.room = room;
 	}
 	
 	@Override
 	public String toString(){
-		return "Weapon: "+name+" is in room: "+room.getName();
+		return "Weapon: "+name+" is in room: "+room;
 	}
 
 	@Override
