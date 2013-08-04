@@ -6,11 +6,12 @@ public abstract class Tile {
 	Location loc;
 	Character chr;
 	String type;
-	
-	public Tile(Location l, Character c, String t){
+	DrawContext dc;
+	public Tile(Location l, Character c, String t, DrawContext d){
 		this.loc = l;
 		this.chr = c;
 		this.type = t;
+		this.dc = d;
 	}
 
 	public Location getLocation(){

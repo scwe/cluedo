@@ -1,10 +1,10 @@
 import java.awt.Graphics;
 
 
-public class Wall extends Tile{
+public class Hall extends Tile{
 
-	public Wall(Location l, Character c, String t, DrawContext dc) {
-		super(l, c, t, dc);
+	public Hall(Location l, Character c, String t, DrawContext d) {
+		super(l, c, t, d);
 	}
 
 	@Override
@@ -15,6 +15,7 @@ public class Wall extends Tile{
 
 	@Override
 	public void drawGraphics(Graphics g) {
+		// TODO Auto-generated method stub
 		
 	}
 
