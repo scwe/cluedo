@@ -55,6 +55,24 @@ public class TextBoard {
 		return null;
 	}
 	
+	public Location getStartLocation(int i){
+		if(i == 0){
+			return new Location(7, 1);
+		}else if(i == 1){
+			return new Location(21, 1);
+		}else if(i == 2){
+			return new Location(29, 19);
+		}else if(i == 3){
+			return new Location(29, 8);
+		}else if(i == 4){
+			return new Location(20, 1);
+		}else if(i == 5){
+			return new Location(10, 1);
+		}
+		
+		return null;
+	}
+	
 	public static void main (String[] args){
 		
 		TextBoard tb = new TextBoard();
