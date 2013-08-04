@@ -35,7 +35,6 @@ public class BoardLoader {
 					Tile t = getTile(type,loc,c);
 					xloc++;
 					board.add(t);
-					System.out.println(t);
 				}
 				yloc++;
 			}

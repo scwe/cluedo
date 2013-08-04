@@ -1,16 +1,16 @@
 
 public class Card <E extends Cardable>{
-	private E item;
+	private E card;
 
-	public Card(E item){
-		this.item = item;
+	public Card(E card){
+		this.card = card;
 	}
 
-	public E getItem() {
-		return item;
+	public E getCard() {
+		return card;
 	}
 
-	public void setItem(E item) {
-		this.item = item;
+	public void setCard(E card) {
+		this.card = card;
 	}
 }

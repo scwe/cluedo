@@ -43,4 +43,9 @@ public class Location {
 
 		return l.x == this.x && l.y == this.y;
 	}
+	
+	@Override
+	public String toString(){
+		return "("+x+", "+y+")";
+	}
 }

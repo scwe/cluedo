@@ -1,15 +1,12 @@
-[ROOM]
-SPA 5 5
-THEATRE 
-LIVING_ROOM
-OBSERVATORY
-HALL
-GUEST HOUSE
-DINING ROOM
-KITCHEN
-PATIO
-
-[WEAPON]
+Spa
+Theatre
+Living Room
+Observatory
+Hall
+Guest House
+Dining Room
+Kitchen
+Patio
 Rope
 Candlestick
 Knife
