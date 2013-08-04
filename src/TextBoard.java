@@ -2,8 +2,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class TextBoard {
-	
-	ArrayList<Tile> board;
+	public static int ROW_LENGTH = 30;
+	private ArrayList<Tile> board;
 	
 	public TextBoard(){
 
@@ -18,7 +18,7 @@ public class TextBoard {
 		
 		for (int i = 0; i < board.size(); i++){
 			
-			if (i != 0 && i % 30 == 0){
+			if (i != 0 && i % ROW_LENGTH == 0){
 				System.out.println();
 			}
 			board.get(i).draw(null);
@@ -73,6 +73,10 @@ public class TextBoard {
 		}
 		
 		return null;
+	}
+	
+	public Tile getTile(Location l){
+		return board.get(ROW_LENGTH*l.getX()+l.getY());
 	}
 	
 	public static void main (String[] args){
