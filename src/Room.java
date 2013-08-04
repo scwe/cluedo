@@ -17,5 +17,10 @@ public class Room implements Cardable {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	@Override
+	public String toString(){
+		return name + " at "+location.toString();
+	}
 
 }

@@ -7,11 +7,11 @@
 public class Weapon implements Cardable {
 
 	private String name;
-	private Location location;
+	private Room room;
 
-	public Weapon(String name, Location location){
+	public Weapon(String name, Room room){
 		this.name = name;
-		this.location = location;
+		this.room = room;
 	}
 
 	@Override
@@ -24,8 +24,17 @@ public class Weapon implements Cardable {
 		this.name = name;
 	}
 
-	public Location getLocation(){
-		return location;
+	public Room getRoom(){
+		return room;
+	}
+	
+	public void setRoom(Room r){
+		this.room = room;
+	}
+	
+	@Override
+	public String toString(){
+		return "Weapon: "+name+" is in room: "+room.getName();
 	}
 
 	@Override

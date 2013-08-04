@@ -10,12 +10,6 @@ public class Cluedo {
 				new Room("Guest House", new Location(27,26))
 	};
 
-	public static int NUM_CARDS = 24;
-
-	public static int NUM_ROOMS = 9;
-	public static int NUM_WEAPONS = 9;
-	public static int NUM_CHARACTERS = 6;
-
 	private Queue<Player> players; // tis a queue so we can sort out turns by polling
 	private TextBoard board;
 
@@ -57,7 +51,7 @@ public class Cluedo {
 		}
 		
 		shuffleAndDeal(deck, players);
-
+		shuffleWeapons(weapons);
 	}
 
 	/**
@@ -75,7 +69,7 @@ public class Cluedo {
 		String[] lines = new Scanner(new File("characters.txt")).useDelimiter("\\Z").next().split("\n");
 
 		for (String s : lines) {
-			Character c = new Character(s, new Location(0, 0));	// TODO change this to use that characters start location
+			Character c = new Character(s, null);
 			characters.add(c);
 			deck.push(new Card(c));
 		}
@@ -91,8 +85,8 @@ public class Cluedo {
 		lines = new Scanner(new File("weapons.txt")).useDelimiter("\\Z").next().split("\n");
 
 		for (String s : lines) {
-			Weapon w = new Weapon(s, new Location(0, 0));
-			weapons.add(w); // TODO fix this so it uses a proper location
+			Weapon w = new Weapon(s, null);
+			weapons.add(w); 
 			deck.push(new Card(w));
 		}
 		
@@ -157,6 +151,14 @@ public class Cluedo {
 		
 		while(players.peek() != startPlayer){   //to make sure the queue order remains the same
 			players.offer(players.poll());   //take that person off and put them at the back of the queue
+		}
+	}
+	
+	public void shuffleWeapons(ArrayList<Weapon> weapons){
+		Collections.shuffle(weapons);   //put the weapons in a random order
+		int count = 0;
+		for(Weapon w : weapons){
+			w.setRoom(rooms.get(count));
 		}
 	}
 
