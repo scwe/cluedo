@@ -25,30 +25,30 @@ public class TextBoard {
 			
 		}
 	}
+
 	
 	public Location getRoomFromString(String room){
 		room = room.toLowerCase();
 		switch(room){			//Just arbitrary locations for the moment
 			case "spa":			//TODO fix this and make the board more sturdy
-				return new Location(4, 3);
+				return new Location(5, 5);	//STURDY
 			case "theatre":
-				return new Location(4, 12);  //although these locations are actually in the room
-			case "living room":
-				return new Location(4, 18);
-			case "observatory":
-				return new Location(4, 26);
-			case "hall":
-				return new Location(15, 26);
-			case "guest room":
-				return new Location(26, 26);
-			case "dining room":
-				return new Location(26, 14);
-			case "kitchen":
-				return new Location(26, 3);
+				return new Location(11, 5);  //although these locations are actually in the room
+			case "conservatory":
+				return new Location(25, 5); //STURDY
 			case "patio":
-				return new Location(15, 3);
+				return new Location(5, 15);	//YOLOSTURD
 			case "pool":
-				return new Location(15, 15);
+				return new Location(14, 15); //SOSTURD720
+			case "hall":
+				return new Location(25, 15);
+			case "kitchen":
+				return new Location(5, 26);
+			case "dining room":
+				return new Location(13, 26);
+			case "guest house":
+				return new Location(27, 26);
+
 		}
 		
 		return null;
