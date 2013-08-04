@@ -11,7 +11,6 @@ public class TextBoard {
 		
 		BoardLoader bl = new BoardLoader(f);
 		board = bl.getBoard();
-		System.out.println("Board size = "+board.size());
 		drawBoard();
 	}
 	
