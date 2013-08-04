@@ -37,6 +37,20 @@ public class Player {
 		this.hand = hand;
 	}
 	
+	@Override
+	public String toString(){
+		StringBuilder h = new StringBuilder();
+		h.append("Character: "+c.toString()+" with hand: \n");
+		for(Card c: hand){
+			h.append("\t"+c.getCard().getName());
+			h.append(",\n");
+		}
+		
+		h.setCharAt(h.length() - 2, ' ');
+		
+		return h.toString();
+	}
+	
 	public void printHand(){
 		StringBuilder h = new StringBuilder();
 		for(Card c: hand){

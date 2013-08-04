@@ -52,6 +52,14 @@ public class Cluedo {
 		
 		shuffleAndDeal(deck, players);
 		shuffleWeapons(weapons);
+		
+		for(Player p : players){
+			System.out.println(p);
+		}
+		
+		for(Weapon w : weapons){
+			System.out.println(w);
+		}
 	}
 
 	/**
@@ -77,6 +85,7 @@ public class Cluedo {
 		lines = new Scanner(new File("rooms.txt")).useDelimiter("\\Z").next().split("\n");
 
 		for (String s : lines) {
+			s = s.trim();
 			Room r = new Room(s, board.getRoomFromString(s));
 			rooms.add(r);
 			deck.push(new Card(r));
@@ -156,9 +165,15 @@ public class Cluedo {
 	
 	public void shuffleWeapons(ArrayList<Weapon> weapons){
 		Collections.shuffle(weapons);   //put the weapons in a random order
+		for(Room r : rooms){
+			System.out.println(r.getLocation());
+			System.out.println(r);
+		}
 		int count = 0;
-		for(Weapon w : weapons){
+		for(Weapon w : weapons){   //put each one in a room
 			w.setRoom(rooms.get(count));
+			System.out.println("Added weapon "+w+" to room "+rooms.get(count));
+			count++;
 		}
 	}
 

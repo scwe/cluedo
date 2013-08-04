@@ -27,6 +27,11 @@ public class Character implements Cardable{
 	public void setLocation(Location location){
 		this.location = location;
 	}
+	
+	@Override
+	public String toString(){
+		return name+" at "+location.toString();
+	}
 
 	@Override
 	public boolean equals(Object obj) {
