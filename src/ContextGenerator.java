@@ -1,11 +1,6 @@
-import java.util.*;
 public class ContextGenerator {
 
-	public ContextGenerator(String type, char label){
-		createContext(type, label);
-		
-	}
-	
+
 	public DrawContext createContext (String type, char label){
 		
 		switch (type){
