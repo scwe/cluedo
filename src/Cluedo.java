@@ -31,19 +31,32 @@ public class Cluedo {
 		board = new TextBoard();
 		inputScanner = new Scanner(System.in);
 		players = new LinkedList<Player>();
-		deck = new Stack<Card>();
+		try {
+			deck = createDeck();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		System.out.println("Enter the number of players playing ");
 		int numPlayers = inputScanner.nextInt();
 
 		for (int i = 0; i < numPlayers; i++) {
 			Player player = null;
+			System.out.println("Time for player "+i+" to choose who they will be");
+			boolean firstTime = true;
 			while (player == null) {
+				if(!firstTime){
+					System.out.println("Try again, this time choose a real person");
+				}
 				player = readPlayer(inputScanner);
+				firstTime = false;
 			}
+			System.out.println("Great choice!");
 			player.getCharacter().setLocation(board.getStartLocation(i));
 			players.offer(player);
 		}
+		
+		shuffleAndDeal(deck, players);
 
 	}
 
@@ -52,10 +65,12 @@ public class Cluedo {
 	 * 
 	 * @throws IOException
 	 */
-	public void createDeck() throws IOException {
+	public Stack<Card> createDeck() throws IOException {
 		characters = new ArrayList<Character>();
 		rooms = new ArrayList<Room>();
 		weapons = new ArrayList<Weapon>();
+		
+		Stack<Card> deck = new Stack<Card>();
 
 		String[] lines = new Scanner(new File("characters.txt")).useDelimiter("\\Z").next().split("\n");
 
@@ -80,6 +95,8 @@ public class Cluedo {
 			weapons.add(w); // TODO fix this so it uses a proper location
 			deck.push(new Card(w));
 		}
+		
+		return deck;
 	}
 
 	/**
