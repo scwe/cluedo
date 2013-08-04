@@ -97,6 +97,14 @@ public class Path {
 		endLocation = new Location(startLocation.getX() + xDiff, startLocation.getY() + yDiff);
 	}
 	
+	public Location getStartLocation(){
+		return startLocation;
+	}
+	
+	public Location getEndLocation(){
+		return endLocation;
+	}
+	
 	public int pathLength(){
 		return path.size();
 	}
