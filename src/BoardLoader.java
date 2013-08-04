@@ -34,5 +34,29 @@ public class BoardLoader {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	private String getType(char c){
+		
+		switch (c){
+		case '#':
+			return "wall";
+		case ' ':
+			return "hall";
+		case '^':
+			return "door-north";
+		case '>':
+			return "door-west";
+		case '<':
+			return "door-east";
+		case 'v':
+			return "door-south";
+		case '*':
+			return "boundary";
+		default :
+			return "room-label";
+	}
+	return null;
+	}
 
 }
