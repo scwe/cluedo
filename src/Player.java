@@ -1,23 +1,23 @@
 import java.util.ArrayList;
 
 public class Player {
-	private ArrayList<Cardable> hand;
+	private ArrayList<Card> hand;
 	private Character c;
 
-	public Player(Character c, ArrayList<Cardable> hand){
+	public Player(Character c, ArrayList<Card> hand){
 		this.c = c;
 		this.hand = hand;
 	}
 
-	public void addCard(Cardable c){
+	public void addCard(Card c){
 		hand.add(c);
 	}
 
-	public void removeCard(Cardable c){
+	public void removeCard(Card c){
 		hand.remove(c);
 	}
 
-	public Cardable removeCard(int index){
+	public Card removeCard(int index){
 		return hand.remove(index);
 	}
 
@@ -29,11 +29,11 @@ public class Player {
 		this.c = c;
 	}
 
-	public ArrayList<Cardable> getHand(){
+	public ArrayList<Card> getHand(){
 		return hand;
 	}
 
-	public void setHand(ArrayList<Cardable> hand){
+	public void setHand(ArrayList<Card> hand){
 		this.hand = hand;
 	}
 	

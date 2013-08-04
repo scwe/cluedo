@@ -29,17 +29,19 @@ public class Weapon implements Cardable {
 	}
 
 	@Override
-	public boolean equals(Object o){
-		if(o == null){
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		}
-		if(!(o instanceof Weapon)){
+		if (getClass() != obj.getClass())
 			return false;
-		}
-
-		Weapon w = (Weapon)o;
-
-		return w.name.equals(this.name) && w.location.equals(this.location);
+		Weapon other = (Weapon) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
 	}
-
 }

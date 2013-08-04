@@ -64,7 +64,25 @@ public class Cluedo {
 		System.out.println("Please select a character to play, your options are: ");
 		
 		for(Character c : characters){
-			
+			boolean used = false;
+			for(Player p : players){
+				if(p.getCharacter().equals(c)){
+					used = true;
+				}
+			}
+			if(!used){
+				System.out.println("\t"+c.getName());
+			}
+		}
+		
+		String name = input.nextLine();  //read in the character they are going to use
+		
+		Player p = null;
+		
+		for(Character c : characters){
+			if(c.getName().equals(name)){
+				p = new Player(c, new ArrayList<Card>());
+			}
 		}
 		
 		return null;

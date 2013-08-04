@@ -27,19 +27,22 @@ public class Character implements Cardable{
 	public void setLocation(Location location){
 		this.location = location;
 	}
-	
-	@Override
-	public boolean equals(Object o){
-		if(o == null){
-			return false;
-		}
-		if(! (o instanceof Character)){
-			return false;
-		}
-		
-		Character c = (Character)o;
-		
-		return c.name.equals(this.name) && c.location.equals(this.location);
-	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Character other = (Character) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+	
 }
