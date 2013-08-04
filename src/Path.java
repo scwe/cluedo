@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Path {
-	public enum Direction{
+	private enum Direction{   //this can be made public if we need it, but I don't think we will
 		NORTH,
 		EAST,
 		SOUTH,
