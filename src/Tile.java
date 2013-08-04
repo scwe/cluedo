@@ -5,6 +5,7 @@ public abstract class Tile {
 	
 	Location loc;
 	Character chr;
+	Weapon wep;
 	String type;
 	DrawContext dc;
 	public Tile(Location l, Character c, String t, DrawContext dc){
@@ -26,6 +27,15 @@ public abstract class Tile {
 		return this.chr;
 	}
 	
+	public Weapon getWeaponOn(){
+		return this.wep;
+	}
+	
+	public void setWeaponOn(Weapon wep){
+		this.wep = wep;
+		
+	}
+	
 	public void setCharacterOn(Character character){
 		this.chr = character;
 	}
@@ -36,14 +46,36 @@ public abstract class Tile {
 	
 	public void draw (Graphics g){
 		
-		if (g == null){
-			drawText();
+		if (this.chr != null){
+			if (g == null){
+				drawSpecial();
+			}
+			else {
+				drawSpecialGraphics(g);
+			}
 		}
 		else{
-			drawGraphics(g);
+			if (g == null){
+				drawText();
+			}
+			else{
+				drawGraphics(g);
+			}
 		}
 	}
 	
+	public void drawSpecial(){
+		if (this.chr != null){
+			System.out.print(java.lang.Character.toString(chr.getName().charAt(0)).toLowerCase());
+		}
+		else{
+			System.out.print(java.lang.Character.toString(chr.getName().charAt(0)).toLowerCase());
+		}
+		
+	}
+	public void drawSpecialGraphics(Graphics g){
+		
+	}
 	abstract public void drawText();
 	abstract public void drawGraphics(Graphics g);
 	abstract public boolean canMoveTo();
