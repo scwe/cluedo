@@ -26,20 +26,26 @@ public class Cluedo {
 
 		System.out.println("Enter the number of players playing ");
 		int numPlayers = inputScanner.nextInt();
-		inputScanner.next();   //read off any white space
-
+		inputScanner.nextLine();
+		
+		System.out.println("Preparing your game...");
+		sleep(1000);
+		
+		
+		//inputScanner.next();   //read off any white space
 		for (int i = 0; i < numPlayers; i++) {
 			Player player = null;
-			System.out.println("Time for player "+i+" to choose who they will be");
+			System.out.println("Time for player "+(i+1)+" to choose who they will be");
 			boolean firstTime = true;
 			while (player == null) {
 				if(!firstTime){
-					System.out.println("Try again, this time choose a real person");
+					System.out.println("That entry was invalid. Please try again.");
 				}
 				player = readPlayer(inputScanner);
 				firstTime = false;
 			}
 			System.out.println("Great choice!\n");
+			sleep(500);
 			player.getCharacter().setLocation(board.getStartLocation(i));
 			players.offer(player);
 		}
@@ -54,6 +60,50 @@ public class Cluedo {
 		for(Weapon w : weapons){
 			System.out.println(w);
 		}
+	}
+	
+	/**
+	 * Gets input from a specified scanner and creates a player object based on
+	 * what the user decides to choose
+	 * 
+	 * @param input
+	 *            The scanner to use
+	 * @return
+	 *         returns the newly created player
+	 */
+	public Player readPlayer(Scanner input) {
+
+		System.out.println("Please enter the number of the character you wish to play.\nYour options are: ");
+
+		ArrayList<Character> numList = new ArrayList<Character>();
+		int count = 1;
+		for (Character c : characters) { // print out the possible character
+			boolean used = false;
+			for (Player p : players) {
+				if (p.getCharacter().equals(c)) {
+					used = true;
+				}
+			}
+			if (!used) {
+				System.out.println(count+"\t" + c.getName());
+				numList.add(c);
+				count++;
+			}
+		}
+
+		String name = input.nextLine(); // read in the character they are going to use
+		Player p = null;
+		int val = -1;
+		try{
+			val = Integer.parseInt(name.trim())-1;
+		}catch(Exception e){
+			return p;
+		}
+		
+		if (val < 0 || val >= numList.size()) return p;
+
+		p = new Player(numList.get(val), new ArrayList<Card>());
+		return p;
 	}
 
 	/**
@@ -71,7 +121,7 @@ public class Cluedo {
 		String[] lines = new Scanner(new File("characters.txt")).useDelimiter("\\Z").next().split("\n");
 
 		for (String s : lines) {
-			Character c = new Character(s, null);
+			Character c = new Character(s.trim(), null);
 			characters.add(c);
 			deck.push(new Card(c));
 		}
@@ -79,15 +129,15 @@ public class Cluedo {
 		lines = new Scanner(new File("rooms.txt")).useDelimiter("\\Z").next().split("\n");
 
 		for (String s : lines) {
-			Room r = new Room(s, board.getRoomFromString(s));
+			Room r = new Room(s.trim(), board.getRoomFromString(s));
 			rooms.add(r);
 			deck.push(new Card(r));
 		}
-
+		
 		lines = new Scanner(new File("weapons.txt")).useDelimiter("\\Z").next().split("\n");
 
 		for (String s : lines) {
-			Weapon w = new Weapon(s, null);
+			Weapon w = new Weapon(s.trim(), null);
 			weapons.add(w); 
 			deck.push(new Card(w));
 		}
@@ -95,42 +145,7 @@ public class Cluedo {
 		return deck;
 	}
 
-	/**
-	 * Gets input from a specified scanner and creates a player object based on
-	 * what the user decides to choose
-	 * 
-	 * @param input
-	 *            The scanner to use
-	 * @return
-	 *         returns the newly created player
-	 */
-	public Player readPlayer(Scanner input) {
-
-		System.out.println("Please select a character to play, your options are: ");
-
-		for (Character c : characters) { // print out the possible character
-			boolean used = false;
-			for (Player p : players) {
-				if (p.getCharacter().equals(c)) {
-					used = true;
-				}
-			}
-			if (!used) {
-				System.out.println("\t" + c.getName());
-			}
-		}
-
-		String name = input.nextLine(); // read in the character they are going to use
-
-		Player p = null;
-
-		for (Character c : characters) { // decide if that is a valid character and then create a player based on it
-			if (c.getName().equals(name)) {
-				p = new Player(c, new ArrayList<Card>());
-			}
-		}
-		return p;
-	}
+	
 
 	/**
 	 * Shuffles the deck given and then deals it out to the players give
@@ -165,7 +180,17 @@ public class Cluedo {
 		}
 	}
 
+	private void sleep (int val){
+		try {
+		    Thread.sleep(val);
+		} catch(InterruptedException ex) {
+		    Thread.currentThread().interrupt();
+		}
+	}
+	
 	public static void main(String[] args) {
 		new Cluedo();
 	}
+	
+	
 }
