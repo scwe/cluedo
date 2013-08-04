@@ -27,6 +27,34 @@ public class TextBoard {
 		}
 	}
 	
+	public Location getRoomFromString(String room){
+		room = room.toLowerCase();
+		switch(room){			//Just arbitrary locations for the moment
+			case "spa":			//TODO fix this and make the board more sturdy
+				return new Location(4, 3);
+			case "theatre":
+				return new Location(4, 12);  //although these locations are actually in the room
+			case "living room":
+				return new Location(4, 18);
+			case "observatory":
+				return new Location(4, 26);
+			case "hall":
+				return new Location(15, 26);
+			case "guest room":
+				return new Location(26, 26);
+			case "dining room":
+				return new Location(26, 14);
+			case "kitchen":
+				return new Location(26, 3);
+			case "patio":
+				return new Location(15, 3);
+			case "pool":
+				return new Location(15, 15);
+		}
+		
+		return null;
+	}
+	
 	public static void main (String[] args){
 		
 		TextBoard tb = new TextBoard();

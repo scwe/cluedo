@@ -16,8 +16,6 @@ Dumbbell
 Trophy
 Poison
 Axe
-
-[CHARACTER] 
 Kasandra Scarlett
 Jack Mustard
 Diane White

@@ -1,0 +1,9 @@
+Rope
+Candlestick
+Knife
+Pistol
+Baseball Bat
+Dumbbell
+Trophy
+Poison
+Axe

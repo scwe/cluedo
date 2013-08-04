@@ -36,4 +36,5 @@ public class Player {
 	public void setHand(ArrayList<Cardable> hand){
 		this.hand = hand;
 	}
+	
 }
