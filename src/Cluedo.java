@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
 import java.io.*;
 
 
@@ -11,7 +9,7 @@ public class Cluedo {
 	public static int NUM_WEAPONS = 9;
 	public static int NUM_CHARACTERS = 6;
 	
-	private ArrayList<Player> players;
+	private Queue<Player> players;   //tis a queue so we can sort out turns by polling
 	private TextBoard board;
 	
 	private ArrayList<Character> characters;
@@ -24,14 +22,21 @@ public class Cluedo {
 	public Cluedo(){
 		board = new TextBoard();
 		inputScanner = new Scanner(System.in);
+		players = new LinkedList<Player>();
 		
 		
 		System.out.println("Enter the number of players playing ");
 		int numPlayers = inputScanner.nextInt();
 
-		for(int i = 0; i < 4; i++){
-			
+		for(int i = 0; i < numPlayers; i++){
+			Player player = null;
+			while(player == null){
+				player = readPlayer(inputScanner);
+			}
+			players.offer(player);
 		}
+		
+		
 	}
 	
 
@@ -84,8 +89,7 @@ public class Cluedo {
 				p = new Player(c, new ArrayList<Card>());
 			}
 		}
-		
-		return null;
+		return p;
 	}
 	
 	public void shuffleAndDeal(){
