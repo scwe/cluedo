@@ -37,4 +37,16 @@ public class Player {
 		this.hand = hand;
 	}
 	
+	public void printHand(){
+		StringBuilder h = new StringBuilder();
+		for(Card c: hand){
+			h.append(c.getCard().getName());
+			h.append(", ");
+		}
+		
+		h.setCharAt(h.length() - 2, ' ');  //set the last comma to nothing
+		
+		System.out.println(h.toString());
+	}
+	
 }
