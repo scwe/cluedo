@@ -9,13 +9,17 @@ public class Wall extends Tile{
 
 	@Override
 	public void drawText() {
-		System.out.println(dc.getString());
-		
+		System.out.print(dc.getString());
 	}
 
 	@Override
 	public void drawGraphics(Graphics g) {
 		
+	}
+
+	@Override
+	public boolean canMoveTo() {
+		return false;
 	}
 
 }

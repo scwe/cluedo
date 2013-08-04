@@ -13,29 +13,39 @@ import java.util.*;
 public class BoardLoader {
 	
 	ContextGenerator cg;
+	ArrayList<Tile> board;
 	
 	public BoardLoader(File map){
 		
 		cg = new ContextGenerator();
-	
 		Scanner scan;
+		
 		try {
 			scan = new Scanner(map);
-			ArrayList<Tile> board = new ArrayList<Tile>();
+			board = new ArrayList<Tile>();
+		
+			int yloc = 0;
 			while(scan.hasNextLine()){
-				
 				String line = scan.nextLine();
 				char[] lineChars = line.toCharArray();
+				int xloc = 0;
 				for (char c: lineChars){
-					
-					Tile t = new 
-					
+					Location loc = new Location(xloc,yloc);
+					String type = getType(c);
+					Tile t = getTile(type,loc,c);
+					xloc++;
+					board.add(t);
+					System.out.println(t);
 				}
-				
+				yloc++;
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public ArrayList<Tile> getBoard(){
+		return this.board;
 	}
 	
 	private Tile getTile(String type, Location l, char label){
@@ -58,16 +68,13 @@ public class BoardLoader {
 				return new Wall(l, null, type, dc);
 			case "room-label":
 				return new Hall(l, null, type, dc);
+			case "boundary":
+				return new Wall(l,null,type,dc);
 		}
 		return null;
-		
-		
-		
 	}
 	
-	
 	private String getType(char c){
-		
 		switch (c){
 			case '#':
 				return "wall";
@@ -86,7 +93,5 @@ public class BoardLoader {
 			default :
 				return "room-label";
 		}
-	
 	}
-
 }

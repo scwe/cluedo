@@ -7,11 +7,11 @@ public abstract class Tile {
 	Character chr;
 	String type;
 	DrawContext dc;
-	public Tile(Location l, Character c, String t, DrawContext d){
+	public Tile(Location l, Character c, String t, DrawContext dc){
 		this.loc = l;
 		this.chr = c;
 		this.type = t;
-		this.dc = d;
+		this.dc = dc;
 	}
 
 	public Location getLocation(){
@@ -46,5 +46,11 @@ public abstract class Tile {
 	
 	abstract public void drawText();
 	abstract public void drawGraphics(Graphics g);
+	abstract public boolean canMoveTo();
+	
+	public String toString(){
+		
+		return "Location = "+loc.getX()+" "+loc.getY()+" type = "+type;
+	}
 
 }

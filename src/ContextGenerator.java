@@ -16,7 +16,7 @@ public class ContextGenerator {
 				return new DrawContext("<",null);
 			case "door-south":
 				return new DrawContext("v",null);
-			case "border":
+			case "boundary":
 				return new DrawContext("*",null);
 			case "room-label":
 				String val = java.lang.Character.toString(label);

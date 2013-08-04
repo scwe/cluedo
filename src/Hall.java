@@ -9,14 +9,21 @@ public class Hall extends Tile{
 
 	@Override
 	public void drawText() {
-		System.out.println(dc.getString());
-		
+		System.out.print(dc.getString());
 	}
 
 	@Override
 	public void drawGraphics(Graphics g) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean canMoveTo() {
+		if(this.chr == null){
+			return true;
+		}
+		return false;
 	}
 
 }
