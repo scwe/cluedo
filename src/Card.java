@@ -31,4 +31,8 @@ public class Card{
 			return false;
 		return true;
 	}
+	
+	public String toString(){
+		return "Card of "+card.toString();
+	}
 }

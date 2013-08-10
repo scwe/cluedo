@@ -73,9 +73,11 @@ public abstract class Tile {
 		}
 		
 	}
+	
 	public void drawSpecialGraphics(Graphics g){
 		
 	}
+	
 	abstract public void drawText();
 	abstract public void drawGraphics(Graphics g);
 	abstract public boolean canMoveTo();

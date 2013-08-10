@@ -23,6 +23,8 @@ public class Cluedo {
 		players = new LinkedList<Player>();
 		try {
 			deck = createDeck();
+			intrigueDeck = createIntrigueDeck();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -64,8 +66,17 @@ public class Cluedo {
 			sleep(1000);
 		}
 		
+		System.out.println(solution);
+		
+		for(IntrigueCard i : intrigueDeck){
+			System.out.println(i);
+		}
+		
 		boolean gameFinished = false;
 		
+		/**
+		 * Game loop, this should probably be moved into a different method
+		 */
 		while (!gameFinished){
 			Player curPlayer = players.poll();
 			Scanner scan = new Scanner(System.in);
@@ -132,9 +143,6 @@ public class Cluedo {
 			
 			
 		}
-		
-		
-		System.out.println(solution);
 		
 	}
 	
@@ -245,13 +253,12 @@ public class Cluedo {
 	 * @param deck
 	 * 		The deck to put everything into
 	 */
-	public void buildIntrigueDeck(Stack<IntrigueCard> deck) {
+	public Stack<IntrigueCard> createIntrigueDeck() throws IOException {
+		Stack<IntrigueCard> deck = new Stack<IntrigueCard>();
 		String[] lines = {};
-		try {
-			lines = new Scanner(new File("keepers.txt")).useDelimiter("\\Z").next().split("\n");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
+		lines = new Scanner(new File("keepers.txt")).useDelimiter("\\Z").next().split("\n");
+		
 
 		for (String s : lines) {
 			deck.push(new Keeper(s));
@@ -272,6 +279,8 @@ public class Cluedo {
 				count++;
 			}
 		}
+		
+		return deck;
 	}
 
 	/**

@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Player {
 
 	private ArrayList<Card> hand;
+	private ArrayList<IntrigueCard> intrigueHand;
 	private Character c;
 	private int playerNumber;
 
@@ -10,6 +11,7 @@ public class Player {
 		this.c = c;
 		this.hand = hand;
 		this.playerNumber = playNum;
+		intrigueHand = new ArrayList<IntrigueCard>();
 	}
 
 	public void addCard(Card c){
@@ -55,9 +57,17 @@ public class Player {
 	}
 	
 	public void printHand(){
+		printHand(hand);
+	}
+	
+	public void printIntrigueHand(){
+		printHand(intrigueHand);
+	}
+	
+	private <E extends Object>void printHand(ArrayList<E> hand){
 		StringBuilder h = new StringBuilder();
-		for(Card c: hand){
-			h.append(c.getCard().getName());
+		for(E e: hand){
+			h.append(e.toString());
 			h.append(", ");
 		}
 		
@@ -67,7 +77,7 @@ public class Player {
 	}
 	
 	public boolean hasIntrigueCards(){
-		return false;
+		return !intrigueHand.isEmpty();
 	}
 	
 	public int getPlayerNumber() {
@@ -76,6 +86,14 @@ public class Player {
 
 	public void setPlayerNumber(int playerNumber) {
 		this.playerNumber = playerNumber;
+	}
+	
+	public void addIntrigueCard(IntrigueCard i){
+		intrigueHand.add(i);
+	}
+	
+	public ArrayList<IntrigueCard> getIntrigueHand(){
+		return intrigueHand;
 	}
 
 	

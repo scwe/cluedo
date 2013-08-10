@@ -2,14 +2,25 @@
 
 public class Keeper implements IntrigueCard{
 	public enum KeeperFunction{
-		RIGHT_SHOW_CARD,		//at the end of your turn, the player on your right must show a card
-		STAY_ROOM,		//at the end of your turn
-		RUMOR_UNANSWERED,   //replaces your dice roll
-		CARD_SNIPE,   //When one player shows a card you may get to see that card too
-		MOVE_START_SPACE,   //At the start of your turn, move anyone back to their start space
-		MOVE_ANYWHERE,     //Instead of rolling the dice, move anywhere
-		MOVE_EXTRA_SIX,   //after your dice roll, but before you move, add 6 to your dice roll
-		TAKE_ANOTHER_TURN;   //at the end of your turn, take another turn
+		RIGHT_SHOW_CARD("At the end of your turn, the player on your right must show a card"),
+		STAY_ROOM("Stay in your room and make another announcement"),
+		RUMOR_UNANSWERED("Instead of responding to an Announcement, it remains unanswered"),
+		CARD_SNIPE("You get to see a card that is being shown too"),   //When one player shows a card you may get to see that card too
+		MOVE_START_SPACE("Move any player back to their start location"),   //At the start of your turn, move anyone back to their start space
+		MOVE_ANYWHERE("Move anywhere instead of rolling the dice"),     //Instead of rolling the dice, move anywhere
+		MOVE_EXTRA_SIX("Add 6 to your dice roll before you move"),   //after your dice roll, but before you move, add 6 to your dice roll
+		TAKE_ANOTHER_TURN("At the end of your turn take another turn ");   //at the end of your turn, take another turn
+		
+		
+		private String value;
+		
+		private KeeperFunction(String v){
+			this.value = v;
+		}
+		
+		public String toString(){
+			return value;
+		}
 	}
 	
 	private KeeperFunction type;
@@ -43,6 +54,10 @@ public class Keeper implements IntrigueCard{
 			type = KeeperFunction.TAKE_ANOTHER_TURN;
 			break;
 		}
+	}
+	
+	public String toString(){
+		return "Keeper Card: "+ type.toString();
 	}
 
 }

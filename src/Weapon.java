@@ -34,7 +34,7 @@ public class Weapon implements Cardable {
 	
 	@Override
 	public String toString(){
-		return "Weapon: "+name+" is in room: "+room;
+		return "Weapon "+name+" in "+room;
 	}
 
 	@Override
