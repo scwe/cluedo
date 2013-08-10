@@ -51,6 +51,7 @@ public class Cluedo {
 			System.out.println("Great choice!\n");
 			sleep(500);
 			player.getCharacter().setLocation(board.getStartLocation(i));
+			player.setPlayerNumber(i);
 			players.offer(player);
 		}
 
@@ -99,19 +100,18 @@ public class Cluedo {
 					playerChoice = Integer.parseInt(decision);
 
 				}catch (Exception e){
-
 					validOption = false;
-
 				}
 				if (playerChoice > 0 && playerChoice <= okRange){
 					validOption = true;
 				}
 			}
 			if (playerChoice == 1){
-				rollDice(curPlayer);
 				selectDirection(rollDice(curPlayer),curPlayer);
 			}
-			else if (playerChoice == 2 ){}
+			else if (playerChoice == 2 ){
+				selectDirection(rollDice(curPlayer),curPlayer);
+			}
 				
 			else if (playerChoice == 3){}
 				
@@ -123,13 +123,17 @@ public class Cluedo {
 	public void selectDirection(int steps, Player curPlayer){
 		
 		boolean validPath = false;
+		Path p = null;
 		
 		Scanner scan = new Scanner(System.in);
+		
 		while(!validPath){
-			System.out.println("Please enter the path you wish to take");
 			System.out.println("Please enter the path you wish to take");
 			System.out.println("(Enter 'board' to show the board)");
 			String buildpath = scan.next();
+			if (buildpath.equalsIgnoreCase("board")){
+				board.drawBoard(); continue;
+			}
 			if (buildpath.length() > steps){
 				System.out.println("Invalid path, please try again");
 				continue;
@@ -141,9 +145,11 @@ public class Cluedo {
 					buildpath = buildpath.concat(addpath);
 				}
 			}
-			Path p = new Path(curPlayer.getCharacter().getLocation(),buildpath);
-			
-			
+			p = new Path(curPlayer.getCharacter().getLocation(),buildpath);
+			if(!p.isValid(board)){
+				System.out.println("That path was not valid, please try again");
+			}
+			validPath = true;
 		}
 		
 	}
@@ -203,8 +209,8 @@ public class Cluedo {
 
 		if (val < 0 || val >= numList.size())
 			return p;
-
-		p = new Player(numList.get(val), new Hand<Card>(),players.size()-1);
+		
+		p = new Player(numList.get(val), new Hand<Card>());
 		return p;
 	}
 

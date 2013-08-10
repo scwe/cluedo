@@ -7,10 +7,10 @@ public class Player {
 	private Character c;
 	private int playerNumber;
 
-	public Player(Character c, Hand<Card> hand, int playNum){
+
+	public Player(Character c, Hand<Card> hand){
 		this.c = c;
 		this.hand = hand;
-		this.playerNumber = playNum;
 		intrigueHand = new Hand<IntrigueCard>();
 	}
 

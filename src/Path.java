@@ -8,7 +8,7 @@ public class Path {
 		WEST;
 		
 		
-		public static Direction fromString(char d){
+		public static Direction fromChar(char d){
 			switch (d){
 				case'n':
 					return NORTH;
@@ -33,16 +33,35 @@ public class Path {
 		char[] directions = input.toCharArray();
 		
 		for(char dir : directions){
-			path.add(Direction.fromString(dir));
+			path.add(Direction.fromChar(dir));
 		}
 		
 		findEndLocation();
 	}
 	
+	public boolean createPath(Location startLocation, String input){
+		
+		this.startLocation = startLocation;
+		path = new ArrayList<Direction>();
+		char[] directions = input.toCharArray();
+		
+		for(char dir : directions){
+			path.add(Direction.fromChar(dir));
+		}
+		
+		try{
+			findEndLocation();
+		}catch(Exception e){
+			return false;
+		}
+		
+		return true;
+	}
+	
 	public Path(Location startLocation, ArrayList<Direction> path){
 		this.startLocation = startLocation;
 		this.path = path;
-		findEndLocation();
+		this.endLocation = findEndLocation();
 	}
 	
 	public boolean isValid(TextBoard board){
@@ -66,7 +85,7 @@ public class Path {
 		return true;
 	}
 	
-	private void findEndLocation(){
+	private Location findEndLocation(){
 		int xDiff = 0;
 		int yDiff = 0;
 		
@@ -83,7 +102,7 @@ public class Path {
 			}
 		}
 		
-		endLocation = new Location(startLocation.getX() + xDiff, startLocation.getY() + yDiff);
+		return new Location(startLocation.getX() + xDiff, startLocation.getY() + yDiff);
 	}
 	
 	public Location getStartLocation(){
