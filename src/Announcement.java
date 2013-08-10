@@ -1,17 +1,16 @@
 
 public class Announcement {
 	
-	private Player p;
 	private Card room;
 	private Card character;
 	private Card weapon;
 	
-	public Announcement(Player p, Card room, Card character, Card weapon){
-		this.p = p;
+	public Announcement(Card room, Card character, Card weapon){
 		this.room = room;
 		this.character = character;
 		this.weapon = weapon;
 	}
+	
 	
 	public boolean isValid(){
 		return room.getCard() instanceof Room && character.getCard() instanceof Character && weapon.getCard() instanceof Weapon;
@@ -39,5 +38,10 @@ public class Announcement {
 	
 	public void setWeapon(Card weapon) {
 		this.weapon = weapon;
+	}
+	
+	@Override
+	public String toString(){
+		return "Announcement\n\t"+room.getCard()+" \n\t"+character.getCard()+" \n\t"+weapon.getCard();
 	}
 }
