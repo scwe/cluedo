@@ -44,4 +44,5 @@ public class Keeper implements IntrigueCard{
 			break;
 		}
 	}
+
 }
