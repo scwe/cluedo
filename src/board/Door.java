@@ -2,14 +2,15 @@ package board;
 
 import java.awt.Graphics;
 
-import card.Suspect;
+import main.Player;
 
 
 
 public class Door extends Tile{
 
-	public Door(Location l, Suspect c, String t, DrawContext dc) {
-		super(l, c, t, dc);
+
+	public Door(Location l, Player p, String t, DrawContext dc) {
+		super(l, p, t, dc);
 	}
 
 	@Override
@@ -25,7 +26,7 @@ public class Door extends Tile{
 
 	@Override
 	public boolean canMoveTo() {
-		if(this.chr == null){
+		if(this.player == null){
 			return true;
 		}
 		return false;

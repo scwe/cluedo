@@ -2,21 +2,23 @@ package board;
 
 import java.awt.Graphics;
 
-import card.Suspect;
+import main.Player;
 import card.Weapon;
 
 
 public abstract class Tile {
 	
 	Location loc;
-	Suspect chr;
+
+	Player player;
 	Weapon wep;
 	String type;
 	DrawContext dc;
 	
-	public Tile(Location l, Suspect c, String t, DrawContext dc){
+	public Tile(Location l, Player play, String t, DrawContext dc){
+
 		this.loc = l;
-		this.chr = c;
+		this.player = play;
 		this.type = t;
 		this.dc = dc;
 	}
@@ -29,8 +31,8 @@ public abstract class Tile {
 		this.loc = location;
 	}
 	
-	public Suspect getCharacterOn(){
-		return this.chr;
+	public Player getPlayerOn(){
+		return this.player;
 	}
 	
 	public Weapon getWeaponOn(){
@@ -42,8 +44,8 @@ public abstract class Tile {
 		
 	}
 	
-	public void setCharacterOn(Suspect character){
-		this.chr = character;
+	public void setPlayerOn(Player play){
+		this.player = play;
 	}
 	
 	public String getTileType(){
@@ -52,7 +54,7 @@ public abstract class Tile {
 	
 	public void draw (Graphics g){
 		
-		if (this.chr != null){
+		if (this.player != null){
 			if (g == null){
 				drawSpecial();
 			}
@@ -71,11 +73,12 @@ public abstract class Tile {
 	}
 	
 	public void drawSpecial(){
-		if (this.chr != null){
-			System.out.print(Character.toString(chr.getName().charAt(0)).toLowerCase());
+
+		if (this.player != null){
+			System.out.print(Character.toString(player.getCharacter().getName().charAt(0)).toUpperCase());
 		}
 		else{
-			System.out.print(Character.toString(chr.getName().charAt(0)).toLowerCase());
+			System.out.print(Character.toString(player.getCharacter().getName().charAt(0)).toUpperCase());
 		}
 		
 	}

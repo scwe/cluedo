@@ -18,14 +18,12 @@ public class TextBoard {
 		drawBoard();
 	}
 
-	public void drawBoard() {
+	
+	public void drawBoard(){
+		
+		for (int a = 0; a < ROW_LENGTH; a++){
 
-		System.out.println("board length " + board.length);
-		System.out.println("board width " + board[0].length);
-
-		for (int a = 0; a < ROW_LENGTH; a++) {
-
-			for (int b = 0; b < COL_LENGTH; b++) {
+			for(int b = 0; b < COL_LENGTH; b++){
 				board[a][b].draw(null);
 			}
 			System.out.println(); // Just to make sure there is a blank line between printing
@@ -80,13 +78,18 @@ public class TextBoard {
 
 		return null;
 	}
-
-	public Tile getTile(Location loc) {
+	
+	public Tile getTile(Location loc){
 		return board[loc.getX()][loc.getY()];
 	}
-
-	public static void main(String[] args) {
-
+	
+	static public Tile getTile(Tile[][] tileBoard, Location loc){
+		return tileBoard[loc.getX()][loc.getY()];
+	}
+		
+	
+	public static void main (String[] args){
+		
 		TextBoard tb = new TextBoard();
 	}
 
