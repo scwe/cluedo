@@ -1,4 +1,10 @@
+package main;
 import java.util.ArrayList;
+
+import card.Card;
+import card.Character;
+import card.Hand;
+import card.IntrigueCard;
 
 public class Player {
 

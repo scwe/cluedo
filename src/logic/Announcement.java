@@ -1,3 +1,9 @@
+package logic;
+import card.Card;
+import card.Character;
+import card.Room;
+import card.Weapon;
+
 
 
 

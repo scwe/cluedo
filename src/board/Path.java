@@ -1,4 +1,7 @@
+package board;
+
 import java.util.*;
+
 
 public class Path {
 	private enum Direction{   //this can be made public if we need it, but I don't think we will

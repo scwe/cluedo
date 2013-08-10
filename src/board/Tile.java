@@ -1,4 +1,9 @@
+package board;
+
 import java.awt.Graphics;
+
+import card.Character;
+import card.Weapon;
 
 
 public abstract class Tile {

@@ -1,10 +1,13 @@
+package card;
 import java.util.*;
+
 
 
 public class Hand<E extends Holdable> extends AbstractList<E> implements List<E> {
 	private ArrayList<E> data;
 	
 	public Hand(){
+		this.data = new ArrayList<E>();
 	}
 	
 	@Override

@@ -1,3 +1,6 @@
+package card;
+import board.Location;
+
 
 public class Character implements Cardable{
 
@@ -30,7 +33,12 @@ public class Character implements Cardable{
 	
 	@Override
 	public String toString(){
-		return name+" at "+location.toString();
+		if(location == null){
+			return name+" who is nowhere";
+		}else{
+			return name+" at "+location.toString();
+		}
+		
 	}
 
 	@Override
