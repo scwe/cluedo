@@ -36,7 +36,7 @@ public class Cluedo {
 		try {
 			deck = createDeck();
 			intrigueDeck = createIntrigueDeck();
-			
+			solution = createSolution(deck);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -65,7 +65,7 @@ public class Cluedo {
 			players.offer(player);
 		}
 
-		solution = createSolution(deck);
+		
 		deck.deal(players);
 		shuffleWeapons(weapons);
 
@@ -284,18 +284,10 @@ public class Cluedo {
 		for (int i = 0; i < 8; i++) {
 			deck.push(new Clock(false));
 		}
+		
 		deck.shuffle();
 
-		int count = 0;
-		for (IntrigueCard i : deck) {
-			if (i instanceof Clock) {
-				if (count == 7) {
-					((Clock) i).setLast(true);
-					break;
-				}
-				count++;
-			}
-		}
+		deck.setDeadlyClock();
 		
 		return deck;
 	}

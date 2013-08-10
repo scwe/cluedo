@@ -4,25 +4,25 @@ import java.util.*;
 
 import main.Player;
 
-public class Deck<E extends Holdable> implements Iterable<E>{
+public class Deck<E extends Holdable> implements Iterable<E> {
 
 	private Stack<E> deck;
-	
-	public Deck(){
+
+	public Deck() {
 		deck = new Stack<E>();
 	}
-	
-	public void addAll(List<E> list){
-		for(E e : list){
+
+	public void addAll(List<E> list) {
+		for (E e : list) {
 			push(e);
 		}
 	}
-	
+
 	public void deal(Queue<Player> players) {
 
 		Player startPlayer = players.peek();
 
-		while (!isEmpty()) { 	// while there are still cards, take a player off the turn queue
+		while (!isEmpty()) { // while there are still cards, take a player off the turn queue
 			Player p = players.poll();
 
 			p.addCard(pop()); // and add a card to its hand then put it on the back
@@ -34,20 +34,38 @@ public class Deck<E extends Holdable> implements Iterable<E>{
 			players.offer(players.poll()); // take that person off and put them at the back of the queue
 		}
 	}
-	
-	public void shuffle(){
+
+	public void setDeadlyClock() {
+		if (!(deck.get(0) instanceof IntrigueCard)) {
+			return;
+		}
+
+		Clock c = null;
+		for (E e : deck) {
+			if (e instanceof Clock) {
+				c = ((Clock) e);
+			}
+		}
+		
+		if(c != null){
+			c.setLast(true);
+		}
+
+	}
+
+	public void shuffle() {
 		Collections.shuffle(deck);
 	}
-	
-	public void push(E e){
+
+	public void push(E e) {
 		deck.push(e);
 	}
-	
-	public E peek(){
+
+	public E peek() {
 		return deck.peek();
 	}
-	
-	public E pop(){
+
+	public E pop() {
 		return deck.pop();
 	}
 
