@@ -1,6 +1,6 @@
 package logic;
 import card.Card;
-import card.Character;
+import card.Suspect;
 import card.Room;
 import card.Weapon;
 
@@ -21,7 +21,7 @@ public class Announcement {
 	
 	
 	public boolean isValid(){
-		return room.getCard() instanceof Room && character.getCard() instanceof Character && weapon.getCard() instanceof Weapon;
+		return room.getCard() instanceof Room && character.getCard() instanceof Suspect && weapon.getCard() instanceof Weapon;
 	}
 	
 	public Card getRoom() {

@@ -2,13 +2,13 @@ package board;
 
 import java.awt.Graphics;
 
-import card.Character;
+import card.Suspect;
 
 
 
 public class Door extends Tile{
 
-	public Door(Location l, Character c, String t, DrawContext dc) {
+	public Door(Location l, Suspect c, String t, DrawContext dc) {
 		super(l, c, t, dc);
 	}
 

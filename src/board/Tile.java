@@ -2,18 +2,18 @@ package board;
 
 import java.awt.Graphics;
 
-import card.Character;
+import card.Suspect;
 import card.Weapon;
 
 
 public abstract class Tile {
 	
 	Location loc;
-	Character chr;
+	Suspect chr;
 	Weapon wep;
 	String type;
 	DrawContext dc;
-	public Tile(Location l, Character c, String t, DrawContext dc){
+	public Tile(Location l, Suspect c, String t, DrawContext dc){
 		this.loc = l;
 		this.chr = c;
 		this.type = t;
@@ -28,7 +28,7 @@ public abstract class Tile {
 		this.loc = location;
 	}
 	
-	public Character getCharacterOn(){
+	public Suspect getCharacterOn(){
 		return this.chr;
 	}
 	
@@ -41,7 +41,7 @@ public abstract class Tile {
 		
 	}
 	
-	public void setCharacterOn(Character character){
+	public void setCharacterOn(Suspect character){
 		this.chr = character;
 	}
 	
@@ -71,10 +71,10 @@ public abstract class Tile {
 	
 	public void drawSpecial(){
 		if (this.chr != null){
-			System.out.print(java.lang.Character.toString(chr.getName().charAt(0)).toLowerCase());
+			System.out.print(Character.toString(chr.getName().charAt(0)).toLowerCase());
 		}
 		else{
-			System.out.print(java.lang.Character.toString(chr.getName().charAt(0)).toLowerCase());
+			System.out.print(Character.toString(chr.getName().charAt(0)).toLowerCase());
 		}
 		
 	}

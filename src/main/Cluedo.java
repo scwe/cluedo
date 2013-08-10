@@ -6,7 +6,7 @@ import java.io.*;
 import logic.Announcement;
 
 import card.*;
-import card.Character;
+import card.Suspect;
 
 import board.Path;
 import board.TextBoard;
@@ -17,7 +17,7 @@ public class Cluedo {
 	private Queue<Player> players; // tis a queue so we can sort out turns by polling
 	private TextBoard board;
 
-	private ArrayList<Character> characters;
+	private ArrayList<Suspect> suspects;
 	private ArrayList<Room> rooms;
 	private ArrayList<Weapon> weapons;
 
@@ -193,9 +193,9 @@ public class Cluedo {
 
 		System.out.println("Please enter the number of the character you wish to play.\nYour options are: ");
 
-		ArrayList<Character> numList = new ArrayList<Character>();
+		ArrayList<Suspect> numList = new ArrayList<Suspect>();
 		int count = 1;
-		for (Character c : characters) { // print out the possible character
+		for (Suspect c : suspects) { // print out the possible character
 			boolean used = false;
 			for (Player p : players) {
 				if (p.getCharacter().equals(c)) {
@@ -231,7 +231,7 @@ public class Cluedo {
 	 * @throws IOException
 	 */
 	public Deck<Card> createDeck() throws IOException {
-		characters = new ArrayList<Character>();
+		suspects = new ArrayList<Suspect>();
 		rooms = new ArrayList<Room>();
 		weapons = new ArrayList<Weapon>();
 
@@ -240,8 +240,8 @@ public class Cluedo {
 		String[] lines = new Scanner(new File("characters.txt")).useDelimiter("\\Z").next().split("\n");
 
 		for (String s : lines) {
-			Character c = new Character(s.trim(), null);
-			characters.add(c);
+			Suspect c = new Suspect(s.trim(), null);
+			suspects.add(c);
 			deck.push(new Card(c));
 		}
 
@@ -315,7 +315,7 @@ public class Cluedo {
 		Card weapon = null;
 
 		for (Card c : deck) {
-			if (c.getCard() instanceof Character) {
+			if (c.getCard() instanceof Suspect) {
 				player = c;
 			} else if (c.getCard() instanceof Room) {
 				room = c;

@@ -2,12 +2,12 @@ package card;
 import board.Location;
 
 
-public class Character implements Cardable{
+public class Suspect implements Cardable{
 
 	private String name;
 	private Location location;
 
-	public Character(String name, Location location){
+	public Suspect(String name, Location location){
 		this.name = name;
 		this.location = location;
 	}
@@ -49,7 +49,7 @@ public class Character implements Cardable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Character other = (Character) obj;
+		Suspect other = (Suspect) obj;
 		if (name == null) {
 			if (other.name != null)
 				return false;

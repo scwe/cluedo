@@ -2,13 +2,13 @@ package board;
 
 import java.awt.Graphics;
 
-import card.Character;
+import card.Suspect;
 
 
 
 public class Hall extends Tile{
 
-	public Hall(Location l, Character c, String t, DrawContext d) {
+	public Hall(Location l, Suspect c, String t, DrawContext d) {
 		super(l, c, t, d);
 	}
 

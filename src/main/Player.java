@@ -2,7 +2,7 @@ package main;
 import java.util.ArrayList;
 
 import card.Card;
-import card.Character;
+import card.Suspect;
 import card.Hand;
 import card.Holdable;
 import card.IntrigueCard;
@@ -11,11 +11,11 @@ public class Player {
 
 	private Hand<Card> hand;
 	private Hand<IntrigueCard> intrigueHand;
-	private Character c;
+	private Suspect c;
 	private int playerNumber;
 
 
-	public Player(Character c, Hand<Card> hand){
+	public Player(Suspect c, Hand<Card> hand){
 		this.c = c;
 		this.hand = hand;
 		intrigueHand = new Hand<IntrigueCard>();
@@ -41,11 +41,11 @@ public class Player {
 		return hand.remove(index);
 	}
 
-	public Character getCharacter(){
+	public Suspect getCharacter(){
 		return c;
 	}
 
-	public void setCharacter(Character c){
+	public void setCharacter(Suspect c){
 		this.c = c;
 	}
 
