@@ -167,7 +167,8 @@ public class Cluedo {
 			}
 			p = new Path(curPlayer.getCharacter().getLocation(),buildpath);
 			if(!p.isValid(board)){
-				System.out.println("That path was not valid, please try again");
+				System.out.println("That path was not valid, please try again-------------------");
+				System.out.println(p.getStartLocation()+" "+p.getEndLocation());
 				continue;
 			}
 			System.out.println("The outcome of that path is as follows");

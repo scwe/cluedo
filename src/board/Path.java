@@ -34,7 +34,6 @@ public class Path {
 		this.startLocation = startLocation;
 		path = new ArrayList<Direction>();
 		char[] directions = input.toCharArray();
-		
 		for(char dir : directions){
 			path.add(Direction.fromChar(dir));
 		}
@@ -96,12 +95,16 @@ public class Path {
 			switch(d){
 				case NORTH:
 					yDiff--;
+					break;
 				case EAST:
 					xDiff++;
+					break;
 				case SOUTH:
 					yDiff++;
+					break;
 				case WEST:
 					xDiff--;
+					break;
 			}
 		}
 		

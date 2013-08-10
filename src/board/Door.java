@@ -16,7 +16,6 @@ public class Door extends Tile{
 	@Override
 	public void drawText() {
 		System.out.print(dc.getString());
-		
 	}
 
 	@Override

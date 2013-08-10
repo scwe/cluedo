@@ -83,13 +83,7 @@ public class TextBoard {
 		return board[loc.getX()][loc.getY()];
 	}
 	
-	static public Tile getTile(Tile[][] tileBoard, Location loc){
-		return tileBoard[loc.getX()][loc.getY()];
-	}
-		
-	
 	public static void main (String[] args){
-		
 		TextBoard tb = new TextBoard();
 	}
 

@@ -91,8 +91,8 @@ public abstract class Tile {
 	abstract public void drawGraphics(Graphics g);
 	abstract public boolean canMoveTo();
 	
+	@Override
 	public String toString(){
-		
 		return "Location = "+loc.getX()+" "+loc.getY()+" type = "+type;
 	}
 

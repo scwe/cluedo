@@ -29,6 +29,7 @@ public class Hall extends Tile{
 		if(this.player == null){
 			return true;
 		}
+		System.out.println("Fucking false");
 		return false;
 	}
 
