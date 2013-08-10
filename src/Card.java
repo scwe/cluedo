@@ -1,5 +1,5 @@
 
-public class Card{
+public class Card implements Holdable{
 
 	private Cardable card;
 

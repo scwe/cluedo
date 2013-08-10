@@ -19,6 +19,7 @@ public class Cluedo {
 	private Scanner inputScanner;
 
 	public Cluedo() {
+		
 		board = new TextBoard();
 		inputScanner = new Scanner(System.in);
 		players = new LinkedList<Player>();
@@ -30,7 +31,7 @@ public class Cluedo {
 			e.printStackTrace();
 		}
 
-		System.out.println("Enter the number of players playing ");
+		System.out.println("Enter the number of players playing");
 		int numPlayers = inputScanner.nextInt();
 		inputScanner.nextLine();
 
@@ -160,8 +161,6 @@ public class Cluedo {
 		Random gen = new Random();
 		int val = gen.nextInt(6)+1;
 		return val;
-	
-		
 	}
 
 	/**
@@ -205,7 +204,7 @@ public class Cluedo {
 		if (val < 0 || val >= numList.size())
 			return p;
 
-		p = new Player(numList.get(val), new ArrayList<Card>(),players.size()-1);
+		p = new Player(numList.get(val), new Hand<Card>(),players.size()-1);
 		return p;
 	}
 
