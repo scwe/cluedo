@@ -63,7 +63,7 @@ public class Cluedo {
 			sleep(500);
 			player.getCharacter().setLocation(board.getStartLocation(i));
 			player.setPlayerNumber(i+1);
-			Location playLoc = board.getStartLocation(player.getPlayerNumber());
+			Location playLoc = board.getStartLocation(player.getPlayerNumber()-1);
 			board.getTile(playLoc).setPlayerOn(player);
 			players.offer(player);
 		}
@@ -179,6 +179,7 @@ public class Cluedo {
 				for (int i = buildpath.length(); i < buildpath.length(); i--){
 					reverseString = reverseString.concat(java.lang.Character.toString(buildpath.charAt(i)));
 				}
+				System.out.println(reverseString);
 				Path newPath = new Path(curPlayer.getCharacter().getLocation(),reverseString);
 				applyPath(board,newPath,curPlayer);
 				continue;

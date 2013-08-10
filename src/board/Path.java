@@ -68,20 +68,30 @@ public class Path {
 	}
 	
 	public boolean isValid(TextBoard board){
+		System.out.println("Is valid is being called");
 		Location l = new Location(startLocation.getX(), startLocation.getY());
+		System.out.println(startLocation);
 		for(Direction d : path){
 			switch(d){
 				case NORTH:
-					l.setY(l.getY()+1);
+					System.out.println(d);
+					l.setY(l.getY()-1);
+					System.out.println(l);
 					if(!board.getTile(l).canMoveTo()) return false;
 				case EAST:
+					System.out.println(d);
 					l.setX(l.getX()+1);
+					System.out.println(l);
 					if(!board.getTile(l).canMoveTo()) return false;
 				case SOUTH:
-					l.setY(l.getY()-1);
+					System.out.println(d);
+					l.setY(l.getY()+1);
+					System.out.println(l);
 					if(!board.getTile(l).canMoveTo()) return false;
 				case WEST:
+					System.out.println(d);
 					l.setX(l.getX()-1);
+					System.out.println(l);
 					if(!board.getTile(l).canMoveTo()) return false;
 			}
 		}
@@ -96,12 +106,16 @@ public class Path {
 			switch(d){
 				case NORTH:
 					yDiff--;
+					break;
 				case EAST:
 					xDiff++;
+					break;
 				case SOUTH:
 					yDiff++;
+					break;
 				case WEST:
 					xDiff--;
+					break;
 			}
 		}
 		
