@@ -1,4 +1,6 @@
+package card;
 import java.util.*;
+
 
 
 public class Hand<E extends Holdable> extends AbstractList<E> implements List<E> {

@@ -1,6 +1,9 @@
+package board;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+
 
 /**
  * Loads a board from a given file and returns an array of tile objects

@@ -1,3 +1,6 @@
+package card;
+import board.Location;
+
 
 public class Character implements Cardable{
 

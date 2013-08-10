@@ -1,5 +1,21 @@
+package main;
+
 import java.util.*;
 import java.io.*;
+
+import logic.Announcement;
+
+import card.Card;
+import card.Character;
+import card.Clock;
+import card.Hand;
+import card.IntrigueCard;
+import card.Keeper;
+import card.Room;
+import card.Weapon;
+
+import board.Path;
+import board.TextBoard;
 
 
 public class Cluedo {
