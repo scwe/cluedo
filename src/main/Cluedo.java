@@ -161,17 +161,15 @@ public class Cluedo {
 			}
 			validPath = true;
 		}
-		
+		scan.close();
 	}
 	
 	/**
 	 * Rolls the dice on a player's turn
-	 * 
 	 * @param p
 	 * 		   the player rolling the die
 	 */
 	public int rollDice (Player p){
-		
 		System.out.println("Now rolling dice for player "+p.getPlayerNumber());
 		sleep(2000);
 		Random gen = new Random();
@@ -237,7 +235,7 @@ public class Cluedo {
 
 		Deck<Card> deck = new Deck<Card>();
 
-		String[] lines = new Scanner(new File("characters.txt")).useDelimiter("\\Z").next().split("\n");
+		String[] lines = new Scanner(new File("suspects.txt")).useDelimiter("\\Z").next().split("\n");
 
 		for (String s : lines) {
 			Suspect c = new Suspect(s.trim(), null);

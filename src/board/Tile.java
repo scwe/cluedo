@@ -13,6 +13,7 @@ public abstract class Tile {
 	Weapon wep;
 	String type;
 	DrawContext dc;
+	
 	public Tile(Location l, Suspect c, String t, DrawContext dc){
 		this.loc = l;
 		this.chr = c;
