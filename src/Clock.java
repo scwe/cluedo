@@ -14,4 +14,8 @@ public class Clock implements IntrigueCard{
 	public void setLast(Boolean last) {
 		this.last = last;
 	}
+	
+	public String toString(){
+		return "Clock card, Deadly: "+last;
+	}
 }

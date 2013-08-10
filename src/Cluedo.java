@@ -1,6 +1,7 @@
 import java.util.*;
 import java.io.*;
 
+
 public class Cluedo {
 
 	private Queue<Player> players; // tis a queue so we can sort out turns by polling
@@ -18,16 +19,19 @@ public class Cluedo {
 	private Scanner inputScanner;
 
 	public Cluedo() {
+		
 		board = new TextBoard();
 		inputScanner = new Scanner(System.in);
 		players = new LinkedList<Player>();
 		try {
 			deck = createDeck();
+			intrigueDeck = createIntrigueDeck();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		System.out.println("Enter the number of players playing ");
+		System.out.println("Enter the number of players playing");
 		int numPlayers = inputScanner.nextInt();
 		inputScanner.nextLine();
 
@@ -65,8 +69,17 @@ public class Cluedo {
 			sleep(1000);
 		}
 		
+		System.out.println(solution);
+		
+		for(IntrigueCard i : intrigueDeck){
+			System.out.println(i);
+		}
+		
 		boolean gameFinished = false;
 		
+		/**
+		 * Game loop, this should probably be moved into a different method
+		 */
 		while (!gameFinished){
 			Player curPlayer = players.poll();
 			Scanner scan = new Scanner(System.in);
@@ -155,7 +168,6 @@ public class Cluedo {
 		int val = gen.nextInt(6)+1;
 		System.out.println("You rolled a "+val);
 		return val;
-		
 	}
 
 	/**
@@ -198,8 +210,8 @@ public class Cluedo {
 
 		if (val < 0 || val >= numList.size())
 			return p;
-
-		p = new Player(numList.get(val), new ArrayList<Card>());
+		
+		p = new Player(numList.get(val), new Hand<Card>());
 		return p;
 	}
 
@@ -248,13 +260,12 @@ public class Cluedo {
 	 * @param deck
 	 * 		The deck to put everything into
 	 */
-	public void buildIntrigueDeck(Stack<IntrigueCard> deck) {
+	public Stack<IntrigueCard> createIntrigueDeck() throws IOException {
+		Stack<IntrigueCard> deck = new Stack<IntrigueCard>();
 		String[] lines = {};
-		try {
-			lines = new Scanner(new File("keepers.txt")).useDelimiter("\\Z").next().split("\n");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
+		lines = new Scanner(new File("keepers.txt")).useDelimiter("\\Z").next().split("\n");
+		
 
 		for (String s : lines) {
 			deck.push(new Keeper(s));
@@ -275,6 +286,8 @@ public class Cluedo {
 				count++;
 			}
 		}
+		
+		return deck;
 	}
 
 	/**

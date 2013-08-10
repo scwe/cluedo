@@ -1,5 +1,5 @@
 
 
-public interface IntrigueCard {
+public interface IntrigueCard extends Holdable{
 	
 }

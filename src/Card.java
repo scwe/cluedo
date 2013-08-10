@@ -1,5 +1,5 @@
 
-public class Card{
+public class Card implements Holdable{
 
 	private Cardable card;
 
@@ -30,5 +30,9 @@ public class Card{
 		} else if (!card.equals(other.card))
 			return false;
 		return true;
+	}
+	
+	public String toString(){
+		return "Card of "+card.toString();
 	}
 }

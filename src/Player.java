@@ -2,13 +2,16 @@ import java.util.ArrayList;
 
 public class Player {
 
-	private ArrayList<Card> hand;
+	private Hand<Card> hand;
+	private Hand<IntrigueCard> intrigueHand;
 	private Character c;
 	private int playerNumber;
 
-	public Player(Character c, ArrayList<Card> hand){
+
+	public Player(Character c, Hand<Card> hand){
 		this.c = c;
 		this.hand = hand;
+		intrigueHand = new Hand<IntrigueCard>();
 	}
 
 	public void addCard(Card c){
@@ -31,11 +34,11 @@ public class Player {
 		this.c = c;
 	}
 
-	public ArrayList<Card> getHand(){
+	public Hand<Card> getHand(){
 		return hand;
 	}
 
-	public void setHand(ArrayList<Card> hand){
+	public void setHand(Hand<Card> hand){
 		this.hand = hand;
 	}
 	
@@ -54,19 +57,15 @@ public class Player {
 	}
 	
 	public void printHand(){
-		StringBuilder h = new StringBuilder();
-		for(Card c: hand){
-			h.append(c.getCard().getName());
-			h.append(", ");
-		}
-		
-		h.setCharAt(h.length() - 2, ' ');  //set the last comma to nothing
-		
-		System.out.println(h.toString());
+		System.out.println(hand);
+	}
+	
+	public void printIntrigueHand(){
+		System.out.println(intrigueHand);
 	}
 	
 	public boolean hasIntrigueCards(){
-		return false;
+		return !intrigueHand.isEmpty();
 	}
 	
 	public int getPlayerNumber() {
@@ -75,6 +74,14 @@ public class Player {
 
 	public void setPlayerNumber(int playerNumber) {
 		this.playerNumber = playerNumber;
+	}
+	
+	public void addIntrigueCard(IntrigueCard i){
+		intrigueHand.add(i);
+	}
+	
+	public Hand<IntrigueCard> getIntrigueHand(){
+		return intrigueHand;
 	}
 
 	
