@@ -2,14 +2,16 @@ package board;
 
 import java.awt.Graphics;
 
+import main.Player;
+
 import card.Character;
 
 
 
 public class Wall extends Tile{
 
-	public Wall(Location l, Character c, String t, DrawContext dc) {
-		super(l, c, t, dc);
+	public Wall(Location l, Player p, String t, DrawContext dc) {
+		super(l, p, t, dc);
 	}
 
 	@Override

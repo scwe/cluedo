@@ -19,11 +19,8 @@ public class TextBoard {
 	
 	public void drawBoard(){
 		
-		System.out.println("board length " + board.length);
-		System.out.println("board width " + board[0].length);
-		
 		for (int a = 0; a < ROW_LENGTH; a++){
-			
+
 			for(int b = 0; b < COL_LENGTH; b++){
 				board[a][b].draw(null);
 			}
@@ -81,8 +78,14 @@ public class TextBoard {
 	}
 	
 	public Tile getTile(Location loc){
+		System.out.println("Returning location at "+loc.getX()+" "+loc.getY());
 		return board[loc.getX()][loc.getY()];
 	}
+	
+	static public Tile getTile(Tile[][] tileBoard, Location loc){
+		return tileBoard[loc.getX()][loc.getY()];
+	}
+		
 	
 	public static void main (String[] args){
 		

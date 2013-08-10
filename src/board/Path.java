@@ -39,7 +39,7 @@ public class Path {
 			path.add(Direction.fromChar(dir));
 		}
 		
-		findEndLocation();
+		this.endLocation = findEndLocation();
 	}
 	
 	public boolean createPath(Location startLocation, String input){
@@ -72,13 +72,13 @@ public class Path {
 		for(Direction d : path){
 			switch(d){
 				case NORTH:
-					l.setY(l.getY()-1);
+					l.setY(l.getY()+1);
 					if(!board.getTile(l).canMoveTo()) return false;
 				case EAST:
 					l.setX(l.getX()+1);
 					if(!board.getTile(l).canMoveTo()) return false;
 				case SOUTH:
-					l.setY(l.getY()+1);
+					l.setY(l.getY()-1);
 					if(!board.getTile(l).canMoveTo()) return false;
 				case WEST:
 					l.setX(l.getX()-1);
@@ -95,11 +95,11 @@ public class Path {
 		for(Direction d: path){
 			switch(d){
 				case NORTH:
-					yDiff--;
+					yDiff++;
 				case EAST:
 					xDiff++;
 				case SOUTH:
-					yDiff++;
+					yDiff--;
 				case WEST:
 					xDiff--;
 			}

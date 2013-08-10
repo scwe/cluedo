@@ -2,14 +2,16 @@ package board;
 
 import java.awt.Graphics;
 
+import main.Player;
+
 import card.Character;
 
 
 
 public class Hall extends Tile{
 
-	public Hall(Location l, Character c, String t, DrawContext d) {
-		super(l, c, t, d);
+	public Hall(Location l, Player p, String t, DrawContext d) {
+		super(l, p, t, d);
 	}
 
 	@Override
@@ -25,7 +27,7 @@ public class Hall extends Tile{
 
 	@Override
 	public boolean canMoveTo() {
-		if(this.chr == null){
+		if(this.player == null){
 			return true;
 		}
 		return false;

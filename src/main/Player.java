@@ -89,6 +89,10 @@ public class Player {
 	public Hand<IntrigueCard> getIntrigueHand(){
 		return intrigueHand;
 	}
+	
+	public char getShortName(){
+		return getCharacter().getName().toUpperCase().charAt(0);
+	}
 
 	
 }

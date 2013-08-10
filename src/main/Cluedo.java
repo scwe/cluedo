@@ -14,8 +14,10 @@ import card.Keeper;
 import card.Room;
 import card.Weapon;
 
+import board.Location;
 import board.Path;
 import board.TextBoard;
+import board.Tile;
 
 
 public class Cluedo {
@@ -67,7 +69,9 @@ public class Cluedo {
 			System.out.println("Great choice!\n");
 			sleep(500);
 			player.getCharacter().setLocation(board.getStartLocation(i));
-			player.setPlayerNumber(i);
+			player.setPlayerNumber(i+1);
+			Location playLoc = board.getStartLocation(player.getPlayerNumber());
+			board.getTile(playLoc).setPlayerOn(player);
 			players.offer(player);
 		}
 
@@ -82,7 +86,7 @@ public class Cluedo {
 
 		for (Weapon w : weapons) {
 			System.out.println(w);
-			sleep(1000);
+			sleep(200);
 		}
 		
 		System.out.println(solution);
@@ -123,7 +127,9 @@ public class Cluedo {
 				}
 			}
 			if (playerChoice == 1){
-				selectDirection(rollDice(curPlayer),curPlayer);
+				if(selectDirection(rollDice(curPlayer),curPlayer)){
+					board.drawBoard();
+				}
 			}
 			else if (playerChoice == 2 ){
 				selectDirection(rollDice(curPlayer),curPlayer);
@@ -136,7 +142,7 @@ public class Cluedo {
 
 	}
 	
-	public void selectDirection(int steps, Player curPlayer){
+	public boolean selectDirection(int steps, Player curPlayer){
 		
 		boolean validPath = false;
 		Path p = null;
@@ -144,11 +150,16 @@ public class Cluedo {
 		Scanner scan = new Scanner(System.in);
 		
 		while(!validPath){
+			System.out.println("Player "+curPlayer.getPlayerNumber()+": "+curPlayer.getCharacter().getName()+
+					" ("+curPlayer.getShortName()+")");
 			System.out.println("Please enter the path you wish to take");
+			System.out.println("Your path can consist of "+steps+" moves ");
+			System.out.println("Enter the path as a combination of n,s,w,e (e.g nsswees)");
 			System.out.println("(Enter 'board' to show the board)");
 			String buildpath = scan.next();
 			if (buildpath.equalsIgnoreCase("board")){
-				board.drawBoard(); continue;
+				board.drawBoard(); 
+				continue;
 			}
 			if (buildpath.length() > steps){
 				System.out.println("Invalid path, please try again");
@@ -164,9 +175,31 @@ public class Cluedo {
 			p = new Path(curPlayer.getCharacter().getLocation(),buildpath);
 			if(!p.isValid(board)){
 				System.out.println("That path was not valid, please try again");
+				continue;
 			}
+			System.out.println("The outcome of that path is as follows");
+			applyPath(board,p,curPlayer);
+			board.drawBoard();
+			System.out.println("Are you happy with this move? (Y/N)");
+			if (!scan.next().equalsIgnoreCase("Y")){
+				String reverseString = "";
+				for (int i = buildpath.length(); i < buildpath.length(); i--){
+					reverseString = reverseString.concat(java.lang.Character.toString(buildpath.charAt(i)));
+				}
+				Path newPath = new Path(curPlayer.getCharacter().getLocation(),reverseString);
+				applyPath(board,newPath,curPlayer);
+				continue;
+			}
+			
 			validPath = true;
 		}
+		return true;
+		
+	}
+	
+	public void applyPath(TextBoard b , Path p, Player player){
+		b.getTile(p.getStartLocation()).setPlayerOn(null);
+		b.getTile(p.getEndLocation()).setPlayerOn(player);
 		
 	}
 	
@@ -179,7 +212,7 @@ public class Cluedo {
 	public int rollDice (Player p){
 		
 		System.out.println("Now rolling dice for player "+p.getPlayerNumber());
-		sleep(2000);
+		sleep(1000);
 		Random gen = new Random();
 		int val = gen.nextInt(6)+1;
 		System.out.println("You rolled a "+val);
