@@ -1,4 +1,6 @@
 
+
+
 public class Announcement {
 	
 	private Card room;
