@@ -139,9 +139,6 @@ public class Cluedo {
 			validPath = true;
 		}
 		
-		
-		System.out.println(solution);
-		
 	}
 	
 	/**
@@ -156,8 +153,8 @@ public class Cluedo {
 		sleep(2000);
 		Random gen = new Random();
 		int val = gen.nextInt(6)+1;
+		System.out.println("You rolled a "+val);
 		return val;
-	
 		
 	}
 
