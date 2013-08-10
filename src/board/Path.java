@@ -68,22 +68,36 @@ public class Path {
 	
 	public boolean isValid(TextBoard board){
 		Location l = new Location(startLocation.getX(), startLocation.getY());
+		System.out.println(l);
 		for(Direction d : path){
 			switch(d){
 				case NORTH:
-					l.setY(l.getY()+1);
-					if(!board.getTile(l).canMoveTo()) return false;
+					l.setY(l.getY()-1);
+					System.out.println(l);
+					if(!board.getTile(l).canMoveTo()) 
+						return false;
+					break;
 				case EAST:
 					l.setX(l.getX()+1);
-					if(!board.getTile(l).canMoveTo()) return false;
+					System.out.println(l);
+					if(!board.getTile(l).canMoveTo()) 
+						return false;
+					break;
 				case SOUTH:
-					l.setY(l.getY()-1);
-					if(!board.getTile(l).canMoveTo()) return false;
+					l.setY(l.getY()+1);
+					System.out.println(l);
+					if(!board.getTile(l).canMoveTo()) 
+						return false;
+					break;
 				case WEST:
 					l.setX(l.getX()-1);
-					if(!board.getTile(l).canMoveTo()) return false;
+					System.out.println(l);
+					if(!board.getTile(l).canMoveTo()) 
+						return false;
+					break;
 			}
 		}
+		System.out.println(l);
 		return true;
 	}
 	

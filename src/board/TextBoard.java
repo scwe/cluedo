@@ -80,7 +80,8 @@ public class TextBoard {
 	}
 	
 	public Tile getTile(Location loc){
-		return board[loc.getX()][loc.getY()];
+		System.out.println("Calling get location "+loc);
+		return board[loc.getY()][loc.getX()];
 	}
 	
 	public static void main (String[] args){

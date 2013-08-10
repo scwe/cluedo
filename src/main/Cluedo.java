@@ -63,7 +63,9 @@ public class Cluedo {
 			sleep(500);
 			player.getCharacter().setLocation(board.getStartLocation(i));
 			player.setPlayerNumber(i+1);
-			Location playLoc = board.getStartLocation(player.getPlayerNumber());
+			
+			Location playLoc = board.getStartLocation(player.getPlayerNumber()-1);
+			System.out.println("shit "+ playLoc);
 			board.getTile(playLoc).setPlayerOn(player);
 			players.offer(player);
 		}
