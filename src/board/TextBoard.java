@@ -22,7 +22,6 @@ public class TextBoard {
 	public void drawBoard(){
 		
 		for (int a = 0; a < ROW_LENGTH; a++){
-
 			for(int b = 0; b < COL_LENGTH; b++){
 				board[a][b].draw(null);
 			}
@@ -67,20 +66,19 @@ public class TextBoard {
 		case 1:
 			return new Location(21, 1);
 		case 2:
-			return new Location(29, 19);
+			return new Location(19, 29);
 		case 3:
-			return new Location(29, 8);
+			return new Location(8, 29);
 		case 4:
-			return new Location(20, 1);
+			return new Location(1, 20);
 		case 5:
-			return new Location(10, 1);
+			return new Location(1, 10);
 		}
 
 		return null;
 	}
 	
 	public Tile getTile(Location loc){
-		System.out.println("Calling get location "+loc);
 		return board[loc.getY()][loc.getX()];
 	}
 	
