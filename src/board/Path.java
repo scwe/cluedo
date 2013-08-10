@@ -95,11 +95,11 @@ public class Path {
 		for(Direction d: path){
 			switch(d){
 				case NORTH:
-					yDiff++;
+					yDiff--;
 				case EAST:
 					xDiff++;
 				case SOUTH:
-					yDiff--;
+					yDiff++;
 				case WEST:
 					xDiff--;
 			}
