@@ -28,7 +28,7 @@ public class Keeper implements IntrigueCard{
 	private KeeperFunction type;
 	
 	public Keeper(String num){
-		int i = Integer.parseInt(num);
+		int i = Integer.parseInt(num.trim());
 		
 		switch(i){
 		case 1:
