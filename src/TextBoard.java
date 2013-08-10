@@ -19,6 +19,7 @@ public class TextBoard {
 		for (int i = 0; i < board.size(); i++){
 			
 			if (i != 0 && i % ROW_LENGTH == 0){
+				
 				System.out.println();
 			}
 			board.get(i).draw(null);

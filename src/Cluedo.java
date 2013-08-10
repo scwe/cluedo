@@ -11,6 +11,8 @@ public class Cluedo {
 	private ArrayList<Weapon> weapons;
 	
 	private Stack<Card> deck;
+	
+	private Announcement solution;
 
 	private Scanner inputScanner;
 
@@ -50,7 +52,8 @@ public class Cluedo {
 			players.offer(player);
 		}
 		
-		shuffleAndDeal(deck, players);
+		solution = createSolution(deck);
+		dealDeck(deck, players);
 		shuffleWeapons(weapons);
 		
 		for(Player p : players){
@@ -60,6 +63,8 @@ public class Cluedo {
 		for(Weapon w : weapons){
 			System.out.println(w);
 		}
+		
+		System.out.println(solution);
 	}
 	
 	/**
@@ -142,6 +147,7 @@ public class Cluedo {
 			deck.push(new Card(w));
 		}
 		
+		Collections.shuffle(deck);   //shuffle the cards
 		return deck;
 	}
 
@@ -154,8 +160,8 @@ public class Cluedo {
 	 * @param players
 	 * 		The Players to deal to 
 	 */
-	public void shuffleAndDeal(Stack<Card> deck, Queue<Player> players){
-		Collections.shuffle(deck);   //shuffle the cards
+	public void dealDeck(Stack<Card> deck, Queue<Player> players){
+		
 		Player startPlayer = players.peek();
 
 		while(!deck.isEmpty()){		//while there are still cards, take a player off the turn queue 
@@ -178,6 +184,28 @@ public class Cluedo {
 			w.setRoom(rooms.get(count));
 			count++;
 		}
+	}
+	
+	private Announcement createSolution(Stack<Card> deck){
+		Card room = null;
+		Card player = null;
+		Card weapon = null;
+		
+		for(Card c: deck){
+			if(c.getCard() instanceof Character){
+				player = c;
+			}else if(c.getCard() instanceof Room){
+				room = c;
+			}else if(c.getCard() instanceof Weapon){
+				weapon = c;
+			}
+		}
+		
+		deck.remove(room);
+		deck.remove(weapon);
+		deck.remove(player);
+		
+		return new Announcement(room, player, weapon);
 	}
 
 	private void sleep (int val){
