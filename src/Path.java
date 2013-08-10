@@ -8,18 +8,18 @@ public class Path {
 		WEST;
 		
 		
-		public static Direction fromString(String s){
-			if(s.equalsIgnoreCase("north")){
-				return NORTH;
-			}else if(s.equalsIgnoreCase("east")){
-				return EAST;
-			}else if(s.equalsIgnoreCase("south")){
-				return SOUTH;
-			}else if(s.equalsIgnoreCase("west")){
-				return WEST;
-			}else{
-				return null;
-			}
+		public static Direction fromString(char d){
+			switch (d){
+				case'n':
+					return NORTH;
+				case 'e':
+					return EAST;
+				case 's':
+					return SOUTH;
+				case 'w':
+					return WEST;
+			}	
+			return null;
 		}
 	}
 	
@@ -30,21 +30,10 @@ public class Path {
 	public Path(Location startLocation, String input){
 		this.startLocation = startLocation;
 		path = new ArrayList<Direction>();
-		String[] directions = input.split(", ");
+		char[] directions = input.toCharArray();
 		
-		for(String s : directions){
-			path.add(Direction.fromString(s.trim()));
-		}
-		
-		findEndLocation();
-	}
-	
-	public Path(Location startLocation, String[] input){
-		this.startLocation = startLocation;
-		path = new ArrayList<Direction>();
-		
-		for(String s : input){
-			path.add(Direction.fromString(s.trim()));
+		for(char dir : directions){
+			path.add(Direction.fromString(dir));
 		}
 		
 		findEndLocation();

@@ -31,7 +31,6 @@ public class Cluedo {
 		System.out.println("Preparing your game...");
 		sleep(1000);
 		
-		
 		//inputScanner.next();   //read off any white space
 		for (int i = 0; i < numPlayers; i++) {
 			Player player = null;
@@ -55,11 +54,102 @@ public class Cluedo {
 		
 		for(Player p : players){
 			System.out.println(p);
+			
 		}
 		
 		for(Weapon w : weapons){
 			System.out.println(w);
+			sleep(1000);
 		}
+		
+		boolean gameFinished = false;
+		
+		while (!gameFinished){
+			Player curPlayer = players.poll();
+			Scanner scan = new Scanner(System.in);
+			System.out.println("Player "+curPlayer.getPlayerNumber()+"'s turn");
+
+			boolean validOption = false;
+			int playerChoice = 0;
+			while(!validOption){
+				System.out.println("Options: ");
+				System.out.println("(1)	Roll dice");
+				System.out.println("(2)  Make Accusation");
+				if (curPlayer.hasIntrigueCards()){
+					System.out.println("(3)  Play intrigue card");
+				}
+				int okRange = (curPlayer.hasIntrigueCards())?3:2;
+				String decision = scan.next();
+				try{
+					playerChoice = Integer.parseInt(decision);
+
+				}catch (Exception e){
+
+					validOption = false;
+
+				}
+				if (playerChoice > 0 && playerChoice <= okRange){
+					validOption = true;
+				}
+			}
+			if (playerChoice == 1){
+				rollDice(curPlayer);
+				selectDirection(rollDice(curPlayer),curPlayer);
+			}
+			else if (playerChoice == 2 ){}
+				
+			else if (playerChoice == 3){}
+				
+			players.offer(curPlayer);
+		}
+
+	}
+	
+	public void selectDirection(int steps, Player curPlayer){
+		
+		boolean validPath = false;
+		
+		Scanner scan = new Scanner(System.in);
+		while(!validPath){
+			System.out.println("Please enter the path you wish to take");
+			System.out.println("Please enter the path you wish to take");
+			System.out.println("(Enter 'board' to show the board)");
+			String buildpath = scan.next();
+			if (buildpath.length() > steps){
+				System.out.println("Invalid path, please try again");
+				continue;
+			}
+			if (buildpath.length() < steps){
+				while(buildpath.length() < steps){
+					System.out.println("You have "+(steps-buildpath.length())+" steps remaining, please enter these now");
+					String addpath = scan.next();
+					buildpath = buildpath.concat(addpath);
+				}
+			}
+			Path p = new Path(curPlayer.getCharacter().getLocation(),buildpath);
+			
+			
+		}
+		
+		
+		
+		
+	}
+	
+	/**
+	 * Rolls the dice on a player's turn
+	 * 
+	 * @param p
+	 * 		   the player rolling the die
+	 */
+	public int rollDice (Player p){
+		
+		System.out.println("Now rolling dice for player "+p.getPlayerNumber());
+		sleep(2000);
+		Random gen = new Random();
+		int val = gen.nextInt(6)+1;
+		return val;
+	
 	}
 	
 	/**
@@ -96,13 +186,11 @@ public class Cluedo {
 		int val = -1;
 		try{
 			val = Integer.parseInt(name.trim())-1;
-		}catch(Exception e){
-			return p;
-		}
-		
+		}catch(Exception e){return p;}
+
 		if (val < 0 || val >= numList.size()) return p;
 
-		p = new Player(numList.get(val), new ArrayList<Card>());
+		p = new Player(numList.get(val), new ArrayList<Card>(),players.size()-1);
 		return p;
 	}
 

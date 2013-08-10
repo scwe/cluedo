@@ -1,12 +1,15 @@
 import java.util.ArrayList;
 
 public class Player {
+
 	private ArrayList<Card> hand;
 	private Character c;
+	private int playerNumber;
 
-	public Player(Character c, ArrayList<Card> hand){
+	public Player(Character c, ArrayList<Card> hand, int playNum){
 		this.c = c;
 		this.hand = hand;
+		this.playerNumber = playNum;
 	}
 
 	public void addCard(Card c){
@@ -62,5 +65,18 @@ public class Player {
 		
 		System.out.println(h.toString());
 	}
+	
+	public boolean hasIntrigueCards(){
+		return false;
+	}
+	
+	public int getPlayerNumber() {
+		return playerNumber;
+	}
+
+	public void setPlayerNumber(int playerNumber) {
+		this.playerNumber = playerNumber;
+	}
+
 	
 }
