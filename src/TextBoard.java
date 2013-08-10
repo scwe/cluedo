@@ -2,30 +2,32 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class TextBoard {
-	public static int ROW_LENGTH = 30;
-	private ArrayList<Tile> board;
+	public final int ROW_LENGTH = 31;
+	public final int COL_LENGTH = 30;
+	private Tile[][] board = new Tile[ROW_LENGTH][COL_LENGTH];
 	
 	public TextBoard(){
 
 		File f = new File("Map");
 		
-		BoardLoader bl = new BoardLoader(f);
+		BoardLoader bl = new BoardLoader(f,ROW_LENGTH,COL_LENGTH);
 		board = bl.getBoard();
 		drawBoard();
 	}
 	
 	public void drawBoard(){
 		
-		for (int i = 0; i < board.size(); i++){
+		System.out.println("board length " + board.length);
+		System.out.println("board width " + board[0].length);
+		
+		for (int a = 0; a < ROW_LENGTH; a++){
 			
-			if (i != 0 && i % ROW_LENGTH == 0){
-				
-				System.out.println();
+			for(int b = 0; b < COL_LENGTH; b++){
+				board[a][b].draw(null);
 			}
-			board.get(i).draw(null);
-			
+			System.out.println(); //Just to make sure there is a blank line between printing
 		}
-		System.out.println(); //Just to make sure there is a blank line between printing
+		
 	}
 
 	
@@ -76,8 +78,8 @@ public class TextBoard {
 		return null;
 	}
 	
-	public Tile getTile(Location l){
-		return board.get(ROW_LENGTH*l.getX()+l.getY());
+	public Tile getTile(Location loc){
+		return board[loc.getX()][loc.getY()];
 	}
 	
 	public static void main (String[] args){

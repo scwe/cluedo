@@ -12,38 +12,39 @@ import java.util.*;
  */
 public class BoardLoader {
 	
-	ContextGenerator cg;
-	ArrayList<Tile> board;
+	private ContextGenerator cg;
+	private Tile[][] board;
+	private int row_length, col_length;
 	
-	public BoardLoader(File map){
+	public BoardLoader(File map, int row_length, int col_length){
 		
 		cg = new ContextGenerator();
 		Scanner scan;
 		
 		try {
 			scan = new Scanner(map);
-			board = new ArrayList<Tile>();
+			board = new Tile[row_length][col_length];
 		
-			int yloc = 0;
+			int rowLoc = 0;
 			while(scan.hasNextLine()){
 				String line = scan.nextLine();
 				char[] lineChars = line.toCharArray();
-				int xloc = 0;
+				int colLoc = 0;
 				for (char c: lineChars){
-					Location loc = new Location(xloc,yloc);
+					Location loc = new Location(rowLoc,colLoc);
 					String type = getType(c);
 					Tile t = getTile(type,loc,c);
-					xloc++;
-					board.add(t);
+					board[rowLoc][colLoc] = t;
+					colLoc++;
 				}
-				yloc++;
+				rowLoc++;
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public ArrayList<Tile> getBoard(){
+	public Tile[][] getBoard(){
 		return this.board;
 	}
 	

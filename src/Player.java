@@ -6,10 +6,9 @@ public class Player {
 	private Character c;
 	private int playerNumber;
 
-	public Player(Character c, ArrayList<Card> hand, int playNum){
+	public Player(Character c, ArrayList<Card> hand){
 		this.c = c;
 		this.hand = hand;
-		this.playerNumber = playNum;
 	}
 
 	public void addCard(Card c){
