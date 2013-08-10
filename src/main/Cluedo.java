@@ -5,14 +5,8 @@ import java.io.*;
 
 import logic.Announcement;
 
-import card.Card;
+import card.*;
 import card.Character;
-import card.Clock;
-import card.Hand;
-import card.IntrigueCard;
-import card.Keeper;
-import card.Room;
-import card.Weapon;
 
 import board.Path;
 import board.TextBoard;
@@ -27,8 +21,8 @@ public class Cluedo {
 	private ArrayList<Room> rooms;
 	private ArrayList<Weapon> weapons;
 
-	private Stack<Card> deck;
-	private Stack<IntrigueCard> intrigueDeck;
+	private Deck<Card> deck;
+	private Deck<IntrigueCard> intrigueDeck;
 
 	private Announcement solution;
 
@@ -72,7 +66,7 @@ public class Cluedo {
 		}
 
 		solution = createSolution(deck);
-		dealDeck(deck, players);
+		deck.deal(players);
 		shuffleWeapons(weapons);
 
 		for (Player p : players) {
@@ -236,12 +230,12 @@ public class Cluedo {
 	 * 
 	 * @throws IOException
 	 */
-	public Stack<Card> createDeck() throws IOException {
+	public Deck<Card> createDeck() throws IOException {
 		characters = new ArrayList<Character>();
 		rooms = new ArrayList<Room>();
 		weapons = new ArrayList<Weapon>();
 
-		Stack<Card> deck = new Stack<Card>();
+		Deck<Card> deck = new Deck<Card>();
 
 		String[] lines = new Scanner(new File("characters.txt")).useDelimiter("\\Z").next().split("\n");
 
@@ -267,7 +261,7 @@ public class Cluedo {
 			deck.push(new Card(w));
 		}
 
-		Collections.shuffle(deck); // shuffle the cards
+		deck.shuffle(); // shuffle the cards
 		return deck;
 	}
 
@@ -276,8 +270,8 @@ public class Cluedo {
 	 * @param deck
 	 * 		The deck to put everything into
 	 */
-	public Stack<IntrigueCard> createIntrigueDeck() throws IOException {
-		Stack<IntrigueCard> deck = new Stack<IntrigueCard>();
+	public Deck<IntrigueCard> createIntrigueDeck() throws IOException {
+		Deck<IntrigueCard> deck = new Deck<IntrigueCard>();
 		String[] lines = {};
 		
 		lines = new Scanner(new File("keepers.txt")).useDelimiter("\\Z").next().split("\n");
@@ -290,7 +284,7 @@ public class Cluedo {
 		for (int i = 0; i < 8; i++) {
 			deck.push(new Clock(false));
 		}
-		Collections.shuffle(deck);
+		deck.shuffle();
 
 		int count = 0;
 		for (IntrigueCard i : deck) {
@@ -304,31 +298,6 @@ public class Cluedo {
 		}
 		
 		return deck;
-	}
-
-	/**
-	 * Shuffles the deck given and then deals it out to the players give
-	 * 
-	 * @param deck
-	 *            The deck to deal
-	 * @param players
-	 *            The Players to deal to
-	 */
-	public void dealDeck(Stack<Card> deck, Queue<Player> players) {
-
-		Player startPlayer = players.peek();
-
-		while (!deck.isEmpty()) { // while there are still cards, take a player off the turn queue
-			Player p = players.poll();
-
-			p.addCard(deck.pop()); // and add a card to its hand then put it on the back
-
-			players.offer(p);
-		}
-
-		while (players.peek() != startPlayer) { // to make sure the queue order remains the same
-			players.offer(players.poll()); // take that person off and put them at the back of the queue
-		}
 	}
 
 	public void shuffleWeapons(ArrayList<Weapon> weapons) {
@@ -348,7 +317,7 @@ public class Cluedo {
 	 * @return
 	 *         The solution to the game, represented in an announcement object
 	 */
-	private Announcement createSolution(Stack<Card> deck) {
+	private Announcement createSolution(Deck<Card> deck) {
 		Card room = null;
 		Card player = null;
 		Card weapon = null;

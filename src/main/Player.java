@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import card.Card;
 import card.Character;
 import card.Hand;
+import card.Holdable;
 import card.IntrigueCard;
 
 public class Player {
@@ -20,12 +21,20 @@ public class Player {
 		intrigueHand = new Hand<IntrigueCard>();
 	}
 
-	public void addCard(Card c){
-		hand.add(c);
+	public void addCard(Holdable h){
+		if(h instanceof Card){
+			hand.add((Card)h);
+		}else if(h instanceof IntrigueCard){
+			intrigueHand.add((IntrigueCard)h);
+		}
 	}
 
-	public void removeCard(Card c){
-		hand.remove(c);
+	public void removeCard(Holdable h){
+		if(h instanceof Card){
+			hand.remove((Card)h);
+		}else if(h instanceof IntrigueCard){
+			intrigueHand.remove((IntrigueCard)h);
+		}
 	}
 
 	public Card removeCard(int index){
@@ -80,10 +89,6 @@ public class Player {
 
 	public void setPlayerNumber(int playerNumber) {
 		this.playerNumber = playerNumber;
-	}
-	
-	public void addIntrigueCard(IntrigueCard i){
-		intrigueHand.add(i);
 	}
 	
 	public Hand<IntrigueCard> getIntrigueHand(){
