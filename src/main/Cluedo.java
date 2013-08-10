@@ -11,12 +11,11 @@ import card.Suspect;
 import board.Location;
 import board.Path;
 import board.TextBoard;
-import board.Tile;
 
 
 public class Cluedo {
 
-	private Queue<Player> players; // tis a queue so we can sort out turns by polling
+	private Queue<Player> players;
 	private TextBoard board;
 
 	private ArrayList<Suspect> suspects;
