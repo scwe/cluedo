@@ -4,11 +4,10 @@ import java.awt.Graphics;
 
 import main.Player;
 
-import card.Character;
-
 
 
 public class Wall extends Tile{
+
 
 	public Wall(Location l, Player p, String t, DrawContext dc) {
 		super(l, p, t, dc);

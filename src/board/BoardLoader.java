@@ -17,7 +17,6 @@ public class BoardLoader {
 	
 	private ContextGenerator cg;
 	private Tile[][] board;
-	private int row_length, col_length;
 	
 	public BoardLoader(File map, int row_length, int col_length){
 		
@@ -69,6 +68,8 @@ public class BoardLoader {
 				return new Door(l, null, type, dc);
 			case "border":
 				return new Wall(l, null, type, dc);
+			case "intrigue":
+				return new IntrigueTile(l, null, type, dc);
 			case "room-label":
 				return new Hall(l, null, type, dc);
 			case "boundary":
@@ -93,6 +94,8 @@ public class BoardLoader {
 				return "door-south";
 			case '*':
 				return "boundary";
+			case '?':
+				return "intrigue";
 			default :
 				return "room-label";
 		}

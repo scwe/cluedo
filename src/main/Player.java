@@ -2,41 +2,50 @@ package main;
 import java.util.ArrayList;
 
 import card.Card;
-import card.Character;
+import card.Suspect;
 import card.Hand;
+import card.Holdable;
 import card.IntrigueCard;
 
 public class Player {
 
 	private Hand<Card> hand;
 	private Hand<IntrigueCard> intrigueHand;
-	private Character c;
+	private Suspect c;
 	private int playerNumber;
 
 
-	public Player(Character c, Hand<Card> hand){
+	public Player(Suspect c, Hand<Card> hand){
 		this.c = c;
 		this.hand = hand;
 		intrigueHand = new Hand<IntrigueCard>();
 	}
 
-	public void addCard(Card c){
-		hand.add(c);
+	public void addCard(Holdable h){
+		if(h instanceof Card){
+			hand.add((Card)h);
+		}else if(h instanceof IntrigueCard){
+			intrigueHand.add((IntrigueCard)h);
+		}
 	}
 
-	public void removeCard(Card c){
-		hand.remove(c);
+	public void removeCard(Holdable h){
+		if(h instanceof Card){
+			hand.remove((Card)h);
+		}else if(h instanceof IntrigueCard){
+			intrigueHand.remove((IntrigueCard)h);
+		}
 	}
 
 	public Card removeCard(int index){
 		return hand.remove(index);
 	}
 
-	public Character getCharacter(){
+	public Suspect getCharacter(){
 		return c;
 	}
 
-	public void setCharacter(Character c){
+	public void setCharacter(Suspect c){
 		this.c = c;
 	}
 
@@ -80,10 +89,6 @@ public class Player {
 
 	public void setPlayerNumber(int playerNumber) {
 		this.playerNumber = playerNumber;
-	}
-	
-	public void addIntrigueCard(IntrigueCard i){
-		intrigueHand.add(i);
 	}
 	
 	public Hand<IntrigueCard> getIntrigueHand(){

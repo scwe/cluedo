@@ -3,19 +3,20 @@ package board;
 import java.awt.Graphics;
 
 import main.Player;
-
-import card.Character;
 import card.Weapon;
 
 
 public abstract class Tile {
 	
 	Location loc;
+
 	Player player;
 	Weapon wep;
 	String type;
 	DrawContext dc;
+	
 	public Tile(Location l, Player play, String t, DrawContext dc){
+
 		this.loc = l;
 		this.player = play;
 		this.type = t;
@@ -72,11 +73,12 @@ public abstract class Tile {
 	}
 	
 	public void drawSpecial(){
+
 		if (this.player != null){
-			System.out.print(java.lang.Character.toString(player.getCharacter().getName().charAt(0)).toUpperCase());
+			System.out.print(Character.toString(player.getCharacter().getName().charAt(0)).toUpperCase());
 		}
 		else{
-			System.out.print(java.lang.Character.toString(player.getCharacter().getName().charAt(0)).toUpperCase());
+			System.out.print(Character.toString(player.getCharacter().getName().charAt(0)).toUpperCase());
 		}
 		
 	}
