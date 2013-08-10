@@ -186,6 +186,13 @@ public class Cluedo {
 		}
 	}
 	
+	/**
+	 * Creates the solution to this game,
+	 * @param deck
+	 * 		The deck of cards to use to find a solution from
+	 * @return
+	 * 		The solution to the game, represented in an announcement object
+	 */
 	private Announcement createSolution(Stack<Card> deck){
 		Card room = null;
 		Card player = null;
