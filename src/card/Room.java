@@ -16,6 +16,8 @@ public class Room implements Cardable {
 	private HashSet<Weapon> weapons;
 	
 	private HashSet<Door> doors;
+	
+	private HashSet<Location> locations;
 
 	public Room(String data, TextBoard board){
 		String[] split = data.trim().split(" ");
@@ -25,6 +27,7 @@ public class Room implements Cardable {
 		suspects = new HashSet<Suspect>();
 		weapons = new HashSet<Weapon>();
 		doors = new HashSet<Door>();
+		locations = new HashSet<Location>();
 		
 		for(int i = 1; i < split.length;){
 			int x = Integer.parseInt(split[i++].trim());
@@ -37,6 +40,10 @@ public class Room implements Cardable {
 				System.out.println("Something went horribly wrong");
 			}
 		}
+	}
+	
+	public void addLocation(Location l){
+		locations.add(l);
 	}
 	
 	public HashSet<Door> getDoors(){
@@ -98,6 +105,14 @@ public class Room implements Cardable {
 	@Override
 	public String toString(){
 		return name + " at "+location;
+	}
+
+	public HashSet<Location> getLocations() {
+		return locations;
+	}
+
+	public void setLocations(HashSet<Location> locations) {
+		this.locations = locations;
 	}
 
 }

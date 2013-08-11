@@ -43,11 +43,7 @@ public class Cluedo {
 		}
 		
 		roomLocations = loadRooms();
-		
-		for(Map.Entry<Location, Room> e: roomLocations.entrySet()){
-			System.out.println(e.getKey()+" "+ e.getValue());
-		}
-		
+		distributeLocations(roomLocations);
 
 		System.out.println("Enter the number of players playing");
 		int numPlayers = inputScanner.nextInt();
@@ -480,6 +476,12 @@ public class Cluedo {
 		}
 		
 		return null;
+	}
+	
+	private void distributeLocations(HashMap<Location, Room> roomLocations){
+		for(Map.Entry<Location, Room> e: roomLocations.entrySet()){
+			e.getValue().addLocation(e.getKey());
+		}
 	}
 	
 	
