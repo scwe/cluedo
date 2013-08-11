@@ -30,7 +30,6 @@ public class Hall extends Tile{
 		if(this.suspect == null){
 			return true;
 		}
-		System.out.println("Fucking false");
 		return false;
 	}
 
