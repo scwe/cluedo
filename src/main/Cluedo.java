@@ -155,18 +155,71 @@ public class Cluedo {
 	}
 	
 	public void makeAnnouncement(Player p, MoveRecord moveRecord){
+		Suspect announcedSuspect = null;
+		Weapon announcedWeapon = null;
+		Room announcedRoom = null;
 		Scanner scan = new Scanner(System.in);
 		System.out.println("OK! Let's begin your announcement!");
-		System.out.println("Which suspect would you like to announce?");
-		for (int i = 0; i < suspects.size(); i++){
-			System.out.println(i+" "+suspects.get(i));
+		boolean validSuspect = false;
+		while (!validSuspect){
+			System.out.println("Which suspect would you like to announce?");
+			for (int i = 0; i < suspects.size(); i++){
+				System.out.println(i+" "+suspects.get(i));
+			}
+			String suspectChoice = scan.next();
+			int choiceValue = -1;
+			try{
+				choiceValue = Integer.parseInt(suspectChoice);
+			}catch (Exception e){
+				System.out.println("Sorry that choice was not valid.");
+			}
+			if (choiceValue < 0 || choiceValue >=  suspects.size())
+				System.out.println("Sorry that choice was not valid.");
+			else{
+				announcedSuspect = suspects.get(choiceValue);
+				validSuspect = true;
+			}
 		}
-		String suspectChoice = scan.next();
-		//try{
-			//int choiceValue = Integer.parseInt
-			
-		//}
-		
+		boolean validWeapon = false;
+		while (!validWeapon){
+			System.out.println("Which suspect would you like to announce?");
+			for (int i = 0; i < weapons.size(); i++){
+				System.out.println(i+" "+weapons.get(i));
+			}
+			String weaponChoice = scan.next();
+			int choiceValue = -1;
+			try{
+				choiceValue = Integer.parseInt(weaponChoice);
+			}catch (Exception e){
+				System.out.println("Sorry that choice was not valid.");
+			}
+			if (choiceValue < 0 || choiceValue >=  weapons.size())
+				System.out.println("Sorry that choice was not valid.");
+			else{
+				announcedWeapon = weapons.get(choiceValue);
+				validWeapon = true;
+			}
+		}
+		boolean validRoom = false;
+		while (!validRoom){
+			System.out.println("Which suspect would you like to announce?");
+			for (int i = 0; i < rooms.size(); i++){
+				System.out.println(i+" "+rooms.get(i));
+			}
+			String roomChoice = scan.next();
+			int choiceValue = -1;
+			try{
+				choiceValue = Integer.parseInt(roomChoice);
+			}catch (Exception e){
+				System.out.println("Sorry that choice was not valid.");
+			}
+			if (choiceValue < 0 || choiceValue >=  rooms.size())
+				System.out.println("Sorry that choice was not valid.");
+			else{
+				announcedRoom = rooms.get(choiceValue);
+				validRoom = true;
+			}
+		}
 	}
 	
 
