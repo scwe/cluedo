@@ -14,12 +14,13 @@ public class Room implements Cardable {
 	
 	private HashSet<Suspect> suspects;
 	private HashSet<Weapon> weapons;
-	
+	private TextBoard board;
 	private HashSet<Door> doors;
 	
 	private HashSet<Location> locations;
 
 	public Room(String data, TextBoard board){
+		this.board = board;
 		String[] split = data.trim().split(" ");
 		this.name = split[0];
 		this.location = board.getRoomFromString(name);
@@ -58,8 +59,15 @@ public class Room implements Cardable {
 		return weapons;
 	}
 	
-	public void addSuspect(Suspect s){
-		suspects.add(s);
+	public Location addSuspect(Suspect s){
+		
+		for (Location loc : locations){
+			if (board.getTile(loc).getSuspectOn() == null){
+				suspects.add(s);
+				return loc;
+			}
+		}
+		return null;
 	}
 	
 	public void addDoor(Door d){

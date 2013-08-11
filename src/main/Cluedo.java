@@ -129,7 +129,7 @@ public class Cluedo {
 			}
 		}
 		if (playerChoice == 1){
-			selectDirection(rollDice(player),player,moveRecord);
+			moveSuspect(rollDice(player),player,moveRecord);
 		}
 		if(moveRecord.getRm()!=null){
 			System.out.println("Would you like to make an accusation? (Y/N)");
@@ -143,7 +143,7 @@ public class Cluedo {
 					validOption = true;
 				}
 				System.out.println("That option was not valid.");
-				System.out.println("Would you like to make an accusation? (Y/N)");
+				System.out.println("Would you like to make an announcement? (Y/N)");
 			}
 		}
 			
@@ -155,9 +155,22 @@ public class Cluedo {
 	}
 	
 	public void makeAnnouncement(Player p, MoveRecord moveRecord){
-		Scanner input = new Scanner(System.in);
+		Scanner scan = new Scanner(System.in);
+		System.out.println("OK! Let's begin your announcement!");
+		System.out.println("Which suspect would you like to announce?");
+		for (int i = 0; i < suspects.size(); i++){
+			System.out.println(i+" "+suspects.get(i));
+		}
+		String suspectChoice = scan.next();
+		//try{
+			//int choiceValue = Integer.parseInt
+			
+		//}
 		
 	}
+	
+
+	
 	
 	public Room findRoom(Door d){
 		for(Room r : rooms){
@@ -174,74 +187,76 @@ public class Cluedo {
 				r.removeSuspect(player.getSuspect());
 			}
 		}
-		//Location roomLoc = room.addSuspect(player.getSuspect());
+		Location roomLoc = room.addSuspect(player.getSuspect());
+		System.out.println("Moving into room "+room);
 		board.getTile(player.getSuspect().getLocation()).setSuspectOn(null);
-		//player.getSuspect().setLocation(roomLoc);
+		player.getSuspect().setLocation(roomLoc);
+		board.getTile(roomLoc).setSuspectOn(player.getSuspect());
 	}
 	
-	public boolean selectDirection(int steps, Player curPlayer,MoveRecord moveRecord){
+	public boolean moveSuspect(int steps, Player curPlayer,MoveRecord moveRecord){
 		
-		boolean validPath = false;
+		boolean finishedTurn = false;
 		Path p = null;
 		
 		Scanner scan = new Scanner(System.in);
-		
-		while(!validPath){
-			HashSet<Location> visited = new HashSet<Location>();
-			while(steps > 0){
-				
-				System.out.println("Player "+curPlayer.getPlayerNumber()+": "+curPlayer.getSuspect().getName()+
-						" ("+curPlayer.getShortName()+")");
-				System.out.println("Please enter the path you wish to take type n, s, w, or e");
-				System.out.println("You have "+steps+" moves remaining ");
-				System.out.println("(Enter 'board' to show the board)");
-				String buildpath = scan.next();
-				if (buildpath.equalsIgnoreCase("board")){
-					board.drawBoard(); 
-					continue;
-				}
-				if (buildpath.length() > 1){
-					System.out.println("Invalid path, please try again");
-					continue;
-				}
-				Location curLoc = curPlayer.getSuspect().getLocation();
-				Location testLoc = board.findLocation(curLoc,buildpath);
-				if (testLoc == null){
-					System.out.println("Invalid path, please try again");
-					continue;
-				}
-				if (visited.contains(testLoc)){
-					System.out.println("Sorry, you have already visited that tile. Please try again");
-					continue;
-				}
-				if(!board.canMoveTo(testLoc)){
-					System.out.println("current player location = "+curPlayer.getSuspect().getLocation());
-					System.out.println("You can not move in that direction, please try again");
-					continue;
-				}
-				steps--;
-				System.out.println("Now moving: "+buildpath);
-				sleep(1000);
-				applyPath(curLoc,testLoc,curPlayer);
-				if (board.getTile(testLoc) instanceof IntrigueTile){
-					System.out.println("You picked up an intrigue card!");
-					sleep(1000);
-					IntrigueCard ic = intrigueDeck.pop();
-					curPlayer.addCard(ic);
-					moveRecord.setIc(ic);
-					System.out.println("Your new intrigue card reads as follows:");
-					System.out.println(ic);
-				}
-				else if (board.getTile(testLoc) instanceof Door){
-					Room rm = findRoom((Door)board.getTile(testLoc));
-					moveRoom(curPlayer,rm);
-					moveRecord.setRm(rm);
-				}
-				visited.add(testLoc);
-				board.drawBoard();
+
+
+		HashSet<Location> visited = new HashSet<Location>();
+		while(steps > 0 || !finishedTurn){
+
+			System.out.println("Player "+curPlayer.getPlayerNumber()+": "+curPlayer.getSuspect().getName()+
+					" ("+curPlayer.getShortName()+")");
+			System.out.println("Please enter the path you wish to take type n, s, w, or e");
+			System.out.println("You have "+steps+" moves remaining ");
+			System.out.println("(Enter 'board' to show the board)");
+			String buildpath = scan.next();
+			if (buildpath.equalsIgnoreCase("board")){
+				board.drawBoard(); 
+				continue;
 			}
-			validPath = true;
+			if (buildpath.length() > 1){
+				System.out.println("Invalid path, please try again");
+				continue;
+			}
+			Location curLoc = curPlayer.getSuspect().getLocation();
+			Location testLoc = board.findLocation(curLoc,buildpath);
+			if (testLoc == null){
+				System.out.println("Invalid path, please try again");
+				continue;
+			}
+			if (visited.contains(testLoc)){
+				System.out.println("Sorry, you have already visited that tile. Please try again");
+				continue;
+			}
+			if(!board.canMoveTo(testLoc)){
+				System.out.println("current player location = "+curPlayer.getSuspect().getLocation());
+				System.out.println("You can not move in that direction, please try again");
+				continue;
+			}
+			steps--;
+			System.out.println("Now moving: "+buildpath);
+			sleep(1000);
+			applyPath(curLoc,testLoc,curPlayer);
+			if (board.getTile(testLoc) instanceof IntrigueTile){
+				System.out.println("You picked up an intrigue card!");
+				sleep(1000);
+				IntrigueCard ic = intrigueDeck.pop();
+				curPlayer.addCard(ic);
+				moveRecord.setIc(ic);
+				System.out.println("Your new intrigue card reads as follows:");
+				System.out.println(ic);
+			}
+			else if (board.getTile(testLoc) instanceof Door){
+				Room rm = findRoom((Door)board.getTile(testLoc));
+				moveRoom(curPlayer,rm);
+				moveRecord.setRm(rm);
+				finishedTurn = true;
+			}
+			visited.add(testLoc);
+			board.drawBoard();
 		}
+
 		return true;
 		
 	}
@@ -249,6 +264,7 @@ public class Cluedo {
 	public void applyPath(Location cur , Location loc, Player player){
 		board.getTile(cur).setSuspectOn(null);
 		board.getTile(loc).setSuspectOn(player.getSuspect());
+		player.getSuspect().setLocation(loc);
 	}
 	
 	/**
