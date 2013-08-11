@@ -650,6 +650,15 @@ public class Cluedo {
 		}
 	}
 	
+	/**
+	 * Helper method, prints the reveal card once it has been found
+	 * @param player
+	 * 		The player required to reveal the card
+	 * @param card
+	 * 		The card they are revealing
+	 * @return
+	 * 		1 if it gets disputed, 0 if it doesn't
+	 */
 	private int printRevelation(Player player, Cardable card){
 		
 
@@ -1074,6 +1083,17 @@ public class Cluedo {
 		sleep(900);
 	}
 	
+	/**
+	 * Queries the user as to whether they want to use a given Keeper card
+	 * @param player
+	 * 		The player whose possiblity it is to use the Keeper Card
+	 * @param cardType
+	 * 		The type of the Keeper Card
+	 * @param message
+	 * 		the message on the Keeper Card, its function
+	 * @return
+	 * 		Whether the Intrigue card was used
+	 */
 	private boolean queryIntrigueCard(Player player, Keeper.KeeperFunction cardType, String message){
 		
 		Scanner yesNo = new Scanner(System.in);
@@ -1108,6 +1128,13 @@ public class Cluedo {
 		
 	}
 	
+	/**
+	 * Removes a specificed Keeper card from a specificed players hand
+	 * @param player
+	 * 		The player to remove the card from
+	 * @param keepFunc
+	 * 		The card to remove
+	 */
 	private void removeIntrigueCard(Player player, KeeperFunction keepFunc){
 		
 		Keeper toRemove = null;
