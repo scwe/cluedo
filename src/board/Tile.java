@@ -102,7 +102,7 @@ public abstract class Tile {
 	
 	@Override
 	public String toString(){
-		return "Location = "+loc.getX()+" "+loc.getY()+" type = "+type;
+		return "Location ("+loc.getX()+","+loc.getY()+"). Type = "+type;
 	}
 
 }

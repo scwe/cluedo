@@ -182,11 +182,12 @@ public class Cluedo {
 
 	}
 	
-private void rollMove(Player player, MoveRecord moveRecord){
+	private void rollMove(Player player, MoveRecord moveRecord){
 		
 		int playerChoice = 0;
 		Scanner optionScan = new Scanner(System.in);
 		
+		int roll = rollDice(player);
 		if(findRoomOfPlayer(player) != null){
 
 			Room playerRoom = findRoomOfPlayer(player);
@@ -194,26 +195,35 @@ private void rollMove(Player player, MoveRecord moveRecord){
 			boolean validOption = false;
 			while(!validOption){
 				System.out.println("Please enter the number of the door you wish to exit by");
-				for(int i = 0; i > playerRoom.getDoors().size(); i++){
-					System.out.println((i+1)+" "+playerRoom.getDoors().get(i));
+				System.out.println("Type 'board' to see the board");
+				for(int i = 0; i < playerRoom.getDoors().size(); i++){
+					System.out.println((i+1)+"	Door at "+playerRoom.getDoors().get(i));
 				}
 				String decision = optionScan.next();
+				if (decision.equalsIgnoreCase("board")){
+					board.drawBoard();
+					continue;
+				}
 				try{
-					playerChoice = Integer.parseInt(decision);
+					playerChoice = Integer.parseInt(decision)-1;
 				}catch (Exception e){
 					System.out.println("Sorry, that option was not valid");
 				}
-				if (playerChoice > 0 && playerChoice <= playerRoom.getDoors().size()){
+				if (playerChoice >= 0 && playerChoice < playerRoom.getDoors().size()){
 					Door toDoor = playerRoom.getDoors().get(playerChoice);
 					if (toDoor instanceof SecretDoor){
 						Room toRoom = (playerRoom.getName().equals("Kitchen"))?findRoom("Conservatory"):findRoom("Kitchen");
+						System.out.println("Moving through the Secret Door to room "+toRoom.getName());
 						moveToRoom(player, toRoom);
 					}
 					else{
+						System.out.println("Moving to the door at "+toDoor.getLocation());
+						sleep(1000);
 						board.getTile(player.getSuspect().getLocation()).setSuspectOn(null);
 						player.getSuspect().setLocation(toDoor.getLocation());
 						board.getTile(toDoor.getLocation()).setSuspectOn(player.getSuspect());
 					}
+					board.drawBoard();
 					validOption = true;
 				}
 				else{
@@ -221,7 +231,7 @@ private void rollMove(Player player, MoveRecord moveRecord){
 				}
 			}
 		}
-		moveSuspect(rollDice(player),player,moveRecord);
+		moveSuspect(roll,player,moveRecord);
 	}
 	
 
