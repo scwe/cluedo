@@ -14,4 +14,5 @@ public class SecretDoor extends Door{
 		return "Secret door at "+loc;
 	}
 
+
 }
