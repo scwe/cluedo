@@ -217,7 +217,7 @@ public class Cluedo {
 						moveToRoom(player, toRoom);
 					}
 					else{
-						System.out.println("Moving to the door at "+toDoor.getLocation());
+						System.out.println("You move to the door at "+toDoor.getLocation());
 						sleep(1000);
 						board.getTile(player.getSuspect().getLocation()).setSuspectOn(null);
 						player.getSuspect().setLocation(toDoor.getLocation());
@@ -246,9 +246,9 @@ public class Cluedo {
 				System.out.println("You have entered the "+moveRecord.getRm().getName());
 				System.out.println("Would you like to make an announcement? (Y/N)");
 				System.out.println("(Type 'hand' to view your hand)");
-				String decision = optionScan.next();
 				validOption = false;
 				while(!validOption){
+					String decision = optionScan.next();
 					if(decision.equalsIgnoreCase("Y")){
 						Declaration dec = makeDeclaration(player,moveRecord,"Announce");
 						performAnnouncement(dec,player);
@@ -263,8 +263,9 @@ public class Cluedo {
 						printHand(player); break;
 					}
 					else{
-						System.out.println("That option was not valid. Please enter Y or N");
+						System.out.println("That option was not valid.");
 						System.out.println("Would you like to make an announcement? (Y/N)");
+						System.out.println("Type Y, N, or enter 'hand' to view your hand.");
 					}
 				}
 			}
