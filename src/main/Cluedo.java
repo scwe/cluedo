@@ -154,7 +154,7 @@ public class Cluedo {
 		p.addCard(deck.pop());
 	}
 	
-	public void makeAnnouncement(Player p, MoveRecord moveRecord){
+	public void makeAnnouncement(Player curPlayer, MoveRecord moveRecord){
 		Suspect announcedSuspect = null;
 		Weapon announcedWeapon = null;
 		Room announcedRoom = null;
@@ -220,6 +220,45 @@ public class Cluedo {
 				validRoom = true;
 			}
 		}
+		
+		System.out.println("Moving "+announcedSuspect+" to announced room "+announcedRoom);
+		sleep(1000);
+	
+		Player movePlayer = null;
+		Player foundPlayer = null;
+		players.offer(curPlayer);
+		while(movePlayer != curPlayer){
+			movePlayer = players.poll();
+			if (movePlayer.getSuspect().equals(announcedSuspect)){
+				foundPlayer = movePlayer;
+			}
+			players.offer(movePlayer);
+		}
+		
+		moveToRoom(foundPlayer,announcedRoom);
+		System.out.println("Moving "+announcedWeapon+" to announced room "+announcedRoom);
+		announcedWeapon.setRoom(announcedRoom);
+		sleep(1000);
+		System.out.println("Can any player disprove the suggestion?");
+		for(Player player: players){
+			if (player != curPlayer){
+				if(player.getHand().contains(announcedSuspect)){
+					printRevelation(curPlayer,announcedSuspect);
+				}
+				else if(player.getHand().contains(announcedWeapon)){
+					printRevelation(curPlayer,announcedWeapon);
+				}
+				else if(player.getHand().contains(announcedRoom)){
+					printRevelation(curPlayer,announcedRoom);
+				}
+			}
+		}
+	}
+	
+	public void printRevelation(Player player, Cardable card){
+		System.out.println(player.getPlayerNumber()+ "("+player.getSuspect()+")"+
+				"revealed the "+card+" card to you in secret, disproving the " +
+				"suspect");
 	}
 	
 
@@ -234,7 +273,7 @@ public class Cluedo {
 		return null;
 	}
 	
-	public void moveRoom(Player player, Room room){
+	public void moveToRoom(Player player, Room room){
 		for(Room r : rooms){
 			if(r.getSuspects().contains(player.getSuspect())){
 				r.removeSuspect(player.getSuspect());
@@ -302,7 +341,7 @@ public class Cluedo {
 			}
 			else if (board.getTile(testLoc) instanceof Door){
 				Room rm = findRoom((Door)board.getTile(testLoc));
-				moveRoom(curPlayer,rm);
+				moveToRoom(curPlayer,rm);
 				moveRecord.setRm(rm);
 				finishedTurn = true;
 			}
@@ -484,7 +523,7 @@ public class Cluedo {
 		deck.remove(weapon);
 		deck.remove(player);
 
-		return new Announcement(room, player, weapon);
+		return null;
 	}
 	
 	public HashMap<Location, Room> loadRooms(){

@@ -5,51 +5,50 @@ import card.Room;
 import card.Weapon;
 
 
-
-
 public class Announcement {
 	
-	private Card room;
-	private Card character;
-	private Card weapon;
 	
-	public Announcement(Card room, Card character, Card weapon){
+
+	private Suspect suspect;
+	private Weapon weapon;
+	private Room room;
+	
+	public Announcement(Suspect suspect, Weapon weapon, Room room){
 		this.room = room;
-		this.character = character;
 		this.weapon = weapon;
-	}
-	
-	
-	public boolean isValid(){
-		return room.getCard() instanceof Room && character.getCard() instanceof Suspect && weapon.getCard() instanceof Weapon;
-	}
-	
-	public Card getRoom() {
-		return room;
-	}
-	
-	public void setRoom(Card room) {
-		this.room = room;
+		this.suspect = suspect;
+		
 	}
 
-	public Card getCharacter() {
-		return character;
+
+	
+	
+	public Suspect getSuspect() {
+		return suspect;
 	}
 
-	public void setCharacter(Card character) {
-		this.character = character;
+	public void setSuspect(Suspect suspect) {
+		this.suspect = suspect;
 	}
 
-	public Card getWeapon() {
+	public Weapon getWeapon() {
 		return weapon;
 	}
-	
-	public void setWeapon(Card weapon) {
+
+	public void setWeapon(Weapon weapon) {
 		this.weapon = weapon;
 	}
-	
-	@Override
-	public String toString(){
-		return "Announcement\n\t"+room.getCard()+" \n\t"+character.getCard()+" \n\t"+weapon.getCard();
+
+
+	public Room getRoom() {
+		return room;
 	}
+
+
+	public void setRoom(Room room) {
+		this.room = room;
+	}
+
+
+	
 }
