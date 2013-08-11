@@ -153,6 +153,4 @@ public class BoardTests {
     	Wall i = new Wall(new Location(5,5), null, "wall", new DrawContext("#", null));
     	assertFalse(i.canMoveTo());
     }
-    
-    
 }
