@@ -128,21 +128,25 @@ public class TextBoard {
 			switch(d.getDrawContext().getString()){
 			case "^":
 				if(getTile(new Location(testLoc.getX(), testLoc.getY()-1)).getSuspectOn() == null){
+					printDoorMessage();
 					return false;
 				}
 				break;
 			case "v":
 				if(getTile(new Location(testLoc.getX(), testLoc.getY()+1)).getSuspectOn() == null){
+					printDoorMessage();
 					return false;
 				}
 				break;
 			case "<":
 				if(getTile(new Location(testLoc.getX()-1, testLoc.getY())).getSuspectOn() == null){
+					printDoorMessage();
 					return false;
 				}
 				break;
 			case ">":
 				if(getTile(new Location(testLoc.getX()+1, testLoc.getY())).getSuspectOn() == null){
+					printDoorMessage();
 					return false;
 				}
 				break;
@@ -154,8 +158,10 @@ public class TextBoard {
 		return false;
 	}
 	
+	
+	
 	/**
-	 * From a seperate file, generates all the rooms with their locations and puts
+	 * From a separate file, generates all the rooms with their locations and puts
 	 * them into a map from location to room
 	 * @param rooms
 	 * 		The rooms that are to be loaded into
@@ -261,5 +267,12 @@ public class TextBoard {
 		return null;
 	}
 
+	
+	private void printDoorMessage(){
+		
+		System.out.println("\nNOTE: You can only enter doors from the direction they point");
+		
+		
+	}
 
 }
