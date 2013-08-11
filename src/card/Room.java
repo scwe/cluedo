@@ -39,6 +39,18 @@ public class Room implements Cardable {
 		}
 	}
 	
+	public HashSet<Door> getDoors(){
+		return doors;
+	}
+	
+	public HashSet<Suspect> getSuspects(){
+		return suspects;
+	}
+	
+	public HashSet<Weapon> getWeapons(){
+		return weapons;
+	}
+	
 	public void addSuspect(Suspect s){
 		suspects.add(s);
 	}
