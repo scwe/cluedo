@@ -11,6 +11,7 @@ import card.Suspect;
 import board.Location;
 import board.Path;
 import board.TextBoard;
+import board.IntrigueTile;
 
 
 public class Cluedo {
@@ -101,7 +102,9 @@ public class Cluedo {
 
 	}
 	
-	public void takeTurn(Player p){
+	public void takeTurn(Player player){
+		
+		MoveRecord moveRecord = new MoveRecord();
 		
 		System.out.println("Player "+p.getPlayerNumber()+": "+p.getCharacter().getName()+
 				" ("+p.getShortName()+")");
@@ -109,15 +112,14 @@ public class Cluedo {
 		boolean validOption = false;
 		int playerChoice = 0;
 		
+		Scanner optionScan = new Scanner(System.in);
 		while(!validOption){
 			System.out.println("Options: ");
 			System.out.println("(1)	Roll dice");
-			System.out.println("(2)  Make Accusation");
-			if (p.hasIntrigueCards()){
+			if (player.hasIntrigueCards()){
 				System.out.println("(3)  Play intrigue card");
 			}
-			int okRange = (p.hasIntrigueCards())?3:2;
-			Scanner optionScan = new Scanner(System.in);
+			int okRange = (player.hasIntrigueCards())?3:2;
 			String decision = optionScan.next();
 			try{
 				playerChoice = Integer.parseInt(decision);
@@ -131,16 +133,28 @@ public class Cluedo {
 			}
 		}
 		if (playerChoice == 1){
-			selectDirection(rollDice(p),p);
+			selectDirection(rollDice(player),player,moveRecord);
 		}
-		else if (playerChoice == 2 ){
-			
+		if(moveRecord.getRm()!=null){
+			System.out.println("Would you like to make an accusation? (Y/N)");
+			String decision = optionScan.next();
+			validOption = false;
+			while(!validOption){
+				if(decision.equalsIgnoreCase("Y")){
+					makeAccusation(player,moveRecord);
+				}
+				else if (decision.equalsIgnoreCase("N")){
+					validOption = true;
+				}
+				System.out.println("That option was not valid.");
+				System.out.println("Would you like to make an accusation? (Y/N)");
+			}
 		}
 			
 		else if (playerChoice == 3){}
 	}
 	
-	public boolean selectDirection(int steps, Player curPlayer){
+	public boolean selectDirection(int steps, Player curPlayer, MoveRecord moveRecord){
 		
 		boolean validPath = false;
 		Path p = null;
@@ -184,11 +198,10 @@ public class Cluedo {
 				System.out.println("Now moving: "+buildpath);
 				sleep(1000);
 				applyPath(curLoc,testLoc,curPlayer);
-				if (board.getTile(testLoc) instanceof IntrigueCard){
-					
-					
-					
-					
+				if (board.getTile(testLoc) instanceof IntrigueTile){
+					IntrigueCard ic = intrigueDeck.pop();
+					curPlayer.addCard(ic);
+					moveRecord.setIc(ic);
 				}
 				visited.add(testLoc);
 				board.drawBoard();
