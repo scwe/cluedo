@@ -20,9 +20,6 @@ public class Announcement {
 		
 	}
 
-
-	
-	
 	public Suspect getSuspect() {
 		return suspect;
 	}
