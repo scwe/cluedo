@@ -21,6 +21,8 @@ public class Cluedo {
 
 	private Deck<Card> deck;
 	private Deck<IntrigueCard> intrigueDeck;
+	
+	private HashMap<Location, Room> roomLocations;
 
 	private Announcement solution;
 
@@ -31,6 +33,7 @@ public class Cluedo {
 		board = new TextBoard();
 		inputScanner = new Scanner(System.in);
 		players = new LinkedList<Player>();
+		
 		try {
 			deck = createDeck();
 			intrigueDeck = createIntrigueDeck();
@@ -38,6 +41,13 @@ public class Cluedo {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		roomLocations = loadRooms();
+		
+		for(Map.Entry<Location, Room> e: roomLocations.entrySet()){
+			System.out.println(e.getKey()+" "+ e.getValue());
+		}
+		
 
 		System.out.println("Enter the number of players playing");
 		int numPlayers = inputScanner.nextInt();
@@ -160,7 +170,6 @@ public class Cluedo {
 				return r;
 			}
 		}
-		
 		return null;
 	}
 	
@@ -404,6 +413,76 @@ public class Cluedo {
 
 		return new Announcement(room, player, weapon);
 	}
+	
+	public HashMap<Location, Room> loadRooms(){
+		HashMap<Location, Room> map = new HashMap<Location, Room>();
+		
+		try{
+			Scanner fileScanner = new Scanner(new File("roomLocs.txt"));
+			
+			int rowCount = 0;
+			while(fileScanner.hasNextLine()){
+				String line = fileScanner.nextLine();
+				
+				char[] characters = line.toCharArray();
+				
+				int colCount = 0;
+				for(char c: characters){
+					String name = getName(c);
+					
+					if(name != null){
+						Room r = getRoom(name);
+						map.put(new Location(colCount, rowCount), r);
+					}
+					colCount++;
+				}
+				rowCount++;
+			}
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		
+		return map;
+	}
+	
+	private Room getRoom(String name){
+		for(Room r : rooms){
+			if(r.getName().equals(name)){
+				return r;
+			}
+		}
+		
+		return null;
+	}
+	
+	private String getName(char room){
+		switch(room){
+		case 'S':
+			return "Spa";
+		case 'T':
+			return "Theatre";
+		case 'L':
+			return "Living_Room";
+		case 'C':
+			return "Conservatory";
+		case 'P':
+			return "Patio";
+		case 'p':
+			return "Pool";
+		case 'H':
+			return "Hall";
+		case 'K':
+			return "Kitchen";
+		case 'D':
+			return "Dining_Room";
+		case 'G':
+			return "Guest_House";
+		}
+		
+		return null;
+	}
+	
+	
 
 	private void sleep(int val) {
 		try {

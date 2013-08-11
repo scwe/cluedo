@@ -71,7 +71,7 @@ public class BoardLoader {
 			case "intrigue":
 				return new IntrigueTile(l, null, type, dc);
 			case "room-label":
-				return new Hall(l, null, type, dc);
+				return new RoomTile(l, null, type, dc);
 			case "boundary":
 				return new Wall(l,null,type,dc);
 			case "room":

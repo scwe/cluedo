@@ -3,15 +3,19 @@ package board;
 import java.io.File;
 import java.util.ArrayList;
 
+import card.Room;
+
 public class TextBoard {
 
 	public final int ROW_LENGTH = 31;
 	public final int COL_LENGTH = 30;
 	private Tile[][] board = new Tile[ROW_LENGTH][COL_LENGTH];
+	private ArrayList<Room> rooms;
 
 	public TextBoard() {
 
 		File f = new File("Map");
+		this.rooms = rooms;
 
 		BoardLoader bl = new BoardLoader(f, ROW_LENGTH, COL_LENGTH);
 		board = bl.getBoard();
