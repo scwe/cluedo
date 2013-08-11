@@ -3,7 +3,11 @@ package board;
 import java.awt.Graphics;
 import card.Suspect;
 
-
+/**
+ * A class to represent the hall in the board
+ * @author CF
+ *
+ */
 
 public class Hall extends Tile{
 

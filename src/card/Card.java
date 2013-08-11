@@ -1,6 +1,11 @@
 package card;
 
-
+/**
+ * A class to represent the Card, contains a Cardable object
+ * i.e. either a Suspect, Weapon or Room
+ * @author scott
+ *
+ */
 public class Card implements Holdable{
 
 	private Cardable card;

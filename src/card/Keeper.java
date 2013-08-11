@@ -1,7 +1,11 @@
 package card;
 
 
-
+/**
+ * The class to represent the Keeper card
+ * @author scott
+ *
+ */
 public class Keeper implements IntrigueCard{
 
 	public enum KeeperFunction{

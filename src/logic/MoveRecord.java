@@ -2,8 +2,15 @@ package logic;
 import card.IntrigueCard;
 import card.Room;
 
+
+/**
+ * A class the represents a Move Record, that is
+ * whether they ahve picked up an IntrigueCard, and whether they have moved into a room
+ * and whether they can accuse
+ * @author scott
+ *
+ */
 public class MoveRecord {
-	
 	
 	private IntrigueCard ic;
 	private Room rm;

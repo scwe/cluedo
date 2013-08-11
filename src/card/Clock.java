@@ -1,11 +1,13 @@
 package card;
 
 
-
+/**
+ * A class representing the clock IntrigueCard
+ * @author scott
+ *
+ */
 public class Clock implements IntrigueCard{
-
 	
-
 	private Boolean last;
 	
 	public Clock(Boolean last){
@@ -15,7 +17,9 @@ public class Clock implements IntrigueCard{
 	public Boolean getLast() {
 		return last;
 	}
-
+	/**
+	 * Whether this is the last Clock in the deck of intrigue Cards
+	 */
 	public void setLast(Boolean last) {
 		this.last = last;
 	}

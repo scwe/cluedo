@@ -5,7 +5,11 @@ import java.awt.Graphics;
 import card.Suspect;
 
 
-
+/**
+ * The tile to represent the 
+ * @author CF
+ *
+ */
 public class Wall extends Tile{
 
 
