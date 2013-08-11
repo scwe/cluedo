@@ -30,6 +30,7 @@ public class TextBoard {
 	 */
 	public void drawBoard(){
 		
+		System.out.println("-----------THE BOARD-----------");
 		for (int a = 0; a < ROW_LENGTH; a++){
 			for(int b = 0; b < COL_LENGTH; b++){
 				board[a][b].draw(null);

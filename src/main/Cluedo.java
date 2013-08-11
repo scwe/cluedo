@@ -148,7 +148,7 @@ public class Cluedo {
 			
 			while(!validOption){
 				
-				System.out.println("\nOptions: (enter corresponding number)");
+				System.out.println("Options: (enter corresponding number)");
 				System.out.println("1	Roll Dice");
 				System.out.println("2	View Hand");
 				if (player.hasIntrigueCards()){
@@ -801,7 +801,7 @@ private void rollMove(Player player, MoveRecord moveRecord){
 	private void printHand(Player player){
 		System.out.println("You hold the following cards:");
 		for (Card c: player.getHand()){
-			System.out.println(c);
+			System.out.println("	"+c);
 			sleep(400);
 		}
 		System.out.println();
