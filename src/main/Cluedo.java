@@ -6,7 +6,6 @@ import java.io.*;
 import logic.Announcement;
 
 import card.*;
-import card.Suspect;
 
 import board.Location;
 import board.Path;
@@ -91,9 +90,6 @@ public class Cluedo {
 		
 		boolean gameFinished = false;
 		
-		/**
-		 * Game loop, this should probably be moved into a different method
-		 */
 		while (!gameFinished){
 			Player curPlayer = players.poll();
 			
@@ -139,6 +135,16 @@ public class Cluedo {
 		}
 			
 		else if (playerChoice == 3){}
+	}
+	
+	public void drawIntrigue(Player p, Deck<IntrigueCard> deck){
+		p.addCard(deck.pop());
+	}
+	
+	public void makeAnnouncement(Player p){
+		Scanner input = new Scanner(System.in);
+		
+		
 	}
 	
 	public boolean selectDirection(int steps, Player curPlayer){
@@ -336,6 +342,7 @@ public class Cluedo {
 		int count = 0;
 		for (Weapon w : weapons) { // put each one in a room
 			w.setRoom(rooms.get(count));
+			rooms.get(count).addWeapon(w);
 			count++;
 		}
 	}
