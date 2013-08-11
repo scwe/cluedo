@@ -177,8 +177,5 @@ public class BoardTests {
     	assertFalse(map.containsKey(new Location(7,7)));
 
     	assertTrue(map.containsValue(r));
-    	
-    	
-
     }
 }
