@@ -4,8 +4,6 @@ import java.awt.Graphics;
 
 import card.Suspect;
 
-import main.Player;
-
 
 public class IntrigueTile extends Tile{
 

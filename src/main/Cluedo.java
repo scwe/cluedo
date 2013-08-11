@@ -324,7 +324,6 @@ public class Cluedo {
 	public boolean moveSuspect(int steps, Player curPlayer,MoveRecord moveRecord){
 		
 		boolean finishedTurn = false;
-		Path p = null;
 		
 		Scanner scan = new Scanner(System.in);
 
