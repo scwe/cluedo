@@ -108,23 +108,33 @@ public class TextBoard {
 		if(getTile(testLoc) instanceof Door){
 			Door d = (Door)getTile(testLoc);
 			
+			System.out.println(d.getDrawContext().getString());
+			
 			switch(d.getDrawContext().getString()){
 			case "^":
 				if(getTile(new Location(testLoc.getX(), testLoc.getY()-1)).getSuspectOn() == null){
+					System.out.println("The suspect there y-1 "+testLoc+" is null");
 					return false;
 				}
+				break;
 			case "v":
 				if(getTile(new Location(testLoc.getX(), testLoc.getY()+1)).getSuspectOn() == null){
+					System.out.println("The suspect there y+1 "+testLoc+" is null");
 					return false;
 				}
+				break;
 			case "<":
 				if(getTile(new Location(testLoc.getX()-1, testLoc.getY())).getSuspectOn() == null){
+					System.out.println("The suspect there x-1 "+testLoc+" is null");
 					return false;
 				}
+				break;
 			case ">":
 				if(getTile(new Location(testLoc.getX()+1, testLoc.getY())).getSuspectOn() == null){
+					System.out.println("The suspect there x+1 "+testLoc+" is null");
 					return false;
 				}
+				break;
 			}
 		}
 		if(getTile(testLoc).canMoveTo()){
