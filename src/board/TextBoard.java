@@ -1,6 +1,12 @@
 package board;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.ArrayList;
+
+import card.Room;
 
 public class TextBoard {
 
@@ -29,34 +35,6 @@ public class TextBoard {
 
 	}
 
-	public Location getRoomFromString(String room) {
-		room = room.toLowerCase().trim();
-		switch (room) {
-		case "spa":
-			return new Location(5, 5);
-		case "theatre":
-			return new Location(11, 5);
-		case "living room":
-			return new Location(17, 5);
-		case "conservatory":
-			return new Location(25, 5);
-		case "patio":
-			return new Location(5, 15);
-		case "pool":
-			return new Location(14, 15);
-		case "hall":
-			return new Location(25, 15);
-		case "kitchen":
-			return new Location(5, 26);
-		case "dining room":
-			return new Location(13, 26);
-		case "guest house":
-			return new Location(27, 26);
-
-		}
-		
-		return null;
-	}
 
 	public Location getStartLocation(int i) {
 		switch (i) {
@@ -137,6 +115,77 @@ public class TextBoard {
 			return true;
 		}
 		return false;
+	}
+	
+	public HashMap<Location, Room> loadRooms(ArrayList<Room> rooms){
+		HashMap<Location, Room> map = new HashMap<Location, Room>();
+		
+		
+		try{
+			Scanner fileScanner = new Scanner(new File("roomLocs.txt"));
+			
+			int rowCount = 0;
+			while(fileScanner.hasNextLine()){
+				String line = fileScanner.nextLine();
+				
+				char[] characters = line.toCharArray();
+				
+				int colCount = 0;
+				for(char c: characters){
+					String name = getName(c);
+					
+					if(name != null){
+						Room r = getRoom(name, rooms);
+						map.put(new Location(colCount, rowCount), r);
+					}
+					colCount++;
+				}
+				rowCount++;
+			}
+			
+			fileScanner.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		
+		return map;
+	}
+	
+	private Room getRoom(String name, ArrayList<Room> rooms){
+		for(Room r : rooms){
+			if(r.getName().equals(name)){
+				return r;
+			}
+		}
+		
+		return null;
+	}
+	
+	private String getName(char room){
+		switch(room){
+		case 'S':
+			return "Spa";
+		case 'T':
+			return "Theatre";
+		case 'L':
+			return "Living_Room";
+		case 'C':
+			return "Conservatory";
+		case 'P':
+			return "Patio";
+		case 'p':
+			return "Pool";
+		case 'H':
+			return "Hall";
+		case 'K':
+			return "Kitchen";
+		case 'D':
+			return "Dining_Room";
+		case 'G':
+			return "Guest_House";
+		}
+		
+		return null;
 	}
 
 

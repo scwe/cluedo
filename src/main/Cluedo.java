@@ -42,7 +42,7 @@ public class Cluedo {
 			e.printStackTrace();
 		}
 		
-		roomLocations = loadRooms();
+		roomLocations = board.loadRooms(rooms);
 		distributeLocations(roomLocations);
 
 		System.out.println("Enter the number of players playing");
@@ -74,7 +74,7 @@ public class Cluedo {
 
 		
 		deck.deal(players);
-		shuffleWeapons(weapons);
+		assignWeapons(weapons);
 
 		for (Player p : players) {
 			System.out.println(p);
@@ -221,8 +221,6 @@ public class Cluedo {
 			}
 		}
 	}
-	
-
 	
 	
 	public Room findRoom(Door d){
@@ -447,7 +445,14 @@ public class Cluedo {
 		return deck;
 	}
 
-	public void shuffleWeapons(ArrayList<Weapon> weapons) {
+	/**
+	 * Assigns the given list of weapons to the rooms
+	 * @param weapons
+	 * 		The weapons to distribute
+	 * @param rooms
+	 * 		The rooms to distribute the weapons to
+	 */
+	public void assignWeapons(ArrayList<Weapon> weapons) {
 		Collections.shuffle(weapons); // put the weapons in a random order
 		int count = 0;
 		for (Weapon w : weapons) { // put each one in a room
@@ -485,77 +490,6 @@ public class Cluedo {
 		deck.remove(player);
 
 		return new Announcement(room, player, weapon);
-	}
-	
-	public HashMap<Location, Room> loadRooms(){
-		HashMap<Location, Room> map = new HashMap<Location, Room>();
-		
-		
-		try{
-			Scanner fileScanner = new Scanner(new File("roomLocs.txt"));
-			
-			int rowCount = 0;
-			while(fileScanner.hasNextLine()){
-				String line = fileScanner.nextLine();
-				
-				char[] characters = line.toCharArray();
-				
-				int colCount = 0;
-				for(char c: characters){
-					String name = getName(c);
-					
-					if(name != null){
-						Room r = getRoom(name);
-						map.put(new Location(colCount, rowCount), r);
-					}
-					colCount++;
-				}
-				rowCount++;
-			}
-			
-			fileScanner.close();
-		}catch(IOException e){
-			e.printStackTrace();
-		}
-		
-		return map;
-	}
-	
-	private Room getRoom(String name){
-		for(Room r : rooms){
-			if(r.getName().equals(name)){
-				return r;
-			}
-		}
-		
-		return null;
-	}
-	
-	private String getName(char room){
-		switch(room){
-		case 'S':
-			return "Spa";
-		case 'T':
-			return "Theatre";
-		case 'L':
-			return "Living_Room";
-		case 'C':
-			return "Conservatory";
-		case 'P':
-			return "Patio";
-		case 'p':
-			return "Pool";
-		case 'H':
-			return "Hall";
-		case 'K':
-			return "Kitchen";
-		case 'D':
-			return "Dining_Room";
-		case 'G':
-			return "Guest_House";
-		}
-		
-		return null;
 	}
 	
 	private void distributeLocations(HashMap<Location, Room> roomLocations){

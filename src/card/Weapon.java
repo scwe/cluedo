@@ -20,12 +20,7 @@ public class Weapon implements Cardable {
 	public String getName() {
 		return name;
 	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
-
+	
 	public Room getRoom(){
 		return room;
 	}

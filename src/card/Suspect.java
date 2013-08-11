@@ -17,12 +17,6 @@ public class Suspect implements Cardable{
 		return name;
 	}
 
-	@Override
-	public void setName(String name) {
-		this.name = name;
-
-	}
-
 	public Location getLocation(){
 		return location;
 	}

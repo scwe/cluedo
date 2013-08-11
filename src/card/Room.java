@@ -10,7 +10,6 @@ import java.util.HashSet;
 public class Room implements Cardable {
 
 	private String name;
-	private Location location;
 	
 	private HashSet<Suspect> suspects;
 	private HashSet<Weapon> weapons;
@@ -23,7 +22,6 @@ public class Room implements Cardable {
 		this.board = board;
 		String[] split = data.trim().split(" ");
 		this.name = split[0];
-		this.location = board.getRoomFromString(name);
 		
 		suspects = new HashSet<Suspect>();
 		weapons = new HashSet<Weapon>();
@@ -95,32 +93,15 @@ public class Room implements Cardable {
 	public String getName() {
 		return name;
 	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-
-	public Location getLocation() {
-		return location;
-	}
-
-	public void setLocation(Location location) {
-		this.location = location;
-	}
 	
 	@Override
 	public String toString(){
-		return name + " at "+location;
+		return name;
 	}
 
 	public HashSet<Location> getLocations() {
 		return locations;
 	}
 
-	public void setLocations(HashSet<Location> locations) {
-		this.locations = locations;
-	}
 
 }
