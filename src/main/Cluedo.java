@@ -416,6 +416,7 @@ public class Cluedo {
 						System.out.println("Moving through the Secret Door to "+toRoom.getName());
 						sleep(1000);
 						moveToRoom(player, toRoom);
+						return;
 					}
 					else{
 						System.out.println("You move to the door at "+toDoor.getLocation());
