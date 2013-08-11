@@ -6,12 +6,8 @@ import java.io.*;
 import logic.Announcement;
 
 import card.*;
-import card.Suspect;
 
-import board.Location;
-import board.Path;
-import board.TextBoard;
-import board.IntrigueTile;
+import board.*;
 
 
 public class Cluedo {
@@ -62,7 +58,7 @@ public class Cluedo {
 			}
 			System.out.println("Great choice!\n");
 			sleep(500);
-			player.getCharacter().setLocation(board.getStartLocation(i));
+			player.getSuspect().setLocation(board.getStartLocation(i));
 			player.setPlayerNumber(i+1);
 			Location playLoc = board.getStartLocation(player.getPlayerNumber()-1);
 
@@ -84,12 +80,6 @@ public class Cluedo {
 			sleep(200);
 		}
 		
-		System.out.println(solution);
-		
-		for(IntrigueCard i : intrigueDeck){
-			System.out.println(i);
-		}
-		
 		boolean gameFinished = false;
 		
 		while (!gameFinished){
@@ -106,8 +96,8 @@ public class Cluedo {
 		
 		MoveRecord moveRecord = new MoveRecord();
 		
-		System.out.println("Player "+p.getPlayerNumber()+": "+p.getCharacter().getName()+
-				" ("+p.getShortName()+")");
+		System.out.println("Player "+player.getPlayerNumber()+": "+player.getSuspect().getName()+
+				" ("+player.getShortName()+")");
 
 		boolean validOption = false;
 		int playerChoice = 0;
@@ -141,7 +131,7 @@ public class Cluedo {
 			validOption = false;
 			while(!validOption){
 				if(decision.equalsIgnoreCase("Y")){
-					makeAccusation(player,moveRecord);
+					makeAnnouncement(player,moveRecord);
 				}
 				else if (decision.equalsIgnoreCase("N")){
 					validOption = true;
@@ -154,7 +144,37 @@ public class Cluedo {
 		else if (playerChoice == 3){}
 	}
 	
-	public boolean selectDirection(int steps, Player curPlayer, MoveRecord moveRecord){
+	public void drawIntrigue(Player p, Deck<IntrigueCard> deck){
+		p.addCard(deck.pop());
+	}
+	
+	public void makeAnnouncement(Player p, MoveRecord moveRecord){
+		Scanner input = new Scanner(System.in);
+		
+		
+	}
+	
+	public Room findRoom(Door d){
+		for(Room r : rooms){
+			if(r.getDoors().contains(d)){
+				return r;
+			}
+		}
+		
+		return null;
+	}
+	
+	public void moveRoom(Player p, Room r){
+		for(Room room : rooms){
+			if(room.getSuspects().contains(p.getSuspect())){
+				room.removeSuspect(p.getSuspect());
+			}
+		}
+		r.addSuspect(p.getSuspect());
+		p.getSuspect().setLocation(r.getLocation());
+	}
+	
+	public boolean selectDirection(int steps, Player curPlayer,MoveRecord moveRecord){
 		
 		boolean validPath = false;
 		Path p = null;
@@ -165,7 +185,7 @@ public class Cluedo {
 			HashSet<Location> visited = new HashSet<Location>();
 			while(steps > 0){
 				
-				System.out.println("Player "+curPlayer.getPlayerNumber()+": "+curPlayer.getCharacter().getName()+
+				System.out.println("Player "+curPlayer.getPlayerNumber()+": "+curPlayer.getSuspect().getName()+
 						" ("+curPlayer.getShortName()+")");
 				System.out.println("Please enter the path you wish to take type n, s, w, or e");
 				System.out.println("You have "+steps+" moves remaining ");
@@ -179,7 +199,7 @@ public class Cluedo {
 					System.out.println("Invalid path, please try again");
 					continue;
 				}
-				Location curLoc = curPlayer.getCharacter().getLocation();
+				Location curLoc = curPlayer.getSuspect().getLocation();
 				Location testLoc = board.findLocation(curLoc,buildpath);
 				if (testLoc == null){
 					System.out.println("Invalid path, please try again");
@@ -190,7 +210,7 @@ public class Cluedo {
 					continue;
 				}
 				if(!board.canMoveTo(testLoc)){
-					System.out.println("current player location = "+curPlayer.getCharacter().getLocation());
+					System.out.println("current player location = "+curPlayer.getSuspect().getLocation());
 					System.out.println("You can not move in that direction, please try again");
 					continue;
 				}
@@ -215,7 +235,7 @@ public class Cluedo {
 	public void applyPath(Location cur , Location loc, Player player){
 		board.getTile(cur).setPlayerOn(null);
 		board.getTile(loc).setPlayerOn(player);
-		player.getCharacter().setLocation(loc);
+		player.getSuspect().setLocation(loc);
 	}
 	
 	/**
@@ -250,7 +270,7 @@ public class Cluedo {
 		for (Suspect c : suspects) { // print out the possible character
 			boolean used = false;
 			for (Player p : players) {
-				if (p.getCharacter().equals(c)) {
+				if (p.getSuspect().equals(c)) {
 					used = true;
 				}
 			}
@@ -300,9 +320,10 @@ public class Cluedo {
 		lines = new Scanner(new File("rooms.txt")).useDelimiter("\\Z").next().split("\n");
 
 		for (String s : lines) {
-			Room r = new Room(s.trim(), board.getRoomFromString(s));
+			Room r = new Room(s.trim(), board);
 			rooms.add(r);
-			deck.push(new Card(r));
+			if(!s.startsWith("Pool"))   //don't add the pool to the deck, it cannot be the place of a murder
+				deck.push(new Card(r));
 		}
 
 		lines = new Scanner(new File("weapons.txt")).useDelimiter("\\Z").next().split("\n");
@@ -349,6 +370,7 @@ public class Cluedo {
 		int count = 0;
 		for (Weapon w : weapons) { // put each one in a room
 			w.setRoom(rooms.get(count));
+			rooms.get(count).addWeapon(w);
 			count++;
 		}
 	}
