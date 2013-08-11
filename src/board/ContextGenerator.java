@@ -1,8 +1,21 @@
 package board;
 
+/**
+ * A class for generating the string to be drawn given an input type or label
+ * @author CF
+ *
+ */
 public class ContextGenerator {
 
-
+	/**
+	 * Creates the context
+	 * @param type
+	 * 		The type of tile that is to be drawn
+	 * @param label
+	 * 		The label of the room, if any
+	 * @return
+	 * 		A draw context with the correct way to be drawn
+	 */
 	public DrawContext createContext (String type, char label){
 		
 		switch (type){

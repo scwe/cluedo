@@ -9,9 +9,10 @@ import card.*;
 
 import board.*;
 
-/**
+/**The main class that takes care of all the user input and delegating what is required to the board 
+ * and most of the other objects
  * 
- * @author scott & CF2
+ * @author scott & CF
  * 
  *
  */
@@ -185,7 +186,15 @@ public class Cluedo {
 
 	}
 	
-private void rollMove(Player player, MoveRecord moveRecord){
+	/**
+	 * Checks to see if the player is in a room and then sorts out getting them out
+	 * of the room
+	 * @param player
+	 * 		The player whose turn it is
+	 * @param moveRecord
+	 * 		The record of the players current turn and moves
+	 */
+	private void rollMove(Player player, MoveRecord moveRecord){
 		
 		int playerChoice = 0;
 		Scanner optionScan = new Scanner(System.in);
@@ -227,7 +236,13 @@ private void rollMove(Player player, MoveRecord moveRecord){
 		moveSuspect(rollDice(player),player,moveRecord);
 	}
 	
-
+	/**
+	 * The method that takes care of the final part of the players turn, making announcements etc
+	 * @param player
+	 * 		The player whose turn it is
+	 * @param moveRecord
+	 * 		The record of the players current turn and moves
+	 */
 	private void endTurn(Player player, MoveRecord moveRecord){
 		
 		Scanner optionScan = new Scanner(System.in);
@@ -284,6 +299,15 @@ private void rollMove(Player player, MoveRecord moveRecord){
 
 	}
 	
+	/**
+	 * A helper method for performing and accusation
+	 * @param dec
+	 * 		The Declaration made
+	 * @param p
+	 * 		The player who made it
+	 * @return
+	 * 		whether that player is the winner (i.e found a indisputable declaration)
+	 */
 	private boolean performAccusation(Declaration dec, Player p){
 		
 		System.out.println("You have decided to make an accusation!");
@@ -318,6 +342,13 @@ private void rollMove(Player player, MoveRecord moveRecord){
 		
 	}
 	
+	/**
+	 * Draws an intrigue card from the deck
+	 * @param p
+	 * 		The player who landed on the intrigue tile
+	 * @param deck
+	 * 		The deck to draw the card from
+	 */
 	public void drawIntrigue(Player p, Deck<IntrigueCard> deck){
 		p.addCard(deck.pop());
 	}
@@ -408,8 +439,13 @@ private void rollMove(Player player, MoveRecord moveRecord){
 		return dec;
 	}
 	
-	//check if the accused character is associated to a given player. If so, move the 
-	//character into the accused room with the accuser.
+	/**check if the accused character is associated to a given player. If so, move the 
+	*character into the accused room with the accuser.
+	*@param ann
+	*		The declaration made
+	*@param curPlayer
+	*		The player whose turn it is at the moment
+	*/
 	private void performAnnouncement(Declaration ann, Player curPlayer){
 		Suspect announcedSuspect = ann.getSuspect();
 		Weapon announcedWeapon = ann.getWeapon();
@@ -789,6 +825,13 @@ private void rollMove(Player player, MoveRecord moveRecord){
 		}
 	}
 	
+	/**
+	 * Finds the room of a given player
+	 * @param player
+	 * 		The player to find
+	 * @return
+	 * 		The room found
+	 */
 	private Room findRoomOfPlayer(Player player){
 		Suspect searchSus = player.getSuspect();
 		for(Room room : rooms){
@@ -801,6 +844,11 @@ private void rollMove(Player player, MoveRecord moveRecord){
 		return null;
 	}
 	
+	/**
+	 * prints the hand of the given player
+	 * @param player
+	 * 		The player whose hand should be printed
+	 */
 	private void printHand(Player player){
 		System.out.println("You hold the following cards:");
 		for (Card c: player.getHand()){
@@ -810,6 +858,9 @@ private void rollMove(Player player, MoveRecord moveRecord){
 		System.out.println();
 	}
 	
+	/**
+	 * Prints the intro sequence
+	 */
 	private void doIntro(){
 		
 		System.out.println("Welcome");
@@ -827,11 +878,15 @@ private void rollMove(Player player, MoveRecord moveRecord){
 		System.out.println("\t\tCLUEDO!");
 		System.out.println("-------------------------------------------");
 		sleep(900);
-		
-		
-		
 	}
 	
+	/**
+	 * Finds the room given a String of the name
+	 * @param roomName
+	 * 		The name of the room to find
+	 * @return
+	 * 		The room found
+	 */
 	private Room findRoom(String roomName){
 		for (Room room : rooms){
 			if (room.getName().equalsIgnoreCase(roomName)){
