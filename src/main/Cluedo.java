@@ -7,9 +7,7 @@ import logic.Announcement;
 
 import card.*;
 
-import board.Location;
-import board.Path;
-import board.TextBoard;
+import board.*;
 
 
 public class Cluedo {
@@ -60,7 +58,7 @@ public class Cluedo {
 			}
 			System.out.println("Great choice!\n");
 			sleep(500);
-			player.getCharacter().setLocation(board.getStartLocation(i));
+			player.getSuspect().setLocation(board.getStartLocation(i));
 			player.setPlayerNumber(i+1);
 			Location playLoc = board.getStartLocation(player.getPlayerNumber()-1);
 
@@ -96,7 +94,7 @@ public class Cluedo {
 	
 	public void takeTurn(Player p){
 		
-		System.out.println("Player "+p.getPlayerNumber()+": "+p.getCharacter().getName()+
+		System.out.println("Player "+p.getPlayerNumber()+": "+p.getSuspect().getName()+
 				" ("+p.getShortName()+")");
 
 		boolean validOption = false;
@@ -143,6 +141,26 @@ public class Cluedo {
 		
 	}
 	
+	public Room findRoom(Door d){
+		for(Room r : rooms){
+			if(r.getDoors().contains(d)){
+				return r;
+			}
+		}
+		
+		return null;
+	}
+	
+	public void moveRoom(Player p, Room r){
+		for(Room room : rooms){
+			if(room.getSuspects().contains(p.getSuspect())){
+				room.removeSuspect(p.getSuspect());
+			}
+		}
+		r.addSuspect(p.getSuspect());
+		p.getSuspect().setLocation(r.getLocation());
+	}
+	
 	public boolean selectDirection(int steps, Player curPlayer){
 		
 		boolean validPath = false;
@@ -154,7 +172,7 @@ public class Cluedo {
 			HashSet<Location> visited = new HashSet<Location>();
 			while(steps > 0){
 				
-				System.out.println("Player "+curPlayer.getPlayerNumber()+": "+curPlayer.getCharacter().getName()+
+				System.out.println("Player "+curPlayer.getPlayerNumber()+": "+curPlayer.getSuspect().getName()+
 						" ("+curPlayer.getShortName()+")");
 				System.out.println("Please enter the path you wish to take type n, s, w, or e");
 				System.out.println("You have "+steps+" moves remaining ");
@@ -168,7 +186,7 @@ public class Cluedo {
 					System.out.println("Invalid path, please try again");
 					continue;
 				}
-				Location curLoc = curPlayer.getCharacter().getLocation();
+				Location curLoc = curPlayer.getSuspect().getLocation();
 				Location testLoc = board.findLocation(curLoc,buildpath);
 				if (testLoc == null){
 					System.out.println("Invalid path, please try again");
@@ -179,7 +197,7 @@ public class Cluedo {
 					continue;
 				}
 				if(!board.canMoveTo(testLoc)){
-					System.out.println("current player location = "+curPlayer.getCharacter().getLocation());
+					System.out.println("current player location = "+curPlayer.getSuspect().getLocation());
 					System.out.println("You can not move in that direction, please try again");
 					continue;
 				}
@@ -205,7 +223,7 @@ public class Cluedo {
 	public void applyPath(Location cur , Location loc, Player player){
 		board.getTile(cur).setPlayerOn(null);
 		board.getTile(loc).setPlayerOn(player);
-		player.getCharacter().setLocation(loc);
+		player.getSuspect().setLocation(loc);
 	}
 	
 	/**
@@ -240,7 +258,7 @@ public class Cluedo {
 		for (Suspect c : suspects) { // print out the possible character
 			boolean used = false;
 			for (Player p : players) {
-				if (p.getCharacter().equals(c)) {
+				if (p.getSuspect().equals(c)) {
 					used = true;
 				}
 			}
