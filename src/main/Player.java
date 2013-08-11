@@ -9,16 +9,20 @@ import card.IntrigueCard;
 
 public class Player {
 
+	
+
 	private Hand<Card> hand;
 	private Hand<IntrigueCard> intrigueHand;
 	private Suspect c;
 	private int playerNumber;
+	private boolean playerOutOfGame;
 
 
 	public Player(Suspect c, Hand<Card> hand){
 		this.c = c;
 		this.hand = hand;
 		intrigueHand = new Hand<IntrigueCard>();
+		this.playerOutOfGame = false;
 	}
 
 	public void addCard(Holdable h){
@@ -97,6 +101,14 @@ public class Player {
 	
 	public char getShortName(){
 		return getSuspect().getName().toUpperCase().charAt(0);
+	}
+	
+	public boolean isPlayerOutOfGame() {
+		return playerOutOfGame;
+	}
+
+	public void setPlayerOutOfGame(boolean playerOutOfGame) {
+		this.playerOutOfGame = playerOutOfGame;
 	}
 
 	

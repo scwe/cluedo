@@ -4,7 +4,7 @@ import board.Door;
 import board.TextBoard;
 import board.Tile;
 
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * A class to represent a room object,
@@ -20,7 +20,7 @@ public class Room implements Cardable {
 	private HashSet<Suspect> suspects;
 	private HashSet<Weapon> weapons;
 	private TextBoard board;
-	private HashSet<Door> doors;
+	private ArrayList<Door> doors;
 	
 	private HashSet<Location> locations;
 
@@ -31,7 +31,7 @@ public class Room implements Cardable {
 		
 		suspects = new HashSet<Suspect>();
 		weapons = new HashSet<Weapon>();
-		doors = new HashSet<Door>();
+		doors = new ArrayList<Door>();
 		locations = new HashSet<Location>();
 		
 		for(int i = 1; i < split.length;){
@@ -51,7 +51,7 @@ public class Room implements Cardable {
 		locations.add(l);
 	}
 	
-	public HashSet<Door> getDoors(){
+	public ArrayList<Door> getDoors(){
 		return doors;
 	}
 	

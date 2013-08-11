@@ -24,6 +24,10 @@ public class Door extends Tile{
 	public void drawGraphics(Graphics g) {
 		
 	}
+	
+	public Location getExit(){
+		return this.loc;
+	}
 
 	@Override
 	public boolean canMoveTo() {

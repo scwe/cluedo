@@ -3,7 +3,7 @@ package main;
 import java.util.*;
 import java.io.*;
 import logic.MoveRecord;
-import logic.Announcement;
+import logic.Declaration;
 
 import card.*;
 
@@ -24,9 +24,11 @@ public class Cluedo {
 	
 	private HashMap<Location, Room> roomLocations;
 
-	private Announcement solution;
+	private Declaration solution;
 
 	private Scanner inputScanner;
+	private boolean gameFinished;
+	private int remainingPlayers;
 
 	public Cluedo() {
 		
@@ -44,11 +46,27 @@ public class Cluedo {
 		
 		roomLocations = board.loadRooms(rooms);
 		board.distributeLocations(roomLocations);
-
-		System.out.println("Enter the number of players playing");
-		int numPlayers = inputScanner.nextInt();
+		boolean validInput = false;
+		int numPlayers = -1;
+		while(!validInput){
+			System.out.println("Enter the number of players playing (1-6)");
+			
+			try{
+				numPlayers = inputScanner.nextInt();
+			}
+			catch (Exception e){
+				System.out.println("That number was not valid. Try again.");
+				continue;
+			}
+			if (numPlayers > 0 && numPlayers <= 6){
+				remainingPlayers = numPlayers;
+				validInput = true;
+			}
+			else{
+				System.out.println("That number was not valid. Try again.");
+			}
+		}
 		inputScanner.nextLine();
-
 		System.out.println("Preparing your game...");
 		sleep(1000);
 		for (int i = 0; i < numPlayers; i++) {
@@ -86,11 +104,19 @@ public class Cluedo {
 			sleep(200);
 		}
 		
-		boolean gameFinished = false;
+		gameFinished = false;
 		
 		while (!gameFinished){
 			Player curPlayer = players.poll();
 			
+			if(remainingPlayers == 0){
+				System.out.println("There are no remaining players. No one wins. Game over!");
+				break;
+			}
+			if(curPlayer.isPlayerOutOfGame()){
+				players.offer(curPlayer);
+				continue;
+			}
 			takeTurn(curPlayer);
 				
 			players.offer(curPlayer);
@@ -116,9 +142,8 @@ public class Cluedo {
 		
 		Scanner optionScan = new Scanner(System.in);
 		while(!validOption){
-			
-			System.out.println("Options: ");
-			System.out.println("(1)	Roll dice");
+			System.out.println("Options: (type corresponding number)");
+			System.out.println("1	Roll dice");
 			if (player.hasIntrigueCards()){
 				System.out.println("(2)  Play intrigue card");
 			}
@@ -135,7 +160,42 @@ public class Cluedo {
 			}
 		}
 		if (playerChoice == 1){
+			if(findRoomOfPlayer(player) != null){
+				Room playerRoom = findRoomOfPlayer(player);
+				System.out.println("You are currently in the "+playerRoom);
+				validOption = false;
+				while(!validOption){
+					System.out.println("Please enter the number of the door you wish to exit by");
+					for(int i = 0; i > playerRoom.getDoors().size(); i++){
+						System.out.println((i+1)+" "+playerRoom.getDoors().get(i));
+					}
+					String decision = optionScan.next();
+					try{
+						playerChoice = Integer.parseInt(decision);
+					}catch (Exception e){
+						System.out.println("Sorry, that option was not valid");
+					}
+					if (playerChoice > 0 && playerChoice <= playerRoom.getDoors().size()){
+						Door toDoor = playerRoom.getDoors().get(playerChoice);
+						if (toDoor instanceof SecretDoor){
+							Room toRoom = (playerRoom.getName().equals("Kitchen"))?findRoom("Conservatory"):findRoom("Kitchen");
+							moveToRoom(player, toRoom);
+						}
+						else{
+							board.getTile(player.getSuspect().getLocation()).setSuspectOn(null);
+							player.getSuspect().setLocation(toDoor.getLocation());
+							board.getTile(toDoor.getLocation()).setSuspectOn(player.getSuspect());
+						}
+						validOption = true;
+					}
+					else{
+						System.out.println("Sorry that option was not valid");
+					}
+				}
+			}
 			moveSuspect(rollDice(player),player,moveRecord);
+			
+			
 		}else if (playerChoice == 2){
 			//TODO the player wants to play an intrigue card
 		}
@@ -145,19 +205,70 @@ public class Cluedo {
 			validOption = false;
 			while(!validOption){
 				if(decision.equalsIgnoreCase("Y")){
-					makeAnnouncement(player,moveRecord);
+					Declaration dec = makeDeclaration(player,moveRecord,"Announce");
 					validOption = true;
 				}
 				else if (decision.equalsIgnoreCase("N")){
 					validOption = true;
 				}
 				else{
-					System.out.println("That option was not valid.");
+					System.out.println("That option was not valid. Please enter Y or N");
 					System.out.println("Would you like to make an announcement? (Y/N)");
 				}
 			}
 		}
-			
+		if(moveRecord.canAccuse() == true){
+			System.out.println("You are in the pool room. Would you like to make an Accusation? (Y/N)");
+			String decision = optionScan.next();
+			validOption = false;
+			while(!validOption){
+				if(decision.equalsIgnoreCase("Y")){
+					Declaration dec = makeDeclaration(player,moveRecord,"Accuse");
+					gameFinished = performAccusation(dec,player);
+					validOption = true;
+				}
+				else if (decision.equalsIgnoreCase("N")){
+					validOption = true;
+				}
+				else{
+					System.out.println("That option was not valid. Please enter Y or N");
+					System.out.println("Would you like to make an Accusation? (Y/N)");
+				}
+			}
+		}
+	}
+	
+	private boolean performAccusation(Declaration dec, Player p){
+		
+		System.out.println("You have decided to make an accusation!");
+		sleep(1500);
+		System.out.println("If you get this right, you win. If you get this wrong, you're out");
+		System.out.println("You look at the solution...");
+		sleep(1500);
+		boolean winner = true;
+		System.out.println("Room: You said "+dec.getAccusedRoom()+". The solution is "+solution.getAccusedRoom());
+		if(!dec.getAccusedRoom().equals(solution.getAccusedRoom())){
+			winner = false;
+		}
+		System.out.println("Weapon: You said "+dec.getWeapon()+". The solution is "+solution.getWeapon());
+		if(!dec.getWeapon().equals(solution.getSuspect())){
+			winner = false;
+		}
+		System.out.println("Suspect: You said "+dec.getSuspect()+". The solution is "+solution.getSuspect());
+		if(!dec.getSuspect().equals(solution.getSuspect())){
+			winner = false;
+		}
+		if(winner){
+			System.out.println("Congratulations, you just won!");
+		}
+		else{
+			System.out.println("I'm sorry to say, you just lost!");
+			System.out.println("You will need to stay at the table to dispute announcements.");
+			p.setPlayerOutOfGame(true);
+			remainingPlayers--;
+		}
+		
+		return winner;
 		
 	}
 	
@@ -174,7 +285,7 @@ public class Cluedo {
 	 * @param moveRecord
 	 * 		The moves made so far in this turn
 	 */
-	public void makeAnnouncement(Player curPlayer, MoveRecord moveRecord){
+	public Declaration makeDeclaration(Player curPlayer, MoveRecord moveRecord, String type){
 		Suspect announcedSuspect = null;
 		Weapon announcedWeapon = null;
 		Room announcedRoom = findRoomOfPlayer(curPlayer);
@@ -182,14 +293,14 @@ public class Cluedo {
 		System.out.println("OK! Let's begin your announcement!");
 		boolean validSuspect = false;
 		while (!validSuspect){
-			System.out.println("Which suspect would you like to announce?");
+			System.out.println("Please enter the number of the suspect you wish to "+type);
 			for (int i = 0; i < suspects.size(); i++){
-				System.out.println(i+" "+suspects.get(i).getName());
+				System.out.println((i+1)+" "+suspects.get(i).getName());
 			}
 			String suspectChoice = scan.next();
 			int choiceValue = -1;
 			try{
-				choiceValue = Integer.parseInt(suspectChoice);
+				choiceValue = Integer.parseInt(suspectChoice)-1;
 			}catch (Exception e){
 				System.out.println("Sorry that choice was not valid.");
 				continue;
@@ -203,14 +314,14 @@ public class Cluedo {
 		}
 		boolean validWeapon = false;
 		while (!validWeapon){
-			System.out.println("Which suspect would you like to announce?");
+			System.out.println("Please enter the number of the weapon you wish to "+type);
 			for (int i = 0; i < weapons.size(); i++){
-				System.out.println(i+" "+weapons.get(i).getName());
+				System.out.println((i+1)+" "+weapons.get(i).getName());
 			}
 			String weaponChoice = scan.next();
 			int choiceValue = -1;
 			try{
-				choiceValue = Integer.parseInt(weaponChoice);
+				choiceValue = Integer.parseInt(weaponChoice)-1;
 			}catch (Exception e){
 				System.out.println("Sorry that choice was not valid.");
 				continue;
@@ -222,9 +333,41 @@ public class Cluedo {
 				validWeapon = true;
 			}
 		}
-
-		//check if the accused character is associated to a given player. If so, move the 
-		//character into the accused room with the accuser.
+		Declaration dec = new Declaration(announcedSuspect,announcedWeapon,findRoomOfPlayer(curPlayer));
+		if (type.equalsIgnoreCase("Accuse")){
+			boolean validRoom = false;
+			while (!validRoom){
+				System.out.println("Please enter the number of the room you wish to "+type);
+				for (int i = 0; i < rooms.size()-1; i++){
+					System.out.println((i+1)+" "+rooms.get(i).getName());
+				}
+				String roomChoice = scan.next();
+				int choiceValue = -1;
+				try{
+					choiceValue = Integer.parseInt(roomChoice)-1;
+				}catch (Exception e){
+					System.out.println("Sorry that choice was not valid.");
+					continue;
+				}
+				if (choiceValue < 0 || choiceValue >=  rooms.size()-1)
+					System.out.println("Sorry that choice was not valid.");
+				else{
+					Room accusedRoom = rooms.get(choiceValue);
+					dec.setAccusedRoom(accusedRoom);
+					validRoom = true;
+				}
+				
+			}
+		}
+		return dec;
+	}
+	
+	//check if the accused character is associated to a given player. If so, move the 
+	//character into the accused room with the accuser.
+	private void performAnnouncement(Declaration ann, Player curPlayer){
+		Suspect announcedSuspect = ann.getSuspect();
+		Weapon announcedWeapon = ann.getWeapon();
+		Room announcedRoom = ann.getRoom();
 		Player movePlayer = null;
 		Player foundPlayer = null;
 		players.offer(curPlayer);
@@ -267,7 +410,7 @@ public class Cluedo {
 		}
 	}
 	
-	public void printRevelation(Player player, Cardable card){
+	private void printRevelation(Player player, Cardable card){
 		System.out.println(player.getPlayerNumber()+ "("+player.getSuspect()+")"+
 				"revealed the "+card+" card to you in secret, disproving the " +
 				"suspect");
@@ -379,7 +522,12 @@ public class Cluedo {
 				Room rm = findRoom((Door)board.getTile(testLoc));
 				System.out.println("Moving to room "+rm);
 				moveToRoom(curPlayer,rm);
-				moveRecord.setRm(rm);
+				if (rm.getName().equalsIgnoreCase("Pool")){
+					moveRecord.setCanAccuse(true);
+				}
+				else{
+					moveRecord.setRm(rm);
+				}
 				finishedTurn = true;
 			}
 			visited.add(testLoc);
@@ -557,7 +705,7 @@ public class Cluedo {
 	 * @return
 	 *         The solution to the game, represented in an announcement object
 	 */
-	private Announcement createSolution(Deck<Card> deck) {
+	private Declaration createSolution(Deck<Card> deck) {
 		Card room = null;
 		Card player = null;
 		Card weapon = null;
@@ -599,6 +747,15 @@ public class Cluedo {
 				if (sus.equals(searchSus)){
 					return room;
 				}
+			}
+		}
+		return null;
+	}
+	
+	private Room findRoom(String roomName){
+		for (Room room : rooms){
+			if (room.getName().equalsIgnoreCase(roomName)){
+				return room;
 			}
 		}
 		return null;
