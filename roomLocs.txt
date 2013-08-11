@@ -1,0 +1,31 @@
+******************************
+*######  ##### ######  ######*
+*#SSSS#  #TTT#?#LLLL#  #CCCC#*
+*#SSSS#  #TTT# #LLLL#  #CCCC#*
+*#SSSS#  #TTT# #LLLL#  #CCCC#*
+*#SSSS# ?#TTT# #LLLL#  #CCCC#*
+*#SSSSv  #TTT# #LLLL#  #CCCC#*
+*#SSS#   #TTT# #LLLL# ?#CCCC#*
+*#####   ##v## ## ###  <CCCC#*
+*   ?           #v#    ######*
+*                        #   *
+*####            ?       #   *
+*#PP##^##  ####^### ##^^#####*
+*#PPPPPP>  #pppppp# #HHHHHHH#*
+*#PPPPPP#  #pppppp# <HHHHHHH#*
+*#PPPPPP#? #pppppp# <HHHHHHH#*
+*#PPPPPP#  #pppppp# #HHHHHHH#*
+*#PPPPPP<  v######v #HHHHHHH#*
+*#PP##v##      ?    #########*
+*####?               ?    #  *
+*          ##v###         #  *
+*          #DDDD#      ######*
+*######    #DDDD<      >GGGG#*
+*#KKKK#v   #DDDD#  ? #vGGGGG#*
+*#KKKKK# ?##DDDD##   #GGGGGG#*
+*#KKKKK#  #DDDDDD#   #GGGGGG#*
+*#KKKKK#  #DDDDDD#   #GGGGGG#*
+*#KKKKK#  #DDDDDD#   #GGGGGG#*
+*#KKKKK#  #DDDDDD#   #GGGGGG#*
+*#######  ########   ########*
+******************************
