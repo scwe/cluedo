@@ -24,6 +24,8 @@ public class ContextGenerator {
 				return new DrawContext("_", null);
 			case "intrigue":
 				return new DrawContext("?", null);
+			case "secret-door":
+				return new DrawContext("8", null);
 			case "room-label":
 				String val = Character.toString(label);
 				return new DrawContext(val,null);

@@ -87,6 +87,8 @@ public class BoardLoader {
 				return new Wall(l,null,type,dc);
 			case "room":
 				return new RoomTile(l, null, type, dc);
+			case "secret-door":
+				return new SecretDoor(l, null, type, dc);
 		}
 		return null;
 	}
@@ -111,6 +113,8 @@ public class BoardLoader {
 				return "intrigue";
 			case '_':
 				return "room";
+			case '8':
+				return "secret-door";
 			default :
 				return "room-label";
 		}

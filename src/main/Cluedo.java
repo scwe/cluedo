@@ -71,7 +71,6 @@ public class Cluedo {
 			board.getTile(playLoc).setSuspectOn(player.getSuspect());
 			players.offer(player);
 		}
-
 		
 		deck.deal(players);
 		assignWeapons(weapons);

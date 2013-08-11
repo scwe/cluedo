@@ -1,8 +1,5 @@
 package card;
-import board.Location;
-import board.Door;
-import board.TextBoard;
-import board.Tile;
+import board.*;
 
 import java.util.HashSet;
 
@@ -44,6 +41,10 @@ public class Room implements Cardable {
 			}else{
 				System.out.println("Something went horribly wrong");
 			}
+		}
+		
+		if(name.equals("Kitchen") || name.equals("Conservatory")){
+			doors.add(new SecretDoor(new Location(70,70), null, "secret-door", new DrawContext("8", null)));
 		}
 	}
 	
@@ -107,6 +108,16 @@ public class Room implements Cardable {
 
 	public HashSet<Location> getLocations() {
 		return locations;
+	}
+	
+	public boolean hasSecretDoor(){
+		for(Door d : doors){
+			if(d instanceof SecretDoor){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 
