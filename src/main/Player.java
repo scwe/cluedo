@@ -41,11 +41,11 @@ public class Player {
 		return hand.remove(index);
 	}
 
-	public Suspect getCharacter(){
+	public Suspect getSuspect(){
 		return c;
 	}
 
-	public void setCharacter(Suspect c){
+	public void setSuspect(Suspect c){
 		this.c = c;
 	}
 
@@ -96,7 +96,7 @@ public class Player {
 	}
 	
 	public char getShortName(){
-		return getCharacter().getName().toUpperCase().charAt(0);
+		return getSuspect().getName().toUpperCase().charAt(0);
 	}
 
 	

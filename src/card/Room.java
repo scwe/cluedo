@@ -1,16 +1,80 @@
 package card;
 import board.Location;
+import board.Door;
+import board.TextBoard;
+import board.Tile;
+
+import java.util.HashSet;
 
 
 public class Room implements Cardable {
 
 	private String name;
 	private Location location;
+	
+	private HashSet<Suspect> suspects;
+	private HashSet<Weapon> weapons;
+	
+	private HashSet<Door> doors;
 
-	public Room(String name, Location location){   //TODO should this have a set of players and Weapons perhaps?
-		this.name = name;						   //Otherwise it is going to be hard find what is where
-		this.location = location;
+	public Room(String data, TextBoard board){
+		String[] split = data.trim().split(" ");
+		this.name = split[0];
+		this.location = board.getRoomFromString(name);
+		
+		suspects = new HashSet<Suspect>();
+		weapons = new HashSet<Weapon>();
+		doors = new HashSet<Door>();
+		
+		for(int i = 1; i < split.length;){
+			int x = Integer.parseInt(split[i++].trim());
+			int y = Integer.parseInt(split[i++].trim());
+			
+			Tile t = board.getTile(new Location(x, y));
+			if(t instanceof Door){
+				doors.add((Door)t);
+			}else{
+				System.out.println("Something went horribly wrong");
+			}
+		}
 	}
+	
+	public HashSet<Door> getDoors(){
+		return doors;
+	}
+	
+	public HashSet<Suspect> getSuspects(){
+		return suspects;
+	}
+	
+	public HashSet<Weapon> getWeapons(){
+		return weapons;
+	}
+	
+	public void addSuspect(Suspect s){
+		suspects.add(s);
+	}
+	
+	public void addDoor(Door d){
+		doors.add(d);
+	}
+	
+	public void addWeapon(Weapon w){
+		weapons.add(w);
+	}
+	
+	public void removeSuspect(Suspect s){
+		suspects.remove(s);
+	}
+	
+	public void removeDoor(Door d){
+		doors.remove(d);
+	}
+	
+	public void removeWeapon(Weapon w){
+		weapons.remove(w);
+	}
+	
 
 	@Override
 	public String getName() {
@@ -35,6 +99,5 @@ public class Room implements Cardable {
 	public String toString(){
 		return name + " at "+location;
 	}
-
 
 }

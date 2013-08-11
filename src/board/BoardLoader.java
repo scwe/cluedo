@@ -74,6 +74,8 @@ public class BoardLoader {
 				return new Hall(l, null, type, dc);
 			case "boundary":
 				return new Wall(l,null,type,dc);
+			case "room":
+				return new RoomTile(l, null, type, dc);
 		}
 		return null;
 	}
@@ -96,6 +98,8 @@ public class BoardLoader {
 				return "boundary";
 			case '?':
 				return "intrigue";
+			case '_':
+				return "room";
 			default :
 				return "room-label";
 		}
