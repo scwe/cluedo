@@ -151,7 +151,6 @@ public class Cluedo {
 	public void makeAnnouncement(Player p, MoveRecord moveRecord){
 		Scanner input = new Scanner(System.in);
 		
-		
 	}
 	
 	public Room findRoom(Door d){
@@ -164,14 +163,15 @@ public class Cluedo {
 		return null;
 	}
 	
-	public void moveRoom(Player p, Room r){
-		for(Room room : rooms){
-			if(room.getSuspects().contains(p.getSuspect())){
-				room.removeSuspect(p.getSuspect());
+	public void moveRoom(Player player, Room room){
+		for(Room r : rooms){
+			if(r.getSuspects().contains(player.getSuspect())){
+				r.removeSuspect(player.getSuspect());
 			}
 		}
-		r.addSuspect(p.getSuspect());
-		p.getSuspect().setLocation(r.getLocation());
+		//Location roomLoc = room.addSuspect(player.getSuspect());
+		board.getTile(player.getSuspect().getLocation()).setSuspectOn(null);
+		//player.getSuspect().setLocation(roomLoc);
 	}
 	
 	public boolean selectDirection(int steps, Player curPlayer,MoveRecord moveRecord){
@@ -219,9 +219,18 @@ public class Cluedo {
 				sleep(1000);
 				applyPath(curLoc,testLoc,curPlayer);
 				if (board.getTile(testLoc) instanceof IntrigueTile){
+					System.out.println("You picked up an intrigue card!");
+					sleep(1000);
 					IntrigueCard ic = intrigueDeck.pop();
 					curPlayer.addCard(ic);
 					moveRecord.setIc(ic);
+					System.out.println("Your new intrigue card reads as follows:");
+					System.out.println(ic);
+				}
+				else if (board.getTile(testLoc) instanceof Door){
+					Room rm = findRoom((Door)board.getTile(testLoc));
+					moveRoom(curPlayer,rm);
+					moveRecord.setRm(rm);
 				}
 				visited.add(testLoc);
 				board.drawBoard();
@@ -233,9 +242,8 @@ public class Cluedo {
 	}
 	
 	public void applyPath(Location cur , Location loc, Player player){
-		board.getTile(cur).setPlayerOn(null);
-		board.getTile(loc).setPlayerOn(player);
-		player.getSuspect().setLocation(loc);
+		board.getTile(cur).setSuspectOn(null);
+		board.getTile(loc).setSuspectOn(player.getSuspect());
 	}
 	
 	/**

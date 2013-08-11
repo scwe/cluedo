@@ -2,6 +2,8 @@ package board;
 
 import java.awt.Graphics;
 
+import card.Suspect;
+
 import main.Player;
 
 
@@ -9,8 +11,8 @@ import main.Player;
 public class Hall extends Tile{
 
 
-	public Hall(Location l, Player p, String t, DrawContext d) {
-		super(l, p, t, d);
+	public Hall(Location l, Suspect suspect, String t, DrawContext d) {
+		super(l, suspect, t, d);
 	}
 
 	@Override
@@ -20,13 +22,12 @@ public class Hall extends Tile{
 
 	@Override
 	public void drawGraphics(Graphics g) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public boolean canMoveTo() {
-		if(this.player == null){
+		if(this.suspect == null){
 			return true;
 		}
 		System.out.println("Fucking false");
