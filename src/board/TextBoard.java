@@ -82,10 +82,6 @@ public class TextBoard {
 		return board[loc.getY()][loc.getX()];
 	}
 	
-	public static void main (String[] args){
-		TextBoard tb = new TextBoard();
-	}
-	
 	public Location findLocation(Location start, String move){
 		
 		Location testLoc  = new Location(start.getX(), start.getY());
