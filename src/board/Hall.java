@@ -1,10 +1,7 @@
 package board;
 
 import java.awt.Graphics;
-
 import card.Suspect;
-
-import main.Player;
 
 
 

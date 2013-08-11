@@ -1,21 +1,16 @@
 package board;
 
 import java.io.File;
-import java.util.ArrayList;
-
-import card.Room;
 
 public class TextBoard {
 
 	public final int ROW_LENGTH = 31;
 	public final int COL_LENGTH = 30;
 	private Tile[][] board = new Tile[ROW_LENGTH][COL_LENGTH];
-	private ArrayList<Room> rooms;
 
 	public TextBoard() {
 
 		File f = new File("Map");
-		this.rooms = rooms;
 
 		BoardLoader bl = new BoardLoader(f, ROW_LENGTH, COL_LENGTH);
 		board = bl.getBoard();
@@ -110,6 +105,38 @@ public class TextBoard {
 	}
 	
 	public boolean canMoveTo(Location testLoc){
+		if(getTile(testLoc) instanceof Door){
+			Door d = (Door)getTile(testLoc);
+			
+			System.out.println(d.getDrawContext().getString());
+			
+			switch(d.getDrawContext().getString()){
+			case "^":
+				if(getTile(new Location(testLoc.getX(), testLoc.getY()-1)).getSuspectOn() == null){
+					System.out.println("The suspect there y-1 "+testLoc+" is null");
+					return false;
+				}
+				break;
+			case "v":
+				if(getTile(new Location(testLoc.getX(), testLoc.getY()+1)).getSuspectOn() == null){
+					System.out.println("The suspect there y+1 "+testLoc+" is null");
+					return false;
+				}
+				break;
+			case "<":
+				if(getTile(new Location(testLoc.getX()-1, testLoc.getY())).getSuspectOn() == null){
+					System.out.println("The suspect there x-1 "+testLoc+" is null");
+					return false;
+				}
+				break;
+			case ">":
+				if(getTile(new Location(testLoc.getX()+1, testLoc.getY())).getSuspectOn() == null){
+					System.out.println("The suspect there x+1 "+testLoc+" is null");
+					return false;
+				}
+				break;
+			}
+		}
 		if(getTile(testLoc).canMoveTo()){
 			return true;
 		}

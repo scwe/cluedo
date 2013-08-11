@@ -490,6 +490,7 @@ public class Cluedo {
 	public HashMap<Location, Room> loadRooms(){
 		HashMap<Location, Room> map = new HashMap<Location, Room>();
 		
+		
 		try{
 			Scanner fileScanner = new Scanner(new File("roomLocs.txt"));
 			
@@ -511,6 +512,8 @@ public class Cluedo {
 				}
 				rowCount++;
 			}
+			
+			fileScanner.close();
 		}catch(IOException e){
 			e.printStackTrace();
 		}

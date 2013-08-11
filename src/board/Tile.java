@@ -11,17 +11,21 @@ public abstract class Tile {
 	
 	Location loc;
 
-	Suspect suspect;
-	Weapon wep;
-	String type;
-	DrawContext dc;
+	protected Suspect suspect;
+	protected Weapon wep;
+	protected String type;
+	protected DrawContext dc;
 	
-	public Tile(Location l, Suspect suspects, String t, DrawContext dc){
+	public Tile(Location l, Suspect suspect, String t, DrawContext dc){
 
 		this.loc = l;
 		this.suspect = suspect;
 		this.type = t;
 		this.dc = dc;
+	}
+	
+	public DrawContext getDrawContext(){
+		return dc;
 	}
 
 	public Location getLocation(){
