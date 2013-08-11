@@ -91,9 +91,6 @@ public class Cluedo {
 		
 		boolean gameFinished = false;
 		
-		/**
-		 * Game loop, this should probably be moved into a different method
-		 */
 		while (!gameFinished){
 			Player curPlayer = players.poll();
 			
@@ -105,11 +102,13 @@ public class Cluedo {
 	}
 	
 	public void takeTurn(Player p){
-		Scanner scan = new Scanner(System.in);
-		System.out.println("Player "+p.getPlayerNumber()+"'s turn");
+		
+		System.out.println("Player "+p.getPlayerNumber()+": "+p.getCharacter().getName()+
+				" ("+p.getShortName()+")");
 
 		boolean validOption = false;
 		int playerChoice = 0;
+		
 		while(!validOption){
 			System.out.println("Options: ");
 			System.out.println("(1)	Roll dice");
@@ -118,11 +117,13 @@ public class Cluedo {
 				System.out.println("(3)  Play intrigue card");
 			}
 			int okRange = (p.hasIntrigueCards())?3:2;
-			String decision = scan.next();
+			Scanner optionScan = new Scanner(System.in);
+			String decision = optionScan.next();
 			try{
 				playerChoice = Integer.parseInt(decision);
 
 			}catch (Exception e){
+				System.out.println("Sorry, that option was not valid");
 				validOption = false;
 			}
 			if (playerChoice > 0 && playerChoice <= okRange){
@@ -130,12 +131,10 @@ public class Cluedo {
 			}
 		}
 		if (playerChoice == 1){
-			if(selectDirection(rollDice(p),p)){
-				board.drawBoard();
-			}
+			selectDirection(rollDice(p),p);
 		}
 		else if (playerChoice == 2 ){
-			selectDirection(rollDice(p),p);
+			
 		}
 			
 		else if (playerChoice == 3){}
@@ -149,60 +148,61 @@ public class Cluedo {
 		Scanner scan = new Scanner(System.in);
 		
 		while(!validPath){
-			System.out.println("Player "+curPlayer.getPlayerNumber()+": "+curPlayer.getCharacter().getName()+
-					" ("+curPlayer.getShortName()+")");
-			System.out.println("Please enter the path you wish to take");
-			System.out.println("Your path can consist of "+steps+" moves ");
-			System.out.println("Enter the path as a combination of n,s,w,e (e.g nsswees)");
-			System.out.println("(Enter 'board' to show the board)");
-			String buildpath = scan.next();
-			if (buildpath.equalsIgnoreCase("board")){
-				board.drawBoard(); 
-				continue;
-			}
-			if (buildpath.length() > steps){
-				System.out.println("Invalid path, please try again");
-				continue;
-			}
-			if (buildpath.length() < steps){
-				while(buildpath.length() < steps){
-					System.out.println("You have "+(steps-buildpath.length())+" steps remaining, please enter these now");
-					String addpath = scan.next();
-					buildpath = buildpath.concat(addpath);
+			HashSet<Location> visited = new HashSet<Location>();
+			while(steps > 0){
+				
+				System.out.println("Player "+curPlayer.getPlayerNumber()+": "+curPlayer.getCharacter().getName()+
+						" ("+curPlayer.getShortName()+")");
+				System.out.println("Please enter the path you wish to take type n, s, w, or e");
+				System.out.println("You have "+steps+" moves remaining ");
+				System.out.println("(Enter 'board' to show the board)");
+				String buildpath = scan.next();
+				if (buildpath.equalsIgnoreCase("board")){
+					board.drawBoard(); 
+					continue;
 				}
-			}
-			p = new Path(curPlayer.getCharacter().getLocation(),buildpath);
-			if(!p.isValid(board)){
-				System.out.println("That path was not valid, please try again-------------------");
-				System.out.println(p.getStartLocation()+" "+p.getEndLocation());
-				continue;
-			}
-			System.out.println("The outcome of that path is as follows");
-			applyPath(board,p,curPlayer);
-			board.drawBoard();
-			System.out.println("Are you happy with this move? (Y/N)");
-			if (!scan.next().equalsIgnoreCase("Y")){
-				String reverseString = "";
-				for (int i = buildpath.length(); i < buildpath.length(); i--){
-					reverseString = reverseString.concat(java.lang.Character.toString(buildpath.charAt(i)));
+				if (buildpath.length() > 1){
+					System.out.println("Invalid path, please try again");
+					continue;
 				}
-				System.out.println(reverseString);
-				Path newPath = new Path(curPlayer.getCharacter().getLocation(),reverseString);
-				applyPath(board,newPath,curPlayer);
-				continue;
+				Location curLoc = curPlayer.getCharacter().getLocation();
+				Location testLoc = board.findLocation(curLoc,buildpath);
+				if (testLoc == null){
+					System.out.println("Invalid path, please try again");
+					continue;
+				}
+				if (visited.contains(testLoc)){
+					System.out.println("Sorry, you have already visited that tile. Please try again");
+					continue;
+				}
+				if(!board.canMoveTo(testLoc)){
+					System.out.println("current player location = "+curPlayer.getCharacter().getLocation());
+					System.out.println("You can not move in that direction, please try again");
+					continue;
+				}
+				steps--;
+				System.out.println("Now moving: "+buildpath);
+				sleep(1000);
+				applyPath(curLoc,testLoc,curPlayer);
+				if (board.getTile(testLoc) instanceof IntrigueCard){
+					
+					
+					
+					
+				}
+				visited.add(testLoc);
+				board.drawBoard();
 			}
-			
 			validPath = true;
 		}
-		scan.close();
 		return true;
 		
 	}
 	
-	public void applyPath(TextBoard b , Path p, Player player){
-		b.getTile(p.getStartLocation()).setPlayerOn(null);
-		b.getTile(p.getEndLocation()).setPlayerOn(player);
-
+	public void applyPath(Location cur , Location loc, Player player){
+		board.getTile(cur).setPlayerOn(null);
+		board.getTile(loc).setPlayerOn(player);
+		player.getCharacter().setLocation(loc);
 	}
 	
 	/**

@@ -33,7 +33,7 @@ public class BoardLoader {
 				char[] lineChars = line.toCharArray();
 				int colLoc = 0;
 				for (char c: lineChars){
-					Location loc = new Location(rowLoc,colLoc);
+					Location loc = new Location(colLoc,rowLoc);
 					String type = getType(c);
 					Tile t = getTile(type,loc,c);
 					board[rowLoc][colLoc] = t;
