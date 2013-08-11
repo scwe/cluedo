@@ -14,7 +14,7 @@ public class Clock implements IntrigueCard{
 		this.last = last;
 	}
 
-	public Boolean getLast() {
+	public Boolean isLast() {
 		return last;
 	}
 	/**

@@ -14,7 +14,7 @@ public class MoveRecord {
 	
 	private IntrigueCard ic;
 	private Room rm;
-	private boolean canAccuse, hasRolled;
+	private boolean canAccuse, hasRolled, dead;
 	String state;
 	
 	public IntrigueCard getIc() {
@@ -40,6 +40,12 @@ public class MoveRecord {
 	}
 	public String getState(){
 		return state;
+	}
+	public boolean isDead(){
+		return dead;
+	}
+	public void setIsDead(boolean val){
+		this.dead = val;
 	}
 	
 	public void setHasRolled(boolean val){

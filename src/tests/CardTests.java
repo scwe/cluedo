@@ -156,8 +156,8 @@ public class CardTests {
 		Clock c = new Clock(false);
 		Clock d = new Clock(true);
 		
-		assertTrue(d.getLast());
-		assertFalse(c.getLast());
+		assertTrue(d.isLast());
+		assertFalse(c.isLast());
 		assertEquals(c.toString(), "Clock card, Deadly: false");
 	}
 	
@@ -211,9 +211,9 @@ public class CardTests {
 		
 		d.setDeadlyClock();
 		
-		assertFalse(((Clock)(d.pop())).getLast());
-		assertFalse(((Clock)(d.pop())).getLast());
-		assertTrue(((Clock)(d.pop())).getLast());
+		assertFalse(((Clock)(d.pop())).isLast());
+		assertFalse(((Clock)(d.pop())).isLast());
+		assertTrue(((Clock)(d.pop())).isLast());
 	}
 	
 	@Test

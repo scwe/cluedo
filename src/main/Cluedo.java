@@ -47,6 +47,10 @@ public class Cluedo {
 			deck = createDeck();
 			intrigueDeck = createIntrigueDeck();
 			solution = createSolution(deck);
+			if(solution==null){
+				System.out.println("SOL = NULL");
+				sleep(2000);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -89,7 +93,6 @@ public class Cluedo {
 				player = readPlayer(inputScanner);
 				firstTime = false;
 			}
-			System.out.println("Great choice!\n");
 			sleep(500);
 			player.getSuspect().setLocation(board.getStartLocation(i));
 			player.setPlayerNumber(i+1);
@@ -116,6 +119,7 @@ public class Cluedo {
 		gameFinished = false;
 		while (!gameFinished){
 			Player curPlayer = players.poll();
+			MoveRecord moveRecord = new MoveRecord();
 			if(remainingPlayers == 0){
 				System.out.println("There are no remaining players. No one wins. Game over!");
 				break;
@@ -124,9 +128,9 @@ public class Cluedo {
 				players.offer(curPlayer);
 				continue;
 			}
-			takeTurn(curPlayer);
+			takeTurn(curPlayer, moveRecord);
 			
-			if (players.size()> 1 && queryIntrigueCard(curPlayer,KeeperFunction.MOVE_START_SPACE,"Your card allows you to move a player back to thier start location")){
+			if (!moveRecord.isDead() && players.size()> 1 && queryIntrigueCard(curPlayer,KeeperFunction.MOVE_START_SPACE,"Your card allows you to move a player back to thier start location")){
 				boolean validOption = false;
 				while(!validOption){
 					ArrayList<Player> playList = new ArrayList<Player>();
@@ -162,11 +166,11 @@ public class Cluedo {
 				sleep(800);
 			}
 			
-			if (queryIntrigueCard(curPlayer,KeeperFunction.TAKE_ANOTHER_TURN,"Your card allows you to take another turn now.")){
+			if (!moveRecord.isDead() && queryIntrigueCard(curPlayer,KeeperFunction.TAKE_ANOTHER_TURN,"Your card allows you to take another turn now.")){
 				System.out.println("Your next turn starts now!");
 				removeIntrigueCard(curPlayer, KeeperFunction.TAKE_ANOTHER_TURN);
 				sleep(800);
-				takeTurn(curPlayer);
+				takeTurn(curPlayer,moveRecord);
 			}
 			
 			for(IntrigueCard inCard : curPlayer.getIntrigueHand()){
@@ -205,9 +209,8 @@ public class Cluedo {
 	 * @param player
 	 * 		The player whose turn it is
 	 */
-	public void takeTurn(Player player){
+	public void takeTurn(Player player, MoveRecord moveRecord){
 		
-		MoveRecord moveRecord = new MoveRecord();
 		
 		System.out.println();
 		System.out.println("------------New Turn------------");
@@ -402,6 +405,7 @@ public class Cluedo {
 		Scanner optionScan = new Scanner(System.in);
 		boolean decisionMade = false;
 		boolean validOption = false;
+		if(moveRecord.isDead())return;
 		//If the player has entered a room, we need to deal with this before their turn ends
 		if(moveRecord.getRm()!=null){
 			while(!decisionMade){
@@ -471,15 +475,15 @@ public class Cluedo {
 		System.out.println("You look at the solution...");
 		sleep(1500);
 		boolean winner = true;
-		System.out.println("Room: You said "+dec.getAccusedRoom()+". The solution is "+solution.getAccusedRoom());
+		System.out.println("Room: You said "+dec.getAccusedRoom().getName()+". The solution is "+solution.getAccusedRoom().getName());
 		if(!dec.getAccusedRoom().equals(solution.getAccusedRoom())){
 			winner = false;
 		}
-		System.out.println("Weapon: You said "+dec.getWeapon()+". The solution is "+solution.getWeapon());
+		System.out.println("Weapon: You said "+dec.getWeapon().getName()+". The solution is "+solution.getWeapon().getName());
 		if(!dec.getWeapon().equals(solution.getSuspect())){
 			winner = false;
 		}
-		System.out.println("Suspect: You said "+dec.getSuspect()+". The solution is "+solution.getSuspect());
+		System.out.println("Suspect: You said "+dec.getSuspect().getName()+". The solution is "+solution.getSuspect().getName());
 		if(!dec.getSuspect().equals(solution.getSuspect())){
 			winner = false;
 		}
@@ -512,8 +516,8 @@ public class Cluedo {
 	
 
 	/**
-	 * Makes an announcement to the board of what the player thinks is the solution
-	 * then test to see if anyone can refute it, working clockwise
+	 * Creates a declaration object which can be used as an Announcement,
+	 * Accusation, or solution.
 	 * @param curPlayer
 	 * 		The curplayer, who's turn is it
 	 * @param moveRecord
@@ -614,7 +618,7 @@ public class Cluedo {
 			}
 		}
 		
-		if (foundPlayer != null){
+		if (foundPlayer != null && !foundPlayer.equals(curPlayer)){
 			System.out.println("Moving "+announcedSuspect.getName()+" to announced room "+announcedRoom);
 			sleep(1000);
 			moveToRoom(foundPlayer,announcedRoom);
@@ -772,6 +776,16 @@ public class Cluedo {
 					System.out.println("Your new intrigue card reads as follows:");
 					System.out.println(ic);
 					sleep(2000);
+					if (ic instanceof Clock){
+						Clock curClock = (Clock)ic;
+						if (curClock.isLast()){
+							System.out.println("The clock was deadly! You died!");
+							System.out.println("You will need to stay at the table to dispute announcements.");
+							curPlayer.setPlayerOutOfGame(true);
+							moveRecord.setIsDead(true);
+							return false;
+						}
+					}
 				}
 			}
 			else if (board.getTile(testLoc) instanceof Door){
@@ -964,25 +978,32 @@ public class Cluedo {
 	 *         The solution to the game, represented in an announcement object
 	 */
 	private Declaration createSolution(Deck<Card> deck) {
-		Card room = null;
-		Card player = null;
-		Card weapon = null;
+		Room room = null;
+		Suspect suspect = null;
+		Weapon weapon = null;
+		Card rm = null;
+		Card wep = null;
+		Card sus = null;
 
 		for (Card c : deck) {
 			if (c.getCard() instanceof Suspect) {
-				player = c;
+				suspect = (Suspect)c.getCard();
+				sus = c;
 			} else if (c.getCard() instanceof Room) {
-				room = c;
+				room = (Room)c.getCard();
+				rm = c;
 			} else if (c.getCard() instanceof Weapon) {
-				weapon = c;
+				weapon = (Weapon)c.getCard();
+				wep = c;
 			}
 		}
+		Declaration dec = new Declaration(suspect,weapon,null);
+		dec.setAccusedRoom(room);
+		deck.remove(rm);
+		deck.remove(wep);
+		deck.remove(sus);
 
-		deck.remove(room);
-		deck.remove(weapon);
-		deck.remove(player);
-
-		return null;
+		return dec;
 	}
 
 	/**
