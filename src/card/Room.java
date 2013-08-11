@@ -43,6 +43,7 @@ public class Room implements Cardable {
 			}
 		}
 		
+		
 		if(name.equals("Kitchen") || name.equals("Conservatory")){
 			doors.add(new SecretDoor(new Location(70,70), null, "secret-door", new DrawContext("8", null)));
 		}

@@ -116,6 +116,9 @@ public class TextBoard {
 	 * 		Whether it is a legal move
 	 */
 	public boolean canMoveTo(Location testLoc){
+		if(testLoc.getX() < 0 || testLoc.getX() >= COL_LENGTH || testLoc.getY() < 0 || testLoc.getY() >= ROW_LENGTH){
+			return false;
+		}
 		if(getTile(testLoc) instanceof Door){
 			Door d = (Door)getTile(testLoc);
 			
