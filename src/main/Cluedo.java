@@ -154,6 +154,7 @@ public class Cluedo {
 						board.getTile(chosenPlayer.getSuspect().getLocation()).setSuspectOn(null);
 						chosenPlayer.getSuspect().setLocation(playerStartLocMap.get(chosenPlayer));
 						board.getTile(playerStartLocMap.get(chosenPlayer)).setSuspectOn(chosenPlayer.getSuspect());
+						validOption = true;
 					}
 					
 				}
@@ -278,7 +279,8 @@ public class Cluedo {
 				System.out.println("Options: (enter corresponding number)");
 				System.out.println("1	Roll Dice");
 				System.out.println("2	View Hand");
-				int okRange = 2;
+				System.out.println("3	End Turn");
+				int okRange = 3;
 				
 				String decision = optionScan.next();
 				try{
@@ -298,6 +300,8 @@ public class Cluedo {
 			}else if (playerChoice == 2){
 				printHand(player);
 				validOption = false;
+			}else if (playerChoice == 3){
+				return;
 			}
 
 		}
@@ -358,6 +362,7 @@ public class Cluedo {
 					playerChoice = Integer.parseInt(decision)-1;
 				}catch (Exception e){
 					System.out.println("Sorry, that option was not valid");
+					continue;
 				}
 				if (playerChoice >= 0 && playerChoice < playerRoom.getDoors().size()){
 					Door toDoor = playerRoom.getDoors().get(playerChoice);
@@ -766,6 +771,7 @@ public class Cluedo {
 					moveRecord.setIc(ic);
 					System.out.println("Your new intrigue card reads as follows:");
 					System.out.println(ic);
+					sleep(2000);
 				}
 			}
 			else if (board.getTile(testLoc) instanceof Door){
