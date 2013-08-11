@@ -47,6 +47,9 @@ public class Cluedo {
 		roomLocations = board.loadRooms(rooms);
 		boolean validInput = false;
 		int numPlayers = -1;
+		
+		doIntro();
+		
 		while(!validInput){
 			System.out.println("Enter the number of players playing (1-6)");
 			
@@ -94,7 +97,7 @@ public class Cluedo {
 
 		for (Player p : players) {
 			System.out.println(p);
-			
+			sleep(200);
 		}
 
 		for (Weapon w : weapons) {
@@ -103,10 +106,8 @@ public class Cluedo {
 		}
 		
 		gameFinished = false;
-		
 		while (!gameFinished){
 			Player curPlayer = players.poll();
-			
 			if(remainingPlayers == 0){
 				System.out.println("There are no remaining players. No one wins. Game over!");
 				break;
@@ -132,90 +133,133 @@ public class Cluedo {
 		
 		MoveRecord moveRecord = new MoveRecord();
 		
+		System.out.println();
+		System.out.println("------------New Turn------------");
 		System.out.println("Player "+player.getPlayerNumber()+": "+player.getSuspect().getName()+
 				" ("+player.getShortName()+")");
 
-		boolean validOption = false;
-		int playerChoice = 0;
-		
 		Scanner optionScan = new Scanner(System.in);
-		while(!validOption){
-			System.out.println("Options: (type corresponding number)");
-			System.out.println("1	Roll dice");
-			if (player.hasIntrigueCards()){
-				System.out.println("(2)  Play intrigue card");
-			}
-			int okRange = (player.hasIntrigueCards())?2:1;
-			String decision = optionScan.next();
-			try{
-				playerChoice = Integer.parseInt(decision);
-			}catch (Exception e){
-				System.out.println("Sorry, that option was not valid");
-				validOption = false;
-			}
-			if (playerChoice > 0 && playerChoice <= okRange){
-				validOption = true;
-			}
-		}
-		if (playerChoice == 1){
-			if(findRoomOfPlayer(player) != null){
-				Room playerRoom = findRoomOfPlayer(player);
-				System.out.println("You are currently in the "+playerRoom);
-				validOption = false;
-				while(!validOption){
-					System.out.println("Please enter the number of the door you wish to exit by");
-					for(int i = 0; i > playerRoom.getDoors().size(); i++){
-						System.out.println((i+1)+" "+playerRoom.getDoors().get(i));
-					}
-					String decision = optionScan.next();
-					try{
-						playerChoice = Integer.parseInt(decision);
-					}catch (Exception e){
-						System.out.println("Sorry, that option was not valid");
-					}
-					if (playerChoice > 0 && playerChoice <= playerRoom.getDoors().size()){
-						Door toDoor = playerRoom.getDoors().get(playerChoice);
-						if (toDoor instanceof SecretDoor){
-							Room toRoom = (playerRoom.getName().equals("Kitchen"))?findRoom("Conservatory"):findRoom("Kitchen");
-							moveToRoom(player, toRoom);
-						}
-						else{
-							board.getTile(player.getSuspect().getLocation()).setSuspectOn(null);
-							player.getSuspect().setLocation(toDoor.getLocation());
-							board.getTile(toDoor.getLocation()).setSuspectOn(player.getSuspect());
-						}
-						validOption = true;
-					}
-					else{
-						System.out.println("Sorry that option was not valid");
-					}
-				}
-			}
-			moveSuspect(rollDice(player),player,moveRecord);
+		boolean decisionMade = false;
+		boolean validOption = false;
+		
+		while(!decisionMade){
 			
+			int playerChoice = 0;
 			
-		}else if (playerChoice == 2){
-			//TODO the player wants to play an intrigue card
-		}
-		if(moveRecord.getRm()!=null){
-			System.out.println("Would you like to make an accusation? (Y/N)");
-			String decision = optionScan.next();
-			validOption = false;
 			while(!validOption){
-				if(decision.equalsIgnoreCase("Y")){
-					Declaration dec = makeDeclaration(player,moveRecord,"Announce");
+				
+				System.out.println("\nOptions: (enter corresponding number)");
+				System.out.println("1	Roll Dice");
+				System.out.println("2	View Hand");
+				if (player.hasIntrigueCards()){
+					System.out.println("3  Play intrigue card");
+				}
+				int okRange = (player.hasIntrigueCards())?3:2;
+				String decision = optionScan.next();
+				try{
+					playerChoice = Integer.parseInt(decision);
+				}catch (Exception e){
+					System.out.println("Sorry, that option was not valid");
+					validOption = false;
+				}
+				if (playerChoice > 0 && playerChoice <= okRange){
 					validOption = true;
 				}
-				else if (decision.equalsIgnoreCase("N")){
+			}
+			if (playerChoice == 1){
+				rollMove(player,moveRecord);
+				decisionMade = true;
+				
+			}else if (playerChoice == 2){
+				printHand(player);
+				validOption = false;
+			}
+			else if (playerChoice == 3){
+				
+			}
+		}
+		endTurn(player, moveRecord);
+
+	}
+	
+private void rollMove(Player player, MoveRecord moveRecord){
+		
+		int playerChoice = 0;
+		Scanner optionScan = new Scanner(System.in);
+		
+		if(findRoomOfPlayer(player) != null){
+
+			Room playerRoom = findRoomOfPlayer(player);
+			System.out.println("You are currently in the "+playerRoom);
+			boolean validOption = false;
+			while(!validOption){
+				System.out.println("Please enter the number of the door you wish to exit by");
+				for(int i = 0; i > playerRoom.getDoors().size(); i++){
+					System.out.println((i+1)+" "+playerRoom.getDoors().get(i));
+				}
+				String decision = optionScan.next();
+				try{
+					playerChoice = Integer.parseInt(decision);
+				}catch (Exception e){
+					System.out.println("Sorry, that option was not valid");
+				}
+				if (playerChoice > 0 && playerChoice <= playerRoom.getDoors().size()){
+					Door toDoor = playerRoom.getDoors().get(playerChoice);
+					if (toDoor instanceof SecretDoor){
+						Room toRoom = (playerRoom.getName().equals("Kitchen"))?findRoom("Conservatory"):findRoom("Kitchen");
+						moveToRoom(player, toRoom);
+					}
+					else{
+						board.getTile(player.getSuspect().getLocation()).setSuspectOn(null);
+						player.getSuspect().setLocation(toDoor.getLocation());
+						board.getTile(toDoor.getLocation()).setSuspectOn(player.getSuspect());
+					}
 					validOption = true;
 				}
 				else{
-					System.out.println("That option was not valid. Please enter Y or N");
-					System.out.println("Would you like to make an announcement? (Y/N)");
+					System.out.println("Sorry that option was not valid");
 				}
 			}
 		}
-		if(moveRecord.canAccuse() == true){
+		moveSuspect(rollDice(player),player,moveRecord);
+	}
+	
+
+	private void endTurn(Player player, MoveRecord moveRecord){
+		
+		Scanner optionScan = new Scanner(System.in);
+		boolean decisionMade = false;
+		boolean validOption = false;
+		//If the player has entered a room, we need to deal with this before their turn ends
+		if(moveRecord.getRm()!=null){
+			while(!decisionMade){
+				System.out.println("You have entered the "+moveRecord.getRm().getName());
+				System.out.println("Would you like to make an announcement? (Y/N)");
+				System.out.println("(Type 'hand' to view your hand)");
+				String decision = optionScan.next();
+				validOption = false;
+				while(!validOption){
+					if(decision.equalsIgnoreCase("Y")){
+						Declaration dec = makeDeclaration(player,moveRecord,"Announce");
+						performAnnouncement(dec,player);
+						validOption = true;
+						decisionMade = true;
+					}
+					else if (decision.equalsIgnoreCase("N")){
+						validOption = true;
+						decisionMade = true;
+					}
+					else if(decision.equalsIgnoreCase("hand")){
+						printHand(player); break;
+					}
+					else{
+						System.out.println("That option was not valid. Please enter Y or N");
+						System.out.println("Would you like to make an announcement? (Y/N)");
+					}
+				}
+			}
+		}
+		if(moveRecord.canAccuse()){
 			System.out.println("You are in the pool room. Would you like to make an Accusation? (Y/N)");
 			String decision = optionScan.next();
 			validOption = false;
@@ -234,6 +278,7 @@ public class Cluedo {
 				}
 			}
 		}
+
 	}
 	
 	private boolean performAccusation(Declaration dec, Player p){
@@ -389,16 +434,16 @@ public class Cluedo {
 		int disproveCount = 0;
 		for(Player player: players){
 			if (player != curPlayer){
-				if(player.getHand().contains(announcedSuspect)){
-					printRevelation(curPlayer,announcedSuspect);
+				if(player.getHand().contains(new Card(announcedSuspect))){
+					printRevelation(player,announcedSuspect);
 					disproveCount++;
 				}
-				else if(player.getHand().contains(announcedWeapon)){
-					printRevelation(curPlayer,announcedWeapon);
+				else if(player.getHand().contains(new Card(announcedWeapon))){
+					printRevelation(player,announcedWeapon);
 					disproveCount++;
 				}
-				else if(player.getHand().contains(announcedRoom)){
-					printRevelation(curPlayer,announcedRoom);
+				else if(player.getHand().contains(new Card(announcedRoom))){
+					printRevelation(player,announcedRoom);
 					disproveCount++;
 				}
 			}
@@ -409,9 +454,10 @@ public class Cluedo {
 	}
 	
 	private void printRevelation(Player player, Cardable card){
-		System.out.println(player.getPlayerNumber()+ "("+player.getSuspect()+")"+
-				"revealed the "+card+" card to you in secret, disproving the " +
-				"suspect");
+		System.out.println("Player "+player.getPlayerNumber()+ " ("+player.getSuspect().getName()+") "+
+				"revealed the "+card.getName()+" card to you in secret, disproving the " +
+				"card as a suspect");
+		sleep(800);
 	}
 	
 	/**
@@ -475,9 +521,10 @@ public class Cluedo {
 
 			System.out.println("Player "+curPlayer.getPlayerNumber()+": "+curPlayer.getSuspect().getName()+
 					" ("+curPlayer.getShortName()+")");
-			System.out.println("Please enter the path you wish to take type n, s, w, or e");
-			System.out.println("You have "+steps+" moves remaining ");
+			System.out.println("Please enter the letter of the direction you wish to take type: n, s, w, or e");
 			System.out.println("(Enter 'board' to show the board)");
+			System.out.println("You have "+steps+" moves remaining ");
+			
 			String buildpath = scan.next();
 			if (buildpath.equalsIgnoreCase("board")){
 				board.drawBoard(); 
@@ -504,7 +551,7 @@ public class Cluedo {
 			}
 			steps--;
 			System.out.println("Now moving: "+buildpath);
-			sleep(1000);
+			sleep(500);
 			applyPath(curLoc,testLoc,curPlayer);
 			if (board.getTile(testLoc) instanceof IntrigueTile){
 				System.out.println("You picked up an intrigue card!");
@@ -520,6 +567,7 @@ public class Cluedo {
 				System.out.println("Moving to room "+rm);
 				moveToRoom(curPlayer,rm);
 				if (rm.getName().equalsIgnoreCase("Pool")){
+					System.out.println("You are in the pool room");
 					moveRecord.setCanAccuse(true);
 				}
 				else{
@@ -559,8 +607,9 @@ public class Cluedo {
 		System.out.println("Now rolling dice for player "+p.getPlayerNumber());
 		sleep(1000);
 		Random gen = new Random();
-		int val = gen.nextInt(6)+1;
+		int val = gen.nextInt(600)+1;
 		System.out.println("You rolled a "+val);
+		System.out.println();
 		return val;
 	}
 
@@ -747,6 +796,37 @@ public class Cluedo {
 			}
 		}
 		return null;
+	}
+	
+	private void printHand(Player player){
+		System.out.println("You hold the following cards:");
+		for (Card c: player.getHand()){
+			System.out.println(c);
+			sleep(400);
+		}
+		System.out.println();
+	}
+	
+	private void doIntro(){
+		
+		System.out.println("Welcome");
+		sleep(800);
+		System.out.println("\tTo");
+		sleep(800);
+		System.out.print("\t   ");
+		for (int i = 0; i < 4; i++){
+			System.out.print(".");
+			sleep(300);
+		}
+		sleep(300);
+		System.out.println();
+		System.out.println("-------------------------------------------");
+		System.out.println("\t\tCLUEDO!");
+		System.out.println("-------------------------------------------");
+		sleep(900);
+		
+		
+		
 	}
 	
 	private Room findRoom(String roomName){

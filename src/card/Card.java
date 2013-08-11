@@ -35,6 +35,6 @@ public class Card implements Holdable{
 	}
 	
 	public String toString(){
-		return "Card of "+card.toString();
+		return card.getName();
 	}
 }
