@@ -1,14 +1,15 @@
 package board;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.ArrayList;
+import java.io.*;
+import java.util.*;
 
 import card.Room;
 
+/**A class to represent the board, passes the drawing off to each its tiles
+ * has some nice helper methods for finding start location etc
+ * @author CF & scott
+ *
+ */
 public class TextBoard {
 
 	public final int ROW_LENGTH = 31;
@@ -24,7 +25,9 @@ public class TextBoard {
 		drawBoard();
 	}
 
-	
+	/**
+	 * Draws the board
+	 */
 	public void drawBoard(){
 		
 		for (int a = 0; a < ROW_LENGTH; a++){
@@ -37,6 +40,13 @@ public class TextBoard {
 	}
 
 
+	/**
+	 * Returns the start location given a player number
+	 * @param i
+	 * 		The player number to get the start location for
+	 * @return
+	 * 		The location that player should start at
+	 */
 	public Location getStartLocation(int i) {
 		switch (i) {
 		case 0:
@@ -56,11 +66,26 @@ public class TextBoard {
 		return null;
 	}
 	
+	/**
+	 * Gets the tile at a specificied location
+	 * @param loc
+	 * 		The location to get the tile for
+	 * @return
+	 * 		The Tile found
+	 */
 	public Tile getTile(Location loc){
 		return board[loc.getY()][loc.getX()];
 	}
 	
-	
+	/**
+	 * Finds the location given a start location and a string to move by
+	 * @param start
+	 * 		The start fo where the move occured
+	 * @param move
+	 * 		The string representation of the move
+	 * @return
+	 * 		The location that that move will end up on
+	 */
 	public Location findLocation(Location start, String move){
 		
 		Location testLoc  = new Location(start.getX(), start.getY());
@@ -83,6 +108,13 @@ public class TextBoard {
 		
 	}
 	
+	/**
+	 * Returns whether it is possible to move to a given location
+	 * @param testLoc
+	 * 		the location we are going to move to
+	 * @return
+	 * 		Whether it is a legal move
+	 */
 	public boolean canMoveTo(Location testLoc){
 		if(getTile(testLoc) instanceof Door){
 			Door d = (Door)getTile(testLoc);
@@ -118,6 +150,14 @@ public class TextBoard {
 		return false;
 	}
 	
+	/**
+	 * From a seperate file, generates all the rooms with their locations and puts
+	 * them into a map from location to room
+	 * @param rooms
+	 * 		The rooms that are to be loaded into
+	 * @return
+	 * 		The map from location to room
+	 */
 	public HashMap<Location, Room> loadRooms(ArrayList<Room> rooms){
 		HashMap<Location, Room> map = new HashMap<Location, Room>();
 		
@@ -162,6 +202,15 @@ public class TextBoard {
 		}
 	}
 	
+	/**
+	 * gets the room based on a name
+	 * @param name
+	 * 		The name of the room
+	 * @param rooms
+	 * 		The rooms to look through
+	 * @return
+	 * 		The room found, or null if there isn't one
+	 */
 	private Room getRoom(String name, ArrayList<Room> rooms){
 		for(Room r : rooms){
 			if(r.getName().equals(name)){
@@ -172,6 +221,13 @@ public class TextBoard {
 		return null;
 	}
 	
+	/**
+	 * Gets the name of the room based on the roomLoc.txt file
+	 * @param room
+	 * 		The character representation of the room
+	 * @return
+	 * 		The actual name of the room
+	 */
 	private String getName(char room){
 		switch(room){
 		case 'S':
