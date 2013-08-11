@@ -21,7 +21,6 @@ public class Room implements Cardable {
 		String[] split = data.trim().split(" ");
 		this.name = split[0];
 		this.location = board.getRoomFromString(name);
-		System.out.println("------"+name+"-----------");
 		
 		suspects = new HashSet<Suspect>();
 		weapons = new HashSet<Weapon>();
@@ -30,14 +29,11 @@ public class Room implements Cardable {
 		for(int i = 1; i < split.length;){
 			int x = Integer.parseInt(split[i++].trim());
 			int y = Integer.parseInt(split[i++].trim());
-			System.out.println(x+" "+y);
 			
 			Tile t = board.getTile(new Location(x, y));
-			System.out.println(t.getLocation());
 			if(t instanceof Door){
 				doors.add((Door)t);
 			}else{
-				System.out.println(t.getLocation());
 				System.out.println("Something went horribly wrong");
 			}
 		}
