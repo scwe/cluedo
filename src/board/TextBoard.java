@@ -104,6 +104,28 @@ public class TextBoard {
 	}
 	
 	public boolean canMoveTo(Location testLoc){
+		if(getTile(testLoc) instanceof Door){
+			Door d = (Door)getTile(testLoc);
+			
+			switch(d.getDrawContext().getString()){
+			case "^":
+				if(getTile(new Location(testLoc.getX(), testLoc.getY()-1)).getSuspectOn() == null){
+					return false;
+				}
+			case "v":
+				if(getTile(new Location(testLoc.getX(), testLoc.getY()+1)).getSuspectOn() == null){
+					return false;
+				}
+			case "<":
+				if(getTile(new Location(testLoc.getX()-1, testLoc.getY())).getSuspectOn() == null){
+					return false;
+				}
+			case ">":
+				if(getTile(new Location(testLoc.getX()+1, testLoc.getY())).getSuspectOn() == null){
+					return false;
+				}
+			}
+		}
 		if(getTile(testLoc).canMoveTo()){
 			return true;
 		}

@@ -50,6 +50,17 @@ public class BoardLoader {
 		return this.board;
 	}
 	
+	/**
+	* returns a tile based off a given string and a location
+	*@param type
+	*	The string to base the type of tile off
+	*@param l
+	* 	The location of the tile
+	*@param label
+	* 	Only used if the it is a room label
+	*@return
+	*	The tile generated
+	*/
 	private Tile getTile(String type, Location l, char label){
 		
 		DrawContext dc = cg.createContext(type, label);
