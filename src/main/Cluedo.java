@@ -96,44 +96,49 @@ public class Cluedo {
 		 */
 		while (!gameFinished){
 			Player curPlayer = players.poll();
-			Scanner scan = new Scanner(System.in);
-			System.out.println("Player "+curPlayer.getPlayerNumber()+"'s turn");
-
-			boolean validOption = false;
-			int playerChoice = 0;
-			while(!validOption){
-				System.out.println("Options: ");
-				System.out.println("(1)	Roll dice");
-				System.out.println("(2)  Make Accusation");
-				if (curPlayer.hasIntrigueCards()){
-					System.out.println("(3)  Play intrigue card");
-				}
-				int okRange = (curPlayer.hasIntrigueCards())?3:2;
-				String decision = scan.next();
-				try{
-					playerChoice = Integer.parseInt(decision);
-
-				}catch (Exception e){
-					validOption = false;
-				}
-				if (playerChoice > 0 && playerChoice <= okRange){
-					validOption = true;
-				}
-			}
-			if (playerChoice == 1){
-				if(selectDirection(rollDice(curPlayer),curPlayer)){
-					board.drawBoard();
-				}
-			}
-			else if (playerChoice == 2 ){
-				selectDirection(rollDice(curPlayer),curPlayer);
-			}
-				
-			else if (playerChoice == 3){}
+			
+			takeTurn(curPlayer);
 				
 			players.offer(curPlayer);
 		}
 
+	}
+	
+	public void takeTurn(Player p){
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Player "+p.getPlayerNumber()+"'s turn");
+
+		boolean validOption = false;
+		int playerChoice = 0;
+		while(!validOption){
+			System.out.println("Options: ");
+			System.out.println("(1)	Roll dice");
+			System.out.println("(2)  Make Accusation");
+			if (p.hasIntrigueCards()){
+				System.out.println("(3)  Play intrigue card");
+			}
+			int okRange = (p.hasIntrigueCards())?3:2;
+			String decision = scan.next();
+			try{
+				playerChoice = Integer.parseInt(decision);
+
+			}catch (Exception e){
+				validOption = false;
+			}
+			if (playerChoice > 0 && playerChoice <= okRange){
+				validOption = true;
+			}
+		}
+		if (playerChoice == 1){
+			if(selectDirection(rollDice(p),p)){
+				board.drawBoard();
+			}
+		}
+		else if (playerChoice == 2 ){
+			selectDirection(rollDice(p),p);
+		}
+			
+		else if (playerChoice == 3){}
 	}
 	
 	public boolean selectDirection(int steps, Player curPlayer){

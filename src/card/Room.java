@@ -7,8 +7,8 @@ public class Room implements Cardable {
 	private String name;
 	private Location location;
 
-	public Room(String name, Location location){
-		this.name = name;
+	public Room(String name, Location location){   //TODO should this have a set of players and Weapons perhaps?
+		this.name = name;						   //Otherwise it is going to be hard find what is where
 		this.location = location;
 	}
 
