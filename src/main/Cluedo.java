@@ -6,6 +6,7 @@ import logic.MoveRecord;
 import logic.Declaration;
 
 import card.*;
+import card.Keeper.KeeperFunction;
 
 import board.*;
 
@@ -27,7 +28,8 @@ public class Cluedo {
 
 	private Deck<Card> deck;
 	private Deck<IntrigueCard> intrigueDeck;
-
+	private Map<Player,Location> playerStartLocMap;
+	
 	private Declaration solution;
 
 	private Scanner inputScanner;
@@ -39,6 +41,7 @@ public class Cluedo {
 		board = new TextBoard();
 		inputScanner = new Scanner(System.in);
 		players = new LinkedList<Player>();
+		playerStartLocMap = new HashMap<Player,Location>();
 		
 		try {
 			deck = createDeck();
@@ -93,6 +96,7 @@ public class Cluedo {
 			Location playLoc = board.getStartLocation(player.getPlayerNumber()-1);
 
 			board.getTile(playLoc).setSuspectOn(player.getSuspect());
+			playerStartLocMap.put(player, playLoc);
 			players.offer(player);
 		}
 		
@@ -121,7 +125,74 @@ public class Cluedo {
 				continue;
 			}
 			takeTurn(curPlayer);
-				
+			
+			if (players.size()> 1 && queryIntrigueCard(curPlayer,KeeperFunction.MOVE_START_SPACE,"Your card allows you to move a player back to thier start location")){
+				boolean validOption = false;
+				while(!validOption){
+					ArrayList<Player> playList = new ArrayList<Player>();
+					System.out.println("Which player would you like to move?");
+					int count = 1;
+					for (Player player: players){
+						System.out.println(count+"   "+player.getSuspect().getName());
+						playList.add(player);
+						count++;
+					}
+					String choice = inputScanner.next();
+					int choiceVal = -1;
+					try{
+						choiceVal = Integer.parseInt(choice)-1;
+					}
+					catch(Exception e){
+						System.out.println("Sorry that choice is invalid");
+					}
+					if(choiceVal < 0 || choiceVal >= playList.size()){
+						System.out.println("Sorry that choice is invalid");
+					}
+					else{
+						Player chosenPlayer = playList.get(choiceVal);
+						System.out.println("Moving player "+chosenPlayer.getPlayerNumber()+" ("+chosenPlayer.getSuspect().getName()+") back to the start!");
+						board.getTile(chosenPlayer.getSuspect().getLocation()).setSuspectOn(null);
+						chosenPlayer.getSuspect().setLocation(playerStartLocMap.get(chosenPlayer));
+						board.getTile(playerStartLocMap.get(chosenPlayer)).setSuspectOn(chosenPlayer.getSuspect());
+					}
+					
+				}
+				removeIntrigueCard(curPlayer, KeeperFunction.MOVE_START_SPACE);
+				sleep(800);
+			}
+			
+			if (queryIntrigueCard(curPlayer,KeeperFunction.TAKE_ANOTHER_TURN,"Your card allows you to take another turn now.")){
+				System.out.println("Your next turn starts now!");
+				removeIntrigueCard(curPlayer, KeeperFunction.TAKE_ANOTHER_TURN);
+				sleep(800);
+				takeTurn(curPlayer);
+			}
+			
+			for(IntrigueCard inCard : curPlayer.getIntrigueHand()){
+				if (inCard instanceof Keeper){
+					Keeper keepCard = (Keeper)inCard;
+					if(keepCard.getType() == KeeperFunction.RIGHT_SHOW_CARD){
+						System.out.println("Your 'right show' keeper card is now being played.");
+						Player last = null;
+						for (Player play: players){
+							last = play;
+						}
+						System.out.println(last.getPlayerNumber()+" will now show you a card");
+						sleep(800);
+						Card chosen = last.getHand().get(0);
+						System.out.println("The card shown is "+chosen);
+						sleep(800);
+						removeIntrigueCard(curPlayer, KeeperFunction.RIGHT_SHOW_CARD);
+						for (Player play: players){
+							if (play != curPlayer && queryIntrigueCard(play,KeeperFunction.CARD_SNIPE,"Your card allows you to see the card just shown")){
+								System.out.println("The card just shown was "+chosen);
+								removeIntrigueCard(play, KeeperFunction.CARD_SNIPE);
+							}
+						}
+					}
+				}
+			}
+
 			players.offer(curPlayer);
 		}
 
@@ -140,25 +211,75 @@ public class Cluedo {
 		System.out.println();
 		System.out.println("------------New Turn------------");
 		System.out.println("Player "+player.getPlayerNumber()+": "+player.getSuspect().getName()+
-				" ("+player.getShortName()+")");
+				" ("+player.getSuspect().getShortName()+")");
 
 		Scanner optionScan = new Scanner(System.in);
 		boolean decisionMade = false;
 		boolean validOption = false;
+		
+		
+		if (queryIntrigueCard(player,KeeperFunction.MOVE_ANYWHERE,"Your card allows you to move anywhere.")){
+			boolean validMoveAnywhere = false;
+			while(!validMoveAnywhere){
+				System.out.println("Enter the location you would like to move to in the form x,y");
+				System.out.println("The board is 30x29 and you cannot move into walls or other players");
+				String choice = optionScan.next();
+				int x = -1;
+				int y = -1;
+				try{
+					String[] spltCoords = choice.split(",");
+					x = Integer.parseInt(spltCoords[0]);
+					y = Integer.parseInt(spltCoords[1]);
+				}
+				catch (Exception e){
+					System.out.println("Sorry, your location was invalid, please try again");
+					continue;
+				}
+				if((x >= 0 && x < 30) && ( y >= 0 && y < 20)){
+					Location testLoc = new Location(x,y);
+					for (Room room : rooms){
+						for (Location loc : room.getLocations()){
+							if (loc.equals(testLoc) && board.getTile(testLoc).getSuspectOn()==null){
+								System.out.println("Now moving into a room!");
+								moveToRoom(player, room);
+								if (room.getName().equalsIgnoreCase("Pool")){
+									moveRecord.setCanAccuse(true);
+									endTurn(player, moveRecord);
+									return;
+								}
+								else{
+									moveRecord.setRm(room);
+									endTurn(player,moveRecord);
+									return;
+								}
+							}
+								
+						}
+					}
+					if(board.canMoveTo(testLoc)){
+						System.out.println("Now moving to "+testLoc);
+						board.getTile(player.getSuspect().getLocation()).setSuspectOn(null);
+						player.getSuspect().setLocation(testLoc);
+						board.getTile(testLoc).setSuspectOn(player.getSuspect());
+						return;
+					}
+				}
+				System.out.println("Sorry, you can not move to that location, please try again");
+			}
+			removeIntrigueCard(player, KeeperFunction.MOVE_ANYWHERE);
+		}
 		
 		while(!decisionMade){
 			
 			int playerChoice = 0;
 			
 			while(!validOption){
-				
+
 				System.out.println("Options: (enter corresponding number)");
 				System.out.println("1	Roll Dice");
 				System.out.println("2	View Hand");
-				if (player.hasIntrigueCards()){
-					System.out.println("3  Play intrigue card");
-				}
-				int okRange = (player.hasIntrigueCards())?3:2;
+				int okRange = 2;
+				
 				String decision = optionScan.next();
 				try{
 					playerChoice = Integer.parseInt(decision);
@@ -178,9 +299,7 @@ public class Cluedo {
 				printHand(player);
 				validOption = false;
 			}
-			else if (playerChoice == 3){
-				
-			}
+
 		}
 		endTurn(player, moveRecord);
 
@@ -200,8 +319,27 @@ public class Cluedo {
 		Scanner optionScan = new Scanner(System.in);
 		
 		int roll = rollDice(player);
+		moveRecord.setHasRolled(true);
+		
+		if (queryIntrigueCard(player,KeeperFunction.MOVE_EXTRA_SIX,"Your card allows you to add 6 to your roll immediately")){
+			roll = roll+6;
+			System.out.println("Another 6 has been added to your roll");
+			System.out.println("Your roll is now worth "+roll);
+			removeIntrigueCard(player, KeeperFunction.MOVE_EXTRA_SIX);
+			sleep(800);
+		}
+		
 		if(findRoomOfPlayer(player) != null){
 
+			if (queryIntrigueCard(player,KeeperFunction.STAY_ROOM,"Your card allows you to stay in the room and make an announcement")){
+				System.out.println("You have opted to stay in the room and make an announcement");
+				removeIntrigueCard(player, KeeperFunction.STAY_ROOM);
+				sleep(800);
+				Declaration dec = makeDeclaration(player,"Announce");
+				performAnnouncement(dec,player);
+				return;
+			}
+			
 			Room playerRoom = findRoomOfPlayer(player);
 			System.out.println("You are currently in the "+playerRoom);
 			boolean validOption = false;
@@ -225,7 +363,8 @@ public class Cluedo {
 					Door toDoor = playerRoom.getDoors().get(playerChoice);
 					if (toDoor instanceof SecretDoor){
 						Room toRoom = (playerRoom.getName().equals("Kitchen"))?findRoom("Conservatory"):findRoom("Kitchen");
-						System.out.println("Moving through the Secret Door to room "+toRoom.getName());
+						System.out.println("Moving through the Secret Door to "+toRoom.getName());
+						sleep(1000);
 						moveToRoom(player, toRoom);
 					}
 					else{
@@ -268,7 +407,7 @@ public class Cluedo {
 				while(!validOption){
 					String decision = optionScan.next();
 					if(decision.equalsIgnoreCase("Y")){
-						Declaration dec = makeDeclaration(player,moveRecord,"Announce");
+						Declaration dec = makeDeclaration(player,"Announce");
 						performAnnouncement(dec,player);
 						validOption = true;
 						decisionMade = true;
@@ -294,7 +433,7 @@ public class Cluedo {
 			validOption = false;
 			while(!validOption){
 				if(decision.equalsIgnoreCase("Y")){
-					Declaration dec = makeDeclaration(player,moveRecord,"Accuse");
+					Declaration dec = makeDeclaration(player,"Accuse");
 					gameFinished = performAccusation(dec,player);
 					validOption = true;
 				}
@@ -361,7 +500,9 @@ public class Cluedo {
 	 * 		The deck to draw the card from
 	 */
 	public void drawIntrigue(Player p, Deck<IntrigueCard> deck){
-		p.addCard(deck.pop());
+		if (!deck.isEmpty()){
+			p.addCard(deck.pop());
+		}
 	}
 	
 
@@ -373,12 +514,11 @@ public class Cluedo {
 	 * @param moveRecord
 	 * 		The moves made so far in this turn
 	 */
-	public Declaration makeDeclaration(Player curPlayer, MoveRecord moveRecord, String type){
+	public Declaration makeDeclaration(Player curPlayer, String type){
 		Suspect announcedSuspect = null;
 		Weapon announcedWeapon = null;
-		Room announcedRoom = findRoomOfPlayer(curPlayer);
 		Scanner scan = new Scanner(System.in);
-		System.out.println("OK! Let's begin your announcement!");
+		System.out.println("OK! Let's begin!");
 		boolean validSuspect = false;
 		while (!validSuspect){
 			System.out.println("Please enter the number of the suspect you wish to "+type);
@@ -461,15 +601,12 @@ public class Cluedo {
 		Suspect announcedSuspect = ann.getSuspect();
 		Weapon announcedWeapon = ann.getWeapon();
 		Room announcedRoom = ann.getRoom();
-		Player movePlayer = null;
 		Player foundPlayer = null;
-		players.offer(curPlayer);
-		while(movePlayer != curPlayer){
-			movePlayer = players.poll();
-			if (movePlayer.getSuspect().equals(announcedSuspect)){
-				foundPlayer = movePlayer;
+		
+		for (Player player : players){
+			if (player.getSuspect().equals(announcedSuspect)){
+				foundPlayer = player;
 			}
-			players.offer(movePlayer);
 		}
 		
 		if (foundPlayer != null){
@@ -482,32 +619,49 @@ public class Cluedo {
 		sleep(1000);
 		System.out.println("Can any player disprove the suggestion?");
 		int disproveCount = 0;
-		for(Player player: players){
-			if (player != curPlayer){
-				if(player.getHand().contains(new Card(announcedSuspect))){
-					printRevelation(player,announcedSuspect);
-					disproveCount++;
-				}
-				else if(player.getHand().contains(new Card(announcedWeapon))){
-					printRevelation(player,announcedWeapon);
-					disproveCount++;
-				}
-				else if(player.getHand().contains(new Card(announcedRoom))){
-					printRevelation(player,announcedRoom);
-					disproveCount++;
-				}
+		
+		Player cyclePlayer = null;
+		players.offer(curPlayer);
+		while((cyclePlayer = players.poll()) != curPlayer){
+			
+			if(cyclePlayer.getHand().contains(new Card(announcedSuspect))){
+				disproveCount += printRevelation(cyclePlayer,announcedSuspect);
 			}
+			else if(cyclePlayer.getHand().contains(new Card(announcedWeapon))){
+				disproveCount += printRevelation(cyclePlayer,announcedWeapon);
+			}
+			else if(cyclePlayer.getHand().contains(new Card(announcedRoom))){
+				disproveCount += printRevelation(cyclePlayer,announcedRoom);
+				
+			}
+			players.offer(cyclePlayer);
 		}
 		if(disproveCount == 0){
-			System.out.println("No players could dispute the suggestion!");
+			System.out.println("No players disputed the suggestion!");
 		}
 	}
 	
-	private void printRevelation(Player player, Cardable card){
+	private int printRevelation(Player player, Cardable card){
+		
+
+		if (queryIntrigueCard(player,KeeperFunction.RUMOR_UNANSWERED, "Your card enables you to refuse to dispute the announcement")){
+			System.out.println("Player "+player.getPlayerNumber()+" has refused to disupte any announcement");
+			removeIntrigueCard(player,KeeperFunction.RUMOR_UNANSWERED);
+			sleep(800);
+			return 0;
+		}
+		
 		System.out.println("Player "+player.getPlayerNumber()+ " ("+player.getSuspect().getName()+") "+
 				"revealed the "+card.getName()+" card to you in secret, disproving the " +
 				"card as a suspect");
+		for (Player play: players){
+			if (play != player && queryIntrigueCard(player,KeeperFunction.CARD_SNIPE,"Your card allows you to see the card just shown")){
+				System.out.println("The card just shown was "+card.getName());
+				removeIntrigueCard(play, KeeperFunction.CARD_SNIPE);
+			}
+		}
 		sleep(800);
+		return 1;
 	}
 	
 	/**
@@ -566,11 +720,11 @@ public class Cluedo {
 		Scanner scan = new Scanner(System.in);
 
 
-		HashSet<Location> visited = new HashSet<Location>();
+		HashSet<Tile> visited = new HashSet<Tile>();
 		while(steps > 0 && !finishedTurn){
 
 			System.out.println("Player "+curPlayer.getPlayerNumber()+": "+curPlayer.getSuspect().getName()+
-					" ("+curPlayer.getShortName()+")");
+					" ("+curPlayer.getSuspect().getShortName()+")");
 			System.out.println("Please enter the letter of the direction you wish to take type: n, s, w, or e");
 			System.out.println("(Enter 'board' to show the board)");
 			System.out.println("You have "+steps+" moves remaining ");
@@ -590,8 +744,8 @@ public class Cluedo {
 				System.out.println("Invalid path, please try again");
 				continue;
 			}
-			if (visited.contains(testLoc)){
-				System.out.println("Sorry, you have already visited that tile. Please try again");
+			if (visited.contains(board.getTile(testLoc))){
+				System.out.println("Sorry, you have already visited that tile this turn. Please try again");
 				continue;
 			}
 			if(!board.canMoveTo(testLoc)){
@@ -604,13 +758,15 @@ public class Cluedo {
 			sleep(500);
 			applyPath(curLoc,testLoc,curPlayer);
 			if (board.getTile(testLoc) instanceof IntrigueTile){
-				System.out.println("You picked up an intrigue card!");
-				sleep(1000);
-				IntrigueCard ic = intrigueDeck.pop();
-				curPlayer.addCard(ic);
-				moveRecord.setIc(ic);
-				System.out.println("Your new intrigue card reads as follows:");
-				System.out.println(ic);
+				if (!intrigueDeck.isEmpty()){
+					System.out.println("You picked up an intrigue card!");
+					sleep(1000);
+					IntrigueCard ic = intrigueDeck.pop();
+					curPlayer.addCard(ic);
+					moveRecord.setIc(ic);
+					System.out.println("Your new intrigue card reads as follows:");
+					System.out.println(ic);
+				}
 			}
 			else if (board.getTile(testLoc) instanceof Door){
 				Room rm = findRoom((Door)board.getTile(testLoc));
@@ -625,7 +781,7 @@ public class Cluedo {
 				}
 				finishedTurn = true;
 			}
-			visited.add(testLoc);
+			visited.add(board.getTile(testLoc));
 			board.drawBoard();
 		}
 
@@ -889,6 +1045,58 @@ public class Cluedo {
 		System.out.println("\t\tCLUEDO!");
 		System.out.println("-------------------------------------------");
 		sleep(900);
+	}
+	
+	private boolean queryIntrigueCard(Player player, Keeper.KeeperFunction cardType, String message){
+		
+		Scanner yesNo = new Scanner(System.in);
+		for(IntrigueCard inCard : player.getIntrigueHand()){
+			if (inCard instanceof Keeper){
+				Keeper keepCard = (Keeper)inCard;
+				if(keepCard.getType() == cardType){
+					System.out.println();
+					System.out.println(player.getPlayerNumber()+" ("+player.getSuspect().getName()+") has an intrigue card to play:");
+					sleep(800);
+					System.out.println(keepCard);
+					System.out.println(message);
+					System.out.println("Would Player "+player.getPlayerNumber()+" like to play that now? Y/N");
+					boolean validOption = false;
+					while(!validOption){
+						String decision = yesNo.next();
+						if (decision.equalsIgnoreCase("y")){
+							return true;
+						}
+						else if (decision.equalsIgnoreCase("n")){
+							return false;
+						}
+						else{
+							System.out.println("That choice was not valid. Please enter Y or N");
+						}
+					}
+				}
+			}
+		}
+		
+		return false;
+		
+	}
+	
+	private void removeIntrigueCard(Player player, KeeperFunction keepFunc){
+		
+		Keeper toRemove = null;
+		for (IntrigueCard inCard: player.getIntrigueHand()){
+			
+			if(inCard instanceof Keeper){
+				Keeper keepCard = (Keeper)inCard;
+				if(keepCard.getType() == keepFunc){
+					toRemove = keepCard;
+				}
+			}
+		}
+		if (toRemove != null){
+			player.getIntrigueHand().remove(toRemove);
+		}
+		
 	}
 	
 	/**

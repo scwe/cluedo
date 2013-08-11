@@ -39,6 +39,12 @@ public class Suspect implements Cardable{
 		}
 		
 	}
+	public char getShortName(){
+		if (getName().equals("Jack Mustard")){
+			return 'M';
+		}
+		return getName().toUpperCase().charAt(0);
+	}
 
 	@Override
 	public boolean equals(Object obj) {

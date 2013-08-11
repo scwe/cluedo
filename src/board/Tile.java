@@ -90,10 +90,10 @@ public abstract class Tile {
 	public void drawSpecial(){
 
 		if (this.suspect != null){
-			System.out.print(Character.toString(suspect.getName().charAt(0)).toUpperCase());
+			System.out.print(suspect.getShortName());
 		}
 		else{
-			System.out.print(Character.toString(suspect.getName().charAt(0)).toUpperCase());
+			System.out.print(suspect.getShortName());
 		}
 		
 	}

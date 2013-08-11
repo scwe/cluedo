@@ -7,7 +7,8 @@ public class MoveRecord {
 	
 	private IntrigueCard ic;
 	private Room rm;
-	private boolean canAccuse;
+	private boolean canAccuse, hasRolled;
+	String state;
 	
 	public IntrigueCard getIc() {
 		return ic;
@@ -27,4 +28,18 @@ public class MoveRecord {
 	public void setCanAccuse(boolean canAccuse) {
 		this.canAccuse = canAccuse;
 	}
+	public void setState(String newState){
+		state = newState;
+	}
+	public String getState(){
+		return state;
+	}
+	
+	public void setHasRolled(boolean val){
+		this.hasRolled = val;
+	}
+	public boolean getHasRolled(){
+		return this.hasRolled;
+	}
+	
 }

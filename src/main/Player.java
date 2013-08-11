@@ -103,9 +103,7 @@ public class Player {
 		return intrigueHand;
 	}
 	
-	public char getShortName(){
-		return getSuspect().getName().toUpperCase().charAt(0);
-	}
+	
 	
 	public boolean isPlayerOutOfGame() {
 		return playerOutOfGame;

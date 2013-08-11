@@ -9,7 +9,7 @@ public class Keeper implements IntrigueCard{
 		STAY_ROOM("Stay in your room and make another announcement"),
 		RUMOR_UNANSWERED("Instead of responding to an Announcement, it remains unanswered"),
 		CARD_SNIPE("You get to see a card that is being shown too"),   //When one player shows a card you may get to see that card too
-		MOVE_START_SPACE("Move any player back to their start location"),   //At the start of your turn, move anyone back to their start space
+		MOVE_START_SPACE("Move any player back to their start location"),   //At the end of your turn, move anyone back to their start space
 		MOVE_ANYWHERE("Move anywhere instead of rolling the dice"),     //Instead of rolling the dice, move anywhere
 		MOVE_EXTRA_SIX("Add 6 to your dice roll before you move"),   //after your dice roll, but before you move, add 6 to your dice roll
 		TAKE_ANOTHER_TURN("At the end of your turn take another turn ");   //at the end of your turn, take another turn
@@ -75,6 +75,10 @@ public class Keeper implements IntrigueCard{
 		if (type != other.type)
 			return false;
 		return true;
+	}
+	
+	public KeeperFunction getType(){
+		return this.type;
 	}
 	
 }

@@ -22,7 +22,7 @@ public class MainTests {
 		
 		assertEquals(p.getSuspect(), s);
 		assertTrue(p.getHand().isEmpty());
-		assertTrue(p.getShortName()=='A');
+		assertTrue(p.getSuspect().getShortName()=='A');
 		assertEquals(p.getPlayerNumber(), 0);
 		assertTrue(p.getIntrigueHand().isEmpty());
 	}
