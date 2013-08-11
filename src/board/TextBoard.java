@@ -85,5 +85,35 @@ public class TextBoard {
 	public static void main (String[] args){
 		TextBoard tb = new TextBoard();
 	}
+	
+	public Location findLocation(Location start, String move){
+		
+		Location testLoc  = new Location(start.getX(), start.getY());
+		switch(move){
+			case "n":
+				testLoc.setY(testLoc.getY()-1);
+				return testLoc;
+			case "e":
+				testLoc.setX(testLoc.getX()+1);
+				return testLoc;
+			case "s":
+				testLoc.setY(testLoc.getY()+1);
+				return testLoc;
+			case "w":
+				testLoc.setX(testLoc.getX()-1);
+				return testLoc;
+			default:
+				return null;
+		}
+		
+	}
+	
+	public boolean canMoveTo(Location testLoc){
+		if(getTile(testLoc).canMoveTo()){
+			return true;
+		}
+		return false;
+	}
+
 
 }
