@@ -44,6 +44,7 @@ public class Deck<E extends Holdable> implements Iterable<E> {
 		for (E e : deck) {
 			if (e instanceof Clock) {
 				c = ((Clock) e);
+				break;		//finds the first one (cause it works from the bottom of the stack up)
 			}
 		}
 		

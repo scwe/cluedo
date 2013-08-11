@@ -559,7 +559,7 @@ public class Cluedo {
 		System.out.println("Now rolling dice for player "+p.getPlayerNumber());
 		sleep(1000);
 		Random gen = new Random();
-		int val = gen.nextInt(6)+1;
+		int val = gen.nextInt(6000)+1;
 		System.out.println("You rolled a "+val);
 		return val;
 	}
