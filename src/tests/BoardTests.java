@@ -153,4 +153,32 @@ public class BoardTests {
     	Wall i = new Wall(new Location(5,5), null, "wall", new DrawContext("#", null));
     	assertFalse(i.canMoveTo());
     }
+
+    @Test
+    public void textBoard_test6(){
+    	final TextBoard b = new TextBoard();
+    	final Room r = new Room("Spa 6 6", b);
+
+    	ArrayList<Room> a = new ArrayList<Room>(){{
+    		add(r);
+			add(new Room("Theatre 11 8", b));
+			add(new Room("Living_Room 17 9", b));
+			add(new Room("Conservatory 23 8", b));
+			add(new Room("Patio 6 12 8 13 8 17 6 18", b));
+			add(new Room("Hall 22 12 23 12 20 14 20 15", b));
+			add(new Room("Kitchen 7 23", b));
+			add(new Room("Dining_Room 13 20 16 22", b));
+			add(new Room("Guest_House 22 23 23 22", b));
+			add(new Room("Pool 15 12 18 17 11 17", b));
+    	}};
+
+    	HashMap<Location, Room> map = b.loadRooms(a);
+
+    	assertFalse(map.containsKey(new Location(7,7)));
+
+    	assertTrue(map.containsValue(r));
+    	
+    	
+
+    }
 }

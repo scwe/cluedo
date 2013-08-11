@@ -43,7 +43,6 @@ public class Cluedo {
 		}
 		
 		roomLocations = board.loadRooms(rooms);
-		board.distributeLocations(roomLocations);
 
 		System.out.println("Enter the number of players playing");
 		int numPlayers = inputScanner.nextInt();

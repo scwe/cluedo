@@ -192,6 +192,8 @@ public class TextBoard {
 			e.printStackTrace();
 		}
 		
+		distributeLocations(map);
+		
 		return map;
 	}
 	
@@ -199,7 +201,7 @@ public class TextBoard {
 	 * A method which takes a map from locations to room
 	 * @param roomLocations
 	 */
-	public void distributeLocations(HashMap<Location, Room> roomLocations){
+	private void distributeLocations(HashMap<Location, Room> roomLocations){
 		for(Map.Entry<Location, Room> e: roomLocations.entrySet()){
 			e.getValue().addLocation(e.getKey());
 		}

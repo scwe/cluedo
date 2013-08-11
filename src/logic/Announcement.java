@@ -1,5 +1,4 @@
 package logic;
-import card.Card;
 import card.Suspect;
 import card.Room;
 import card.Weapon;
