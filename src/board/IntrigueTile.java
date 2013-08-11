@@ -4,7 +4,11 @@ import java.awt.Graphics;
 
 import card.Suspect;
 
-
+/**
+ * The tile to represent the ? on the board, the intrigue tile
+ * @author scott
+ *
+ */
 public class IntrigueTile extends Tile{
 
 	public IntrigueTile(Location l, Suspect suspect, String t, DrawContext dc) {

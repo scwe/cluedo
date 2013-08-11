@@ -29,6 +29,12 @@ public class Player {
 		this.playerOutOfGame = false;
 	}
 
+	/**
+	 * Adds a card to the players hand, either his card hand
+	 * or Intrigue hand, dependant on the type of the offering
+	 * @param h
+	 * 		The holdable to put in one of the hands
+	 */
 	public void addCard(Holdable h){
 		if(h instanceof Card){
 			hand.add((Card)h);
@@ -37,6 +43,11 @@ public class Player {
 		}
 	}
 
+	/**
+	 * Removes a Holdable from the correct hand
+	 * @param h
+	 * 		The holdable to be removed
+	 */
 	public void removeCard(Holdable h){
 		if(h instanceof Card){
 			hand.remove((Card)h);

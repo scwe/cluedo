@@ -3,11 +3,16 @@ import card.Suspect;
 import card.Room;
 import card.Weapon;
 
-
+/**
+ * A class to represent a declaration in the game,
+ * that is an accusation or the solution or if in the pool
+ * and you think you have an ansewer.
+ * Essentially a tuple of Weapon, Suspect and Room
+ * @author CF
+ *
+ */
 public class Declaration {
 	
-	
-
 	private Suspect suspect;
 	private Weapon weapon;
 	private Room room;

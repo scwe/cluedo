@@ -1,7 +1,14 @@
 package card;
 import java.util.*;
 
-
+/**
+ * A class to represent a hand of some type of holdable object,'
+ * i.e. either intrigue cards or Cardables
+ * @author scott
+ *
+ * @param <E>
+ * The type of card that will be held in this hand
+ */
 
 public class Hand<E extends Holdable> extends AbstractList<E> implements List<E> {
 	private ArrayList<E> data;

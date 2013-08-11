@@ -4,7 +4,11 @@ import java.awt.Graphics;
 
 import card.Suspect;
 
-
+/**
+ * A Tile to represent rooms on the board
+ * @author scott
+ *
+ */
 public class RoomTile extends Tile{
 
 	public RoomTile(Location l, Suspect suspect, String t, DrawContext dc) {
