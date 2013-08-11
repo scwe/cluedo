@@ -3,6 +3,7 @@ package card;
 
 
 public class Keeper implements IntrigueCard{
+
 	public enum KeeperFunction{
 		RIGHT_SHOW_CARD("At the end of your turn, the player on your right must show a card"),
 		STAY_ROOM("Stay in your room and make another announcement"),
@@ -62,4 +63,18 @@ public class Keeper implements IntrigueCard{
 		return "Keeper Card: "+ type.toString();
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Keeper other = (Keeper) obj;
+		if (type != other.type)
+			return false;
+		return true;
+	}
+	
 }

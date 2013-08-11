@@ -38,8 +38,6 @@ public class Room implements Cardable {
 			Tile t = board.getTile(new Location(x, y));
 			if(t instanceof Door){
 				doors.add((Door)t);
-			}else{
-				System.out.println("Something went horribly wrong");
 			}
 		}
 		
