@@ -110,6 +110,7 @@ public class Cluedo {
 		
 		Scanner optionScan = new Scanner(System.in);
 		while(!validOption){
+			
 			System.out.println("Options: ");
 			System.out.println("(1)	Roll dice");
 			if (player.hasIntrigueCards()){
@@ -292,7 +293,6 @@ public class Cluedo {
 			}
 		}
 		Location roomLoc = room.addSuspect(player.getSuspect());
-		System.out.println("Moving into room "+room);
 		board.getTile(player.getSuspect().getLocation()).setSuspectOn(null);
 		player.getSuspect().setLocation(roomLoc);
 		board.getTile(roomLoc).setSuspectOn(player.getSuspect());
@@ -366,6 +366,7 @@ public class Cluedo {
 			}
 			else if (board.getTile(testLoc) instanceof Door){
 				Room rm = findRoom((Door)board.getTile(testLoc));
+				System.out.println("Moving to room "+rm);
 				moveToRoom(curPlayer,rm);
 				moveRecord.setRm(rm);
 				finishedTurn = true;
