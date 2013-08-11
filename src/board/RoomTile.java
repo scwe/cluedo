@@ -2,13 +2,15 @@ package board;
 
 import java.awt.Graphics;
 
+import card.Suspect;
+
 import main.Player;
 
 
 public class RoomTile extends Tile{
 
-	public RoomTile(Location l, Player play, String t, DrawContext dc) {
-		super(l, play, t, dc);
+	public RoomTile(Location l, Suspect suspect, String t, DrawContext dc) {
+		super(l, suspect, t, dc);
 	}
 
 	@Override
