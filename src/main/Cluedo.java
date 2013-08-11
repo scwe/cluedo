@@ -2,7 +2,7 @@ package main;
 
 import java.util.*;
 import java.io.*;
-
+import logic.MoveRecord;
 import logic.Announcement;
 
 import card.*;
@@ -68,7 +68,7 @@ public class Cluedo {
 			player.setPlayerNumber(i+1);
 			Location playLoc = board.getStartLocation(player.getPlayerNumber()-1);
 
-			board.getTile(playLoc).setPlayerOn(player);
+			board.getTile(playLoc).setSuspectOn(player.getSuspect());
 			players.offer(player);
 		}
 
