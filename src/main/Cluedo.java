@@ -43,7 +43,7 @@ public class Cluedo {
 		}
 		
 		roomLocations = board.loadRooms(rooms);
-		distributeLocations(roomLocations);
+		board.distributeLocations(roomLocations);
 
 		System.out.println("Enter the number of players playing");
 		int numPlayers = inputScanner.nextInt();
@@ -154,6 +154,11 @@ public class Cluedo {
 		p.addCard(deck.pop());
 	}
 	
+	/**
+	 * Makes an announcement to the board that that player thinks it is
+	 * @param p
+	 * @param moveRecord
+	 */
 	public void makeAnnouncement(Player p, MoveRecord moveRecord){
 		Suspect announcedSuspect = null;
 		Weapon announcedWeapon = null;
@@ -222,7 +227,13 @@ public class Cluedo {
 		}
 	}
 	
-	
+	/**
+	 * Takes a door and finds the corresponding room attached to it
+	 * @param d
+	 * 		The door to find the room for
+	 * @return
+	 * 		The room found, null if there is none (shouldn't be possible)
+	 */
 	public Room findRoom(Door d){
 		for(Room r : rooms){
 			if(r.getDoors().contains(d)){
@@ -232,6 +243,14 @@ public class Cluedo {
 		return null;
 	}
 	
+	/**
+	 * Moves a given player into a given room, making sure to remove that player
+	 * from their original room if any
+	 * @param player
+	 * 		The player to move
+	 * @param room
+	 * 		The room to move the player to
+	 */
 	public void moveRoom(Player player, Room room){
 		for(Room r : rooms){
 			if(r.getSuspects().contains(player.getSuspect())){
@@ -245,6 +264,19 @@ public class Cluedo {
 		board.getTile(roomLoc).setSuspectOn(player.getSuspect());
 	}
 	
+	/**
+	 * Takes care of the user inputing text and then moves and tests whether that 
+	 * is a valid move until the user has no more moves left. If they move somewhere invalid
+	 * it will repeat until they choose something valid.
+	 * @param steps
+	 * 		The steps to be taken
+	 * @param curPlayer
+	 * 		The player that is moving
+	 * @param moveRecord
+	 * 		where they have moved so far
+	 * @return
+	 * 		whether the move was successful or not
+	 */
 	public boolean moveSuspect(int steps, Player curPlayer,MoveRecord moveRecord){
 		
 		boolean finishedTurn = false;
@@ -312,6 +344,15 @@ public class Cluedo {
 		
 	}
 	
+	/**
+	 * Applies the path to the board
+	 * @param cur
+	 * 		The suspects current position
+	 * @param loc
+	 * 		The position the suspect is moving to
+	 * @param player
+	 * 		The player object that wraps a suspect
+	 */
 	public void applyPath(Location cur , Location loc, Player player){
 		board.getTile(cur).setSuspectOn(null);
 		board.getTile(loc).setSuspectOn(player.getSuspect());
@@ -491,15 +532,12 @@ public class Cluedo {
 
 		return new Announcement(room, player, weapon);
 	}
-	
-	private void distributeLocations(HashMap<Location, Room> roomLocations){
-		for(Map.Entry<Location, Room> e: roomLocations.entrySet()){
-			e.getValue().addLocation(e.getKey());
-		}
-	}
-	
-	
 
+	/**
+	 * A helper method so we can sleep the thread to make the outpput nicer
+	 * @param val
+	 * 		The time in milliseconds to sleep
+	 */
 	private void sleep(int val) {
 		try {
 			Thread.sleep(val);

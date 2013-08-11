@@ -3,6 +3,7 @@ package board;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -149,6 +150,16 @@ public class TextBoard {
 		}
 		
 		return map;
+	}
+	
+	/**
+	 * A method which takes a map from locations to room
+	 * @param roomLocations
+	 */
+	public void distributeLocations(HashMap<Location, Room> roomLocations){
+		for(Map.Entry<Location, Room> e: roomLocations.entrySet()){
+			e.getValue().addLocation(e.getKey());
+		}
 	}
 	
 	private Room getRoom(String name, ArrayList<Room> rooms){
