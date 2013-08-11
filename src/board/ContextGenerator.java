@@ -20,6 +20,8 @@ public class ContextGenerator {
 				return new DrawContext("v",null);
 			case "boundary":
 				return new DrawContext("*",null);
+			case "room":
+				return new DrawContext("_", null);
 			case "intrigue":
 				return new DrawContext("?", null);
 			case "room-label":

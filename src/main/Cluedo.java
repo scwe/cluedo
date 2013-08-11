@@ -82,12 +82,6 @@ public class Cluedo {
 			sleep(200);
 		}
 		
-		System.out.println(solution);
-		
-		for(IntrigueCard i : intrigueDeck){
-			System.out.println(i);
-		}
-		
 		boolean gameFinished = false;
 		
 		while (!gameFinished){
@@ -293,9 +287,10 @@ public class Cluedo {
 		lines = new Scanner(new File("rooms.txt")).useDelimiter("\\Z").next().split("\n");
 
 		for (String s : lines) {
-			Room r = new Room(s.trim(), board.getRoomFromString(s));
+			Room r = new Room(s.trim(), board);
 			rooms.add(r);
-			deck.push(new Card(r));
+			if(!s.startsWith("Pool"))   //don't add the pool to the deck, it cannot be the place of a murder
+				deck.push(new Card(r));
 		}
 
 		lines = new Scanner(new File("weapons.txt")).useDelimiter("\\Z").next().split("\n");
