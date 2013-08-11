@@ -6,7 +6,7 @@ import card.Suspect;
 import card.Weapon;
 
 /**A class to represent the tile class
- * it contains all the usual shit, like howw to draw it etc
+ * it contains all the usual shit, like how to draw it etc
  * also they know how to draw themselves
  * @author cf
  *
@@ -61,6 +61,12 @@ public abstract class Tile {
 		return this.type;
 	}
 	
+	/**
+	 * The draw method for the tile, if g is not null then it wil draw it to a graphics pane,
+	 * otherwise it will print it
+	 * @param g
+	 * 		The graphics pane to draw it to, null if it is to be printed
+	 */
 	public void draw (Graphics g){
 		
 		if (this.suspect != null){

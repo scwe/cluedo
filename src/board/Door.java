@@ -5,7 +5,11 @@ import java.awt.Graphics;
 import card.Suspect;
 
 
-
+/**
+ * The door tile
+ * @author CF
+ *
+ */
 public class Door extends Tile{
 
 

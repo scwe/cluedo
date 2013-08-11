@@ -83,10 +83,23 @@ public class MainTests {
 		p.addCard(new Card(s));
 		p.addCard(new Clock(false));
 		
+		assertTrue(p.hasIntrigueCards());
+		
 		p.removeCard(new Card(s));
 		
 		assertTrue(p.getHand().size()==0);
-		assertTrue(p.getIntrigueHand().size()==0);
+		assertTrue(p.getIntrigueHand().size()==1);
+		
+	}
+	
+	@Test
+	public void player_test8() {
+		Player p = new Player(s, new Hand<Card>());
+		
+		p.addCard(new Card(s));
+		p.addCard(new Clock(false));
+		
+		assertEquals(p.toString().trim(), "Character: a who is nowhere with hand: \n\ta");
 		
 	}
 
