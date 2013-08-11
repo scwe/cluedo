@@ -20,7 +20,6 @@ public class MoveRecord {
 	}
 	public void setRm(Room rm) {
 		this.rm = rm;
-		setCanAccuse(true);
 	}
 	public boolean canAccuse() {
 		return canAccuse;

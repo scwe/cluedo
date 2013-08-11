@@ -22,7 +22,7 @@ public class TextBoard {
 
 		BoardLoader bl = new BoardLoader(f, ROW_LENGTH, COL_LENGTH);
 		board = bl.getBoard();
-		drawBoard();
+
 	}
 
 	/**
