@@ -7,9 +7,13 @@ import card.Hand;
 import card.Holdable;
 import card.IntrigueCard;
 
+/**
+ * This class represents the player as a entity, so it contains a suspect on the board and two hands
+ * for the intrigue cards and the normal cards, plus whether they are still playing or not
+ * @author scott
+ *
+ */
 public class Player {
-
-	
 
 	private Hand<Card> hand;
 	private Hand<IntrigueCard> intrigueHand;

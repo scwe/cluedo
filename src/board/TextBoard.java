@@ -161,7 +161,7 @@ public class TextBoard {
 	 * @return
 	 * 		The map from location to room
 	 */
-	public HashMap<Location, Room> loadRooms(ArrayList<Room> rooms){
+	public void loadRooms(ArrayList<Room> rooms){
 		HashMap<Location, Room> map = new HashMap<Location, Room>();
 		
 		
@@ -192,17 +192,7 @@ public class TextBoard {
 			e.printStackTrace();
 		}
 		
-		distributeLocations(map);
-		
-		return map;
-	}
-	
-	/**
-	 * A method which takes a map from locations to room
-	 * @param roomLocations
-	 */
-	private void distributeLocations(HashMap<Location, Room> roomLocations){
-		for(Map.Entry<Location, Room> e: roomLocations.entrySet()){
+		for(Map.Entry<Location, Room> e: map.entrySet()){
 			e.getValue().addLocation(e.getKey());
 		}
 	}

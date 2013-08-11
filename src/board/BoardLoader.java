@@ -8,8 +8,6 @@ import java.util.*;
 /**
  * Loads a board from a given file and returns an array of tile objects
  * 
- * 
- * 
  * @author CF
  *
  */
@@ -93,6 +91,14 @@ public class BoardLoader {
 		return null;
 	}
 	
+	/**
+	 * Turns a character from the file into a full string that describes the tile
+	 * better
+	 * @param c
+	 * 		The character from the file
+	 * @return
+	 * 		The full string representation
+	 */
 	private String getType(char c){
 		switch (c){
 			case '#':

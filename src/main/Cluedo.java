@@ -9,7 +9,12 @@ import card.*;
 
 import board.*;
 
-
+/**
+ * 
+ * @author scott & CF2
+ * 
+ *
+ */
 public class Cluedo {
 
 	private Queue<Player> players;
@@ -21,8 +26,6 @@ public class Cluedo {
 
 	private Deck<Card> deck;
 	private Deck<IntrigueCard> intrigueDeck;
-	
-	private HashMap<Location, Room> roomLocations;
 
 	private Declaration solution;
 
@@ -44,7 +47,7 @@ public class Cluedo {
 			e.printStackTrace();
 		}
 		
-		roomLocations = board.loadRooms(rooms);
+		board.loadRooms(rooms);
 		boolean validInput = false;
 		int numPlayers = -1;
 		

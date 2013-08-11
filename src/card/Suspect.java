@@ -1,7 +1,12 @@
 package card;
 import board.Location;
 
-
+/**
+ * The Suspect class represents a character on the board, and can also be
+ * put into a card and held in some hand or deck
+ * @author scott
+ *
+ */
 public class Suspect implements Cardable{
 
 	private String name;
