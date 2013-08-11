@@ -33,17 +33,17 @@ public class TextBoard {
 		room = room.toLowerCase().trim();
 		switch (room) {
 		case "spa":
-			return new Location(5, 5); // STURDY
+			return new Location(5, 5);
 		case "theatre":
-			return new Location(11, 5); // although these locations are actually in the room
+			return new Location(11, 5);
 		case "living room":
 			return new Location(17, 5);
 		case "conservatory":
-			return new Location(25, 5); // STURDY
+			return new Location(25, 5);
 		case "patio":
-			return new Location(5, 15); // YOLOSTURD
+			return new Location(5, 15);
 		case "pool":
-			return new Location(14, 15); // SOSTURD720
+			return new Location(14, 15);
 		case "hall":
 			return new Location(25, 15);
 		case "kitchen":
@@ -54,7 +54,7 @@ public class TextBoard {
 			return new Location(27, 26);
 
 		}
-
+		
 		return null;
 	}
 
@@ -113,25 +113,21 @@ public class TextBoard {
 			switch(d.getDrawContext().getString()){
 			case "^":
 				if(getTile(new Location(testLoc.getX(), testLoc.getY()-1)).getSuspectOn() == null){
-					System.out.println("The suspect there y-1 "+testLoc+" is null");
 					return false;
 				}
 				break;
 			case "v":
 				if(getTile(new Location(testLoc.getX(), testLoc.getY()+1)).getSuspectOn() == null){
-					System.out.println("The suspect there y+1 "+testLoc+" is null");
 					return false;
 				}
 				break;
 			case "<":
 				if(getTile(new Location(testLoc.getX()-1, testLoc.getY())).getSuspectOn() == null){
-					System.out.println("The suspect there x-1 "+testLoc+" is null");
 					return false;
 				}
 				break;
 			case ">":
 				if(getTile(new Location(testLoc.getX()+1, testLoc.getY())).getSuspectOn() == null){
-					System.out.println("The suspect there x+1 "+testLoc+" is null");
 					return false;
 				}
 				break;
