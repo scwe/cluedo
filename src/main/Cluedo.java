@@ -98,6 +98,12 @@ public class Cluedo {
 
 	}
 	
+	/**
+	 * The main method to control the turn taking process, checks what the user wants to do,
+	 * then processes accordingly
+	 * @param player
+	 * 		The player whose turn it is
+	 */
 	public void takeTurn(Player player){
 		
 		MoveRecord moveRecord = new MoveRecord();
@@ -114,9 +120,9 @@ public class Cluedo {
 			System.out.println("Options: ");
 			System.out.println("(1)	Roll dice");
 			if (player.hasIntrigueCards()){
-				System.out.println("(3)  Play intrigue card");
+				System.out.println("(2)  Play intrigue card");
 			}
-			int okRange = (player.hasIntrigueCards())?3:2;
+			int okRange = (player.hasIntrigueCards())?2:1;
 			String decision = optionScan.next();
 			try{
 				playerChoice = Integer.parseInt(decision);
@@ -130,6 +136,8 @@ public class Cluedo {
 		}
 		if (playerChoice == 1){
 			moveSuspect(rollDice(player),player,moveRecord);
+		}else if (playerChoice == 2){
+			//TODO the player wants to play an intrigue card
 		}
 		if(moveRecord.getRm()!=null){
 			System.out.println("Would you like to make an accusation? (Y/N)");
@@ -150,7 +158,7 @@ public class Cluedo {
 			}
 		}
 			
-		else if (playerChoice == 3){}
+		
 	}
 	
 	public void drawIntrigue(Player p, Deck<IntrigueCard> deck){
@@ -159,9 +167,12 @@ public class Cluedo {
 	
 
 	/**
-	 * Makes an announcement to the board that that player thinks it is
-	 * @param p
+	 * Makes an announcement to the board of what the player thinks is the solution
+	 * then test to see if anyone can refute it, working clockwise
+	 * @param curPlayer
+	 * 		The curplayer, who's turn is it
 	 * @param moveRecord
+	 * 		The moves made so far in this turn
 	 */
 	public void makeAnnouncement(Player curPlayer, MoveRecord moveRecord){
 		Suspect announcedSuspect = null;

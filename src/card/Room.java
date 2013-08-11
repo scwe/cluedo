@@ -6,7 +6,13 @@ import board.Tile;
 
 import java.util.HashSet;
 
-
+/**
+ * A class to represent a room object,
+ * keeps track of all the weapons, suspects currently in it,
+ * also keeps track of all the locations in it and it's doors
+ * @author scott
+ *
+ */
 public class Room implements Cardable {
 
 	private String name;

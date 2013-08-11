@@ -6,7 +6,12 @@ import main.Player;
 import card.Suspect;
 import card.Weapon;
 
-
+/**A class to represent the tile class
+ * it contains all the usual shit, like howw to draw it etc
+ * also they know how to draw themselves
+ * @author cf
+ *
+ */
 public abstract class Tile {
 	
 	Location loc;
